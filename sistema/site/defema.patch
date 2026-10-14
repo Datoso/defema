@@ -1,0 +1,72 @@
+--- site/defema.html
++++ site/defema.html
+@@ -372,6 +372,7 @@
+   <div id="pedidoConteudo"></div>
+ </dialog>
+ 
++<script src="carregar-produtos.js"></script>
+ <script>
+ /* ===== CONFIGURAÇÃO DA LOJA (troque pelos dados reais) ===== */
+ const LOJA = {
+@@ -530,6 +531,28 @@
+ ];
+ PRODUTOS.forEach((p,i)=>p.id=i);
+ 
++/* ===== CATÁLOGO ONLINE (Supabase) =====
++   Cole aqui o "Project URL" e a chave "anon public" (Settings > API).
++   Vazios = o site usa só os produtos escritos acima. NUNCA use a service_role. */
++const SUPABASE = { url: "", anonKey: "" };
++const TEM_SUPABASE = !!(SUPABASE.url && SUPABASE.anonKey && window.carregarCatalogo);
++/* cópia dos produtos escritos acima: usada se o Supabase falhar na 1ª visita */
++const EMBUTIDO = { PRODUTOS: PRODUTOS.slice(), DEPS: {...DEPS}, DEP_INFO: {...DEP_INFO} };
++/* troca o conteúdo de PRODUTOS/DEPS/DEP_INFO NO LUGAR (eles continuam const).
++   Devolve true se algo mudou. */
++function trocarCatalogo(d){
++  if(!d || !d.PRODUTOS || !d.PRODUTOS.length) return false;
++  if(assinaturaCatalogo(d) === assinaturaCatalogo({PRODUTOS, DEPS, DEP_INFO})) return false;
++  PRODUTOS.splice(0, PRODUTOS.length, ...d.PRODUTOS);
++  PRODUTOS.forEach((p,i)=>p.id=i);
++  for(const k in DEPS) delete DEPS[k];
++  for(const k in DEP_INFO) delete DEP_INFO[k];
++  Object.assign(DEPS, d.DEPS); Object.assign(DEP_INFO, d.DEP_INFO);
++  return true;
++}
++/* abre já com a última cópia salva neste aparelho (antes de restaurar o pedido) */
++if(TEM_SUPABASE) trocarCatalogo(lerCatalogoCache({url: SUPABASE.url}));
++
+ /* ===== Ícones e cores por departamento (usados quando não há foto) ===== */
+ const ICON = {
+   "Defensivos":'<path d="M9 3h6v4l2 2v12H7V9l2-2z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M10 14h4" stroke="currentColor" stroke-width="1.6"/>',
+@@ -721,6 +744,7 @@
+   "Cadeado de latão|Papaiz":"Cadeado Papaiz de latão maciço, resistente à ferrugem, com 2 chaves. Escolha o tamanho."
+ };
+ function descricao(p){
++  if(p.descricao) return p.descricao;   // texto cadastrado no painel tem prioridade
+   if(DESC_MARCA[p.nome+"|"+p.marca]) return DESC_MARCA[p.nome+"|"+p.marca];
+   if(DESC[p.nome]) return DESC[p.nome];
+   if(NPK[p.nome]) return `Adubo mineral NPK. Os números são as porcentagens de nitrogênio (N), fósforo (P) e potássio (K). ${NPK[p.nome]}`;
+@@ -1092,7 +1116,24 @@
+ 
+ const h = location.hash.replace("#","");
+ if(["inicio","produtos","sobre"].includes(h)) state.page = h;
++/* departamento novo criado no painel: usa ícone e cores padrão */
++function coresPadrao(){
++  Object.keys(DEPS).forEach(d=>{ ICON[d] ??= ICON["Ferramentas"]; TINT[d] ??= "#eef0ec"; INK[d] ??= "#1f4d2d"; });
++}
++/* chega catálogo novo do Supabase: troca e redesenha a tela atual */
++function atualizarCatalogo(d){
++  if(!trocarCatalogo(d)) return;
++  coresPadrao();
++  for(const k in SEL) delete SEL[k];
++  const dlg = document.getElementById("dlgProduto"); if(dlg.open) dlg.close();
++  if(state.dep && !DEPS[state.dep]) { state.dep = null; state.sub = null; }
++  renderAtalhos(); atualizarPedido(); render();
++}
++coresPadrao();
++renderAtalhos();
+ render();
++if(TEM_SUPABASE) carregarCatalogo({ ...SUPABASE, fallback: EMBUTIDO, onAtualizar: atualizarCatalogo })
++  .then(atualizarCatalogo);
+ </script>
+ </body>
+ </html>

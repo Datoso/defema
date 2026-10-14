@@ -1,0 +1,17 @@
+{
+  "name": "defema-importar",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Importa o catálogo Defema (dados/produtos.json + fotos de site/img) para o Supabase",
+  "type": "module",
+  "scripts": {
+    "importar": "node importar.mjs",
+    "simular": "node importar.mjs --simular",
+    "exportar": "node exportar-do-site.mjs",
+    "gerar-sql": "node gerar-sql-dados.mjs"
+  },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@supabase/supabase-js": "2.45.4"
+  }
+}

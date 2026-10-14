@@ -1,0 +1,1496 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#163a22">
+<meta name="robots" content="noindex, nofollow">
+<title>Painel Defema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+  /* =========================================================
+     CONFIGURAÇÃO — preencha com os dados do projeto Supabase
+     (Project Settings > API). Use a chave ANON (pública),
+     NUNCA a service_role. Vazio = modo demonstração.
+     ========================================================= */
+  const SUPABASE_URL = "https://yujjwtgzueevorjfybwp.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl1amp3dGd6dWVldm9yamZ5YndwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMTc5NzAsImV4cCI6MjEwNzU5Mzk3MH0.Ywa6B-Zefo-RFkjM2c9PwqOp-yYhiNIfWAsL77JCZAg";
+</script>
+<style>
+:root{
+  --bg:#fdfcf8; --surface:#fff; --fg:#1b2a1f; --muted:#6b6357; --line:#e6dfd2;
+  --leaf:#163a22; --leaf-2:#1f4d2d; --leaf-soft:#e8f0ea;
+  --soil:#7b5434; --soil-soft:#f6efe5;
+  --seed:#fff1c9; --seed-ink:#5a3e1b; --seed-line:#ecd9a6;
+  --promo:#a5402d; --promo-soft:#fbeae6; --ok:#1d7a45; --erro:#b3261e;
+  --display:"Zilla Slab", Georgia, "Times New Roman", serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r:14px; --toque:48px;
+  --foco:0 0 0 3px #fff, 0 0 0 6px #d99a2b;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--fg);font:16px/1.45 var(--body);min-height:100vh;min-height:100dvh}
+h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.15;margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:none;box-shadow:var(--foco);border-radius:10px}
+[hidden]{display:none !important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* ---------- botões ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:var(--toque);padding:10px 18px;border-radius:12px;border:2px solid transparent;font-weight:600;cursor:pointer;text-decoration:none;white-space:nowrap;-webkit-tap-highlight-color:transparent;transition:transform .08s, background .15s}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.55;cursor:not-allowed;transform:none}
+.btn-pri{background:var(--leaf);color:#fff}
+.btn-pri:hover{background:var(--leaf-2)}
+.btn-sec{background:var(--surface);color:var(--leaf);border-color:var(--line)}
+.btn-sec:hover{border-color:var(--leaf)}
+.btn-perigo{background:var(--surface);color:var(--erro);border-color:#efc9c4}
+.btn-perigo:hover{background:#fdf1ef}
+.btn-claro{background:rgba(255,255,255,.12);color:#fff;border-color:rgba(255,255,255,.25)}
+.btn-claro:hover{background:rgba(255,255,255,.2)}
+.btn-ico{width:var(--toque);padding:0}
+.btn svg{width:20px;height:20px;flex:none}
+
+/* ---------- topo ---------- */
+.demo{background:var(--seed);color:var(--seed-ink);border-bottom:1px solid var(--seed-line);padding:8px 16px;font-size:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.demo b{font-weight:700}
+.demo button{background:none;border:0;padding:4px 0;color:var(--seed-ink);text-decoration:underline;font-weight:600;cursor:pointer;margin-left:auto;font-size:14px}
+.topo{background:var(--leaf);color:#fff;position:sticky;top:0;z-index:20;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top))}
+.topo-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.marca{display:flex;align-items:center;gap:10px;min-width:0;margin-right:auto}
+.marca-logo{width:38px;height:38px;border-radius:10px;background:var(--seed);color:var(--leaf);display:grid;place-items:center;font:700 22px var(--display);flex:none}
+.marca h1{font-size:21px;color:#fff}
+.marca small{display:block;font-size:12px;opacity:.75;font-family:var(--body);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topo .so-largo{display:none}
+@media (min-width:760px){.topo .so-largo{display:inline-flex}}
+
+main{max-width:1100px;margin:0 auto;padding:16px 16px 120px}
+
+/* ---------- login ---------- */
+.login{max-width:400px;margin:8vh auto 0;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:28px 22px;box-shadow:0 8px 30px rgba(22,58,34,.07)}
+.login h2{font-size:28px;color:var(--leaf);margin-bottom:4px}
+.login p{color:var(--muted);margin:0 0 18px}
+
+/* ---------- formulário ---------- */
+.campo{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;min-width:0}
+.campo>label,.rot{font-weight:600;font-size:15px}
+.dica{font-size:13px;color:var(--muted)}
+.inp{width:100%;min-height:var(--toque);padding:10px 12px;border:1.5px solid #d8d0c1;border-radius:12px;background:#fff;font-size:16px}
+.inp:focus{border-color:var(--leaf);outline:none;box-shadow:0 0 0 3px rgba(22,58,34,.18)}
+textarea.inp{min-height:96px;resize:vertical}
+select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='9' viewBox='0 0 14 9'%3E%3Cpath d='M1 1l6 6 6-6' stroke='%237b5434' stroke-width='2' fill='none'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+.inp[aria-invalid="true"]{border-color:var(--erro);background:#fff7f6}
+.erro-txt{color:var(--erro);font-size:13px;font-weight:600}
+.preco-box{position:relative}
+.preco-box span{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:600;pointer-events:none}
+.preco-box .inp{padding-left:40px;font-variant-numeric:tabular-nums}
+.grade2{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+@media (max-width:420px){.grade2.quebra{grid-template-columns:1fr}}
+
+/* ---------- barra de ferramentas da lista ---------- */
+.ferr{display:grid;gap:10px;margin-bottom:12px}
+@media (min-width:760px){.ferr{grid-template-columns:1fr 260px}}
+.busca{position:relative}
+.busca svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted);pointer-events:none}
+.busca .inp{padding-left:44px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:2px 2px 6px;margin:0 -2px 6px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;min-height:40px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);font-weight:600;font-size:14px;cursor:pointer;color:var(--fg);display:inline-flex;align-items:center;gap:6px}
+.chip .n{font-size:12px;background:var(--soil-soft);color:var(--soil);border-radius:999px;padding:1px 7px}
+.chip[aria-pressed="true"]{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.chip[aria-pressed="true"] .n{background:rgba(255,255,255,.2);color:#fff}
+.resumo{font-size:14px;color:var(--muted);margin:0 0 8px;display:flex;justify-content:space-between;gap:8px;align-items:center}
+
+/* ---------- lista ---------- */
+.lista{list-style:none;margin:0;padding:0;display:grid;gap:8px;grid-template-columns:minmax(0,1fr)}
+.lista>li{min-width:0}
+@media (min-width:900px){.lista{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.linha{display:flex;align-items:stretch;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);min-height:80px;overflow:hidden}
+.linha:hover{border-color:#cfc5b2}
+.linha.inativo{background:#f6f4ef}
+.linha.inativo .thumb,.linha.inativo .item-nome{opacity:.55}
+.item{display:flex;gap:10px;align-items:center;flex:1;min-width:0;text-align:left;background:none;border:0;border-radius:var(--r) 0 0 var(--r);padding:10px 4px 10px 10px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.item:active{background:#fdfbf6}
+.thumb{width:56px;height:56px;border-radius:10px;background:#fff;border:1px solid var(--line);flex:none;overflow:hidden;display:grid;place-items:center;color:var(--soil);font:700 20px var(--display)}
+.thumb img{width:100%;height:100%;object-fit:contain}
+.item-txt{min-width:0;flex:1}
+.item-nome{font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.item-sub{display:block;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:3px}
+.tag{font-size:11px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:var(--soil-soft);color:var(--soil)}
+.tag.promo{background:var(--promo-soft);color:var(--promo)}
+.tag.top{background:var(--seed);color:var(--seed-ink)}
+.tag.off{background:#e9e6df;color:#55504a}
+.tag.novo{background:var(--leaf-soft);color:var(--leaf)}
+.tag.semfoto{background:#eef1f4;color:#4a5562}
+/* ações rápidas da linha: preço (toque para editar) e interruptor "no site" */
+.acoes{flex:none;width:112px;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:4px;padding:6px 8px 6px 4px}
+.preco-btn{min-height:44px;border:1.5px dashed #e3dccd;background:none;border-radius:10px;padding:4px 6px;text-align:right;cursor:pointer;font-variant-numeric:tabular-nums;line-height:1.15;display:flex;flex-direction:column;align-items:flex-end;justify-content:center}
+.preco-btn:hover{border-color:var(--soil)}
+.preco-btn b{font-size:16px;color:var(--leaf)}
+.preco-btn s{font-size:12px;color:var(--muted)}
+.preco-btn small{font-size:11px;color:var(--muted)}
+.preco-btn .consultar{font-size:12px;color:var(--soil);font-weight:600;background:var(--soil-soft);padding:3px 8px;border-radius:8px}
+.preco-btn .lapis{font-size:11px;color:var(--soil);font-weight:600;display:flex;align-items:center;gap:3px;margin-top:2px}
+.preco-btn .lapis svg{width:12px;height:12px}
+.preco-form{display:flex;flex-direction:column;gap:4px}
+.preco-form .inp{min-height:44px;padding:6px 8px;text-align:right;font-variant-numeric:tabular-nums}
+.preco-form .mini{display:flex;gap:4px}
+.preco-form .mini button{flex:1;min-height:36px;border-radius:9px;border:1.5px solid var(--line);background:#fff;font-weight:700;font-size:13px;cursor:pointer;padding:0}
+.preco-form .mini .okb{background:var(--leaf);border-color:var(--leaf);color:#fff}
+.sw-mini{display:flex;align-items:center;justify-content:flex-end;gap:6px;min-height:40px;border:0;background:none;cursor:pointer;font-size:12px;font-weight:600;color:var(--muted);padding:0 6px;border-radius:10px}
+.sw-mini .sw{width:40px;height:24px;border-radius:999px;background:#d6cfc2;position:relative;flex:none;transition:background .15s}
+.sw-mini .sw::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+.sw-mini[aria-checked="true"]{color:var(--leaf)}
+.sw-mini[aria-checked="true"] .sw{background:var(--leaf)}
+.sw-mini[aria-checked="true"] .sw::after{transform:translateX(16px)}
+.sw-mini[disabled]{opacity:.5}
+.vazio{text-align:center;color:var(--muted);padding:40px 16px;background:var(--surface);border:1px dashed var(--line);border-radius:var(--r)}
+
+/* botão flutuante (celular) */
+.barra-baixo{position:fixed;left:0;right:0;bottom:0;z-index:14;background:var(--surface);border-top:1px solid var(--line);padding:8px 16px calc(8px + env(safe-area-inset-bottom));display:flex;gap:8px}
+.barra-baixo .btn{flex:1 1 0;min-width:0;padding:8px 6px;font-size:15px;gap:6px}
+.barra-baixo .btn svg{width:18px;height:18px}
+.barra-baixo .btn-pri{flex:1.25 1 0}
+@media (min-width:760px){.barra-baixo{display:none}}
+
+/* ---------- diálogos ---------- */
+dialog{border:0;padding:0;background:var(--bg);color:var(--fg);width:100%;max-width:100%;height:100%;max-height:100%;margin:0}
+dialog::backdrop{background:rgba(15,30,20,.5)}
+@media (min-width:760px){
+  dialog{width:min(720px,94vw);height:auto;max-height:92vh;margin:auto;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+}
+.dlg{display:flex;flex-direction:column;height:100%;max-height:inherit}
+.dlg-topo{display:flex;align-items:center;gap:8px;padding:10px 12px 10px 18px;padding-top:max(10px,env(safe-area-inset-top));background:var(--surface);border-bottom:1px solid var(--line);flex:none}
+.dlg-topo h2{font-size:22px;color:var(--leaf);margin-right:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dlg-corpo{overflow-y:auto;padding:16px 18px 24px;flex:1;-webkit-overflow-scrolling:touch}
+.dlg-pe{flex:none;display:flex;gap:10px;padding:10px 16px calc(10px + env(safe-area-inset-bottom));background:var(--surface);border-top:1px solid var(--line)}
+.dlg-pe .btn-pri{flex:1}
+.secao{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px 14px 4px;margin-bottom:14px}
+.secao>h3{font-size:18px;color:var(--soil);margin:0 0 12px}
+
+/* interruptores */
+.chaves{display:grid;gap:8px;margin-bottom:12px}
+@media (min-width:560px){.chaves{grid-template-columns:1fr 1fr}}
+.chave{display:flex;align-items:center;gap:12px;min-height:56px;padding:8px 12px;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;background:#fff}
+.chave input{position:absolute;opacity:0;width:1px;height:1px}
+.chave .sw{width:48px;height:28px;border-radius:999px;background:#d6cfc2;position:relative;flex:none;transition:background .15s}
+.chave .sw::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+.chave input:checked + .sw{background:var(--leaf)}
+.chave input:checked + .sw::after{transform:translateX(20px)}
+.chave input:focus-visible + .sw{box-shadow:var(--foco)}
+.chave b{display:block;font-weight:600;line-height:1.2}
+.chave small{display:block;color:var(--muted);font-size:13px;line-height:1.25}
+.chave.ativo-off{border-color:#e8c8a0;background:var(--soil-soft)}
+
+/* promoção */
+.promo-prev{background:var(--seed);border:1px solid var(--seed-line);color:var(--seed-ink);border-radius:12px;padding:10px 12px;font-size:14px;margin:-4px 0 14px}
+.promo-prev s{color:var(--muted)}
+.promo-prev b{color:var(--promo)}
+
+/* opções */
+.opcoes{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:8px}
+.opcao{display:flex;gap:6px;align-items:center}
+.opcao .inp{flex:1;min-width:0}
+.opcao .btn-ico{width:44px;min-height:44px;border-radius:10px;padding:0;border:1.5px solid var(--line);background:#fff;color:var(--soil);flex:none}
+.opcao .btn-ico.x{color:var(--erro)}
+
+/* foto */
+.foto-area{display:grid;grid-template-columns:128px minmax(0,1fr);gap:14px;align-items:start}
+@media (max-width:380px){.foto-area{grid-template-columns:104px minmax(0,1fr)}}
+.foto-prev{width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:12px;background:#fff;display:grid;place-items:center;overflow:hidden;color:var(--muted);font-size:13px;text-align:center;position:relative}
+.foto-prev img{width:100%;height:100%;object-fit:contain}
+.foto-prev .selo{position:absolute;left:6px;top:6px;background:var(--seed);color:var(--seed-ink);font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px}
+.foto-btns{display:grid;gap:8px}
+.foto-btns .btn{width:100%;justify-content:flex-start;white-space:normal;text-align:left;padding:8px 12px;line-height:1.2}
+.file-lbl{position:relative}
+.file-lbl input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+.file-lbl:focus-within{box-shadow:var(--foco)}
+.check-mini{display:flex;gap:8px;align-items:center;font-size:14px;min-height:40px;cursor:pointer}
+.check-mini input{width:20px;height:20px;accent-color:var(--leaf)}
+
+/* reajuste */
+.prev-tab{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.prev-tab th,.prev-tab td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.prev-tab th{font-size:12px;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);position:sticky;top:0;background:var(--surface)}
+.prev-tab td.n,.prev-tab th.n{text-align:right;white-space:nowrap}
+.prev-tab .sobe{color:var(--promo);font-weight:700}
+.prev-tab .desce{color:var(--ok);font-weight:700}
+.prev-wrap{max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.prev-res{background:var(--leaf-soft);color:var(--leaf);border-radius:12px;padding:10px 12px;font-weight:600;margin:0 0 10px}
+.aviso{font-size:13px;color:var(--soil)}
+
+/* departamentos */
+.dep-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);margin-bottom:10px}
+.dep-card>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;min-height:56px;padding:8px 14px;font-weight:700}
+.dep-card>summary::-webkit-details-marker{display:none}
+.dep-card>summary::after{content:"";width:10px;height:10px;border-right:2px solid var(--soil);border-bottom:2px solid var(--soil);transform:rotate(45deg);margin-left:auto;flex:none;transition:transform .15s}
+.dep-card[open]>summary::after{transform:rotate(-135deg)}
+.dep-card>summary .n{white-space:nowrap;flex:none;font-size:12px;font-weight:600;color:var(--soil);background:var(--soil-soft);border-radius:999px;padding:1px 8px}
+.dep-corpo{padding:4px 14px 14px;border-top:1px solid var(--line)}
+.dep-corpo h4{font:700 15px var(--display);color:var(--soil);margin:14px 0 8px}
+.linha-form{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.linha-form .inp{flex:1;min-width:0}
+.linha-form .btn{flex:none;padding:8px 10px}
+.linha-form small{flex:none;font-size:12px;color:var(--muted);min-width:24px;text-align:right}
+
+/* toast */
+.toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:100;display:grid;gap:8px;width:min(92vw,420px);pointer-events:none}
+.toast{background:#1b2a1f;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-weight:600;display:flex;gap:10px;align-items:center;animation:sobe .2s ease-out}
+.toast.ok{background:var(--ok)}
+.toast.erro{background:var(--erro)}
+.toast .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.35);border-top-color:#fff;border-radius:50%;animation:gira .8s linear infinite;flex:none}
+@keyframes gira{to{transform:rotate(360deg)}}
+@keyframes sobe{from{opacity:0;transform:translateY(8px)}}
+dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
+.carregando{text-align:center;padding:60px 0;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{animation:none !important;transition:none !important}}
+</style>
+</head>
+<body>
+
+<div class="demo" id="faixaDemo" role="status" hidden>
+  <span>⚠️ <b>Modo demonstração.</b> As alterações ficam só neste aparelho e não vão para o site.</span>
+  <button type="button" id="btnRestaurar">Restaurar dados de exemplo</button>
+</div>
+
+<header class="topo">
+  <div class="topo-in">
+    <div class="marca">
+      <div class="marca-logo" aria-hidden="true">D</div>
+      <div style="min-width:0">
+        <h1>Painel Defema</h1>
+        <small id="usuarioTxt">Catálogo da loja</small>
+      </div>
+    </div>
+    <button class="btn btn-claro so-largo" id="btnDepsTopo" type="button" hidden>Departamentos</button>
+    <button class="btn btn-claro so-largo" id="btnReajusteTopo" type="button" hidden>Reajuste em lote</button>
+    <button class="btn btn-claro so-largo" id="btnNovoTopo" type="button" hidden>+ Novo produto</button>
+    <button class="btn btn-claro" id="btnSair" type="button" hidden>Sair</button>
+  </div>
+</header>
+
+<main id="principal">
+  <p class="carregando" id="telaCarregando">Carregando…</p>
+
+  <!-- LOGIN -->
+  <section class="login" id="telaLogin" hidden aria-labelledby="tLogin">
+    <h2 id="tLogin">Entrar</h2>
+    <p id="loginDica">Use o e-mail e a senha cadastrados para a loja.</p>
+    <form id="formLogin" novalidate>
+      <div class="campo">
+        <label for="lEmail">E-mail</label>
+        <input class="inp" id="lEmail" type="email" autocomplete="username" inputmode="email" required>
+      </div>
+      <div class="campo">
+        <label for="lSenha">Senha</label>
+        <input class="inp" id="lSenha" type="password" autocomplete="current-password" required>
+      </div>
+      <p class="erro-txt" id="loginErro" role="alert" hidden></p>
+      <button class="btn btn-pri" type="submit" style="width:100%" id="btnEntrar">Entrar</button>
+    </form>
+  </section>
+
+  <!-- LISTA -->
+  <section id="telaLista" hidden aria-label="Produtos">
+    <div class="ferr">
+      <div class="busca">
+        <label for="busca" class="sr">Buscar produto</label>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+        <input class="inp" id="busca" type="search" placeholder="Buscar por nome ou marca…" autocomplete="off" enterkeyhint="search">
+      </div>
+      <div>
+        <label for="filtroDep" class="sr">Departamento</label>
+        <select class="inp" id="filtroDep"><option value="">Todos os departamentos</option></select>
+      </div>
+    </div>
+    <div class="chips" id="chips" role="group" aria-label="Filtrar por situação"></div>
+    <p class="resumo"><span id="resumo" aria-live="polite"></span></p>
+    <ul class="lista" id="lista"></ul>
+  </section>
+</main>
+
+<nav class="barra-baixo" id="barraBaixo" aria-label="Ações" hidden>
+  <button class="btn btn-sec" type="button" id="btnReajuste" aria-label="Reajuste de preços em lote">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 19L19 5"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>Reajuste</button>
+  <button class="btn btn-sec" type="button" id="btnDeps" aria-label="Departamentos e subcategorias">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Seções</button>
+  <button class="btn btn-pri" type="button" id="btnNovo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Novo</button>
+</nav>
+
+<!-- EDITOR -->
+<dialog id="dlgEditor" aria-labelledby="tEditor">
+  <form class="dlg" id="formEditor" novalidate>
+    <div class="dlg-topo">
+      <h2 id="tEditor">Editar produto</h2>
+      <button class="btn btn-sec btn-ico" type="button" data-fechar aria-label="Fechar sem salvar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dlg-corpo">
+      <div class="secao">
+        <h3>Foto</h3>
+        <div class="foto-area">
+          <div class="foto-prev" id="fotoPrev" aria-live="polite">Sem foto</div>
+          <div class="foto-btns">
+            <label class="btn btn-sec file-lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>
+              Tirar foto
+              <input type="file" accept="image/*" capture="environment" id="fotoCamera" aria-label="Tirar foto com a câmera">
+            </label>
+            <label class="btn btn-sec file-lbl">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>
+              Escolher arquivo
+              <input type="file" accept="image/*" id="fotoArquivo" aria-label="Escolher foto da galeria ou arquivo">
+            </label>
+            <label class="check-mini"><input type="checkbox" id="fotoRecorte" checked> Recortar fundo branco</label>
+            <button class="btn btn-perigo" type="button" id="btnTirarFoto" hidden>Remover foto</button>
+          </div>
+        </div>
+        <p class="dica" id="fotoDica" style="margin:10px 0 12px">A foto é ajustada para um quadrado branco (500×500).</p>
+      </div>
+
+      <div class="secao">
+        <h3>Produto</h3>
+        <div class="campo">
+          <label for="eNome">Nome *</label>
+          <input class="inp" id="eNome" required maxlength="120" autocomplete="off" aria-describedby="eNomeErro">
+          <span class="erro-txt" id="eNomeErro" hidden></span>
+        </div>
+        <div class="grade2 quebra">
+          <div class="campo">
+            <label for="eMarca">Marca</label>
+            <input class="inp" id="eMarca" list="listaMarcas" maxlength="60" autocomplete="off">
+            <datalist id="listaMarcas"></datalist>
+          </div>
+          <div class="campo">
+            <label for="eUn">Unidade / embalagem</label>
+            <input class="inp" id="eUn" maxlength="120" placeholder="ex.: Saco 50 kg" autocomplete="off">
+          </div>
+        </div>
+        <div class="grade2 quebra">
+          <div class="campo">
+            <label for="eDep">Departamento *</label>
+            <select class="inp" id="eDep" required></select>
+          </div>
+          <div class="campo">
+            <label for="eSub">Subcategoria *</label>
+            <select class="inp" id="eSub" required aria-describedby="eSubErro"></select>
+          </div>
+        </div>
+        <div class="campo" id="campoSubNova" hidden>
+          <label for="eSubNova">Nome da nova subcategoria</label>
+          <input class="inp" id="eSubNova" maxlength="60" autocomplete="off" aria-describedby="eSubErro">
+        </div>
+        <span class="erro-txt" id="eSubErro" hidden style="display:block;margin:-6px 0 12px"></span>
+        <div class="campo">
+          <label for="eDesc">Descrição</label>
+          <textarea class="inp" id="eDesc" maxlength="1000" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="secao">
+        <h3>Preço</h3>
+        <div class="grade2">
+          <div class="campo">
+            <label for="ePreco">Preço</label>
+            <div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="ePreco" inputmode="decimal" placeholder="Consultar" autocomplete="off" aria-describedby="ePrecoDica ePrecoErro"></div>
+          </div>
+          <div class="campo">
+            <label for="eAntigo">Preço antigo (“de”)</label>
+            <div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="eAntigo" inputmode="decimal" placeholder="—" autocomplete="off" aria-describedby="ePrecoDica ePrecoErro"></div>
+          </div>
+        </div>
+        <p class="dica" id="ePrecoDica" style="margin:-6px 0 12px">Preço vazio = “Consultar preço”. Preencha o preço antigo para mostrar como <b>promoção</b>.</p>
+        <p class="erro-txt" id="ePrecoErro" hidden style="margin:-4px 0 12px"></p>
+        <div class="promo-prev" id="promoPrev" hidden></div>
+      </div>
+
+      <div class="secao">
+        <h3>Opções (tamanhos, pesos…)</h3>
+        <div class="campo">
+          <label for="eOpNome">Rótulo das opções</label>
+          <input class="inp" id="eOpNome" maxlength="40" placeholder="ex.: Tamanho, Peso, Bitola" autocomplete="off">
+        </div>
+        <ul class="opcoes" id="opcoes" aria-label="Lista de opções"></ul>
+        <button class="btn btn-sec" type="button" id="btnAddOpcao" style="margin-bottom:14px">+ Adicionar opção</button>
+      </div>
+
+      <div class="secao">
+        <h3>Situação e selos</h3>
+        <div class="chaves">
+          <label class="chave" id="chaveAtivo"><input type="checkbox" id="eAtivo"><span class="sw" aria-hidden="true"></span><span><b id="eAtivoTxt">Aparece no site</b><small id="eAtivoDica">Desligue quando acabar o estoque</small></span></label>
+          <label class="chave"><input type="checkbox" id="eTop"><span class="sw" aria-hidden="true"></span><span><b>Mais procurado</b><small>Destaque no site</small></span></label>
+          <label class="chave"><input type="checkbox" id="eNovo"><span class="sw" aria-hidden="true"></span><span><b>Novidade</b><small>Selo “novo”</small></span></label>
+          <label class="chave"><input type="checkbox" id="eRestrito"><span class="sw" aria-hidden="true"></span><span><b>Venda restrita</b><small>Uso profissional / receita</small></span></label>
+          <label class="chave"><input type="checkbox" id="eMetro"><span class="sw" aria-hidden="true"></span><span><b>Vendido por metro</b><small>Preço por metro</small></span></label>
+        </div>
+      </div>
+
+      <button class="btn btn-perigo" type="button" id="btnExcluir" style="width:100%">Excluir produto</button>
+    </div>
+    <div class="dlg-pe">
+      <button class="btn btn-sec" type="button" data-fechar>Cancelar</button>
+      <button class="btn btn-pri" type="submit" id="btnSalvar">Salvar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- REAJUSTE -->
+<dialog id="dlgReajuste" aria-labelledby="tReajuste">
+  <form class="dlg" id="formReajuste" novalidate>
+    <div class="dlg-topo">
+      <h2 id="tReajuste">Reajuste em lote</h2>
+      <button class="btn btn-sec btn-ico" type="button" data-fechar aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dlg-corpo">
+      <div class="secao">
+        <div class="grade2 quebra">
+          <div class="campo">
+            <label for="rDep">Departamento</label>
+            <select class="inp" id="rDep"><option value="">Todos</option></select>
+          </div>
+          <div class="campo">
+            <label for="rMarca">Marca</label>
+            <select class="inp" id="rMarca"><option value="">Todas</option></select>
+          </div>
+        </div>
+        <div class="grade2">
+          <div class="campo">
+            <label for="rPct">Percentual (%)</label>
+            <input class="inp" id="rPct" inputmode="decimal" placeholder="ex.: 8 ou -5" autocomplete="off" aria-describedby="rPctDica">
+          </div>
+          <div class="campo" style="justify-content:flex-end">
+            <label class="check-mini" style="min-height:var(--toque)"><input type="checkbox" id="rArred"> Terminar em ,90</label>
+          </div>
+        </div>
+        <p class="dica" id="rPctDica" style="margin:-6px 0 14px">Use número negativo para baixar. Produtos sem preço (“consultar”) não mudam. Em promoção, o preço antigo acompanha.</p>
+      </div>
+      <div id="rPrevia" aria-live="polite"></div>
+    </div>
+    <div class="dlg-pe">
+      <button class="btn btn-sec" type="button" data-fechar>Cancelar</button>
+      <button class="btn btn-pri" type="submit" id="btnAplicar" disabled>Aplicar</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- DEPARTAMENTOS -->
+<dialog id="dlgDeps" aria-labelledby="tDeps">
+  <div class="dlg">
+    <div class="dlg-topo">
+      <h2 id="tDeps">Departamentos</h2>
+      <button class="btn btn-sec btn-ico" type="button" data-fechar aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dlg-corpo">
+      <p class="dica" style="margin:0 0 12px">Toque num departamento para renomear, mudar a descrição ou cuidar das subcategorias. Renomear não mexe nos produtos: eles continuam no mesmo lugar.</p>
+      <div id="depsLista"></div>
+      <div class="secao">
+        <h3>Novo departamento</h3>
+        <form class="linha-form" id="formNovoDep" novalidate>
+          <label class="sr" for="novoDepNome">Nome do novo departamento</label>
+          <input class="inp" id="novoDepNome" name="nome" maxlength="60" placeholder="ex.: Pet shop" autocomplete="off">
+          <button class="btn btn-pri" type="submit">Adicionar</button>
+        </form>
+      </div>
+    </div>
+    <div class="dlg-pe">
+      <button class="btn btn-sec" type="button" data-fechar style="flex:1">Fechar</button>
+    </div>
+  </div>
+</dialog>
+
+<div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<!-- Dados de exemplo para o modo demonstração. Gerado por build.mjs a partir de ../dados/produtos.json — não edite à mão. -->
+<script type="application/json" id="dadosDemo">/*DADOS-DEMO*/{"departamentos":[{"nome":"Defensivos","info":"Inseticidas, carrapaticidas e uso profissional","ordem":1,"subcategorias":[{"nome":"Inseticidas","ordem":1},{"nome":"Carrapaticidas e mosquicidas","ordem":2},{"nome":"Uso profissional","ordem":3}]},{"nome":"Ferramentas","info":"Enxadas, pás, martelos, furadeiras","ordem":2,"subcategorias":[{"nome":"Ferramentas manuais","ordem":1},{"nome":"Ferramentas elétricas","ordem":2},{"nome":"Jardinagem","ordem":3}]},{"nome":"Máquinas","info":"Pulverizadores, roçadeiras e aparadores","ordem":3,"subcategorias":[{"nome":"Pulverizadores","ordem":1},{"nome":"Roçadeiras e aparadores","ordem":2}]},{"nome":"Sementes","info":"Hortaliças Isla","ordem":4,"subcategorias":[{"nome":"Folhosas e temperos","ordem":1},{"nome":"Frutos e legumes","ordem":2},{"nome":"Raízes e bulbos","ordem":3}]},{"nome":"Insumos","info":"Adubo, calcário, substrato","ordem":5,"subcategorias":[{"nome":"Adubos","ordem":1},{"nome":"Calcário","ordem":2},{"nome":"Terras e substratos","ordem":3}]},{"nome":"Mudas","info":"Bandejas de hortaliças, café e maracujá","ordem":6,"subcategorias":[{"nome":"Bandeja 200 mudas","ordem":1},{"nome":"Bandeja 128 mudas","ordem":2},{"nome":"Mudas unitárias","ordem":3}]},{"nome":"Ferragens e EPIs","info":"Botas, arames, pregos e grampos","ordem":7,"subcategorias":[{"nome":"EPIs","ordem":1},{"nome":"Cercas e arames","ordem":2},{"nome":"Ferragens","ordem":3}]}],"produtos":[{"nome":"K-Othrine SC 25","marca":"Bayer","dep":"Defensivos","sub":"Inseticidas","un":"Frasco 30 mL · ambientes externos","preco":null,"antigo":null,"top":false,"novo":false,"foto":"k-othrine-sc25.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Inseticida piretroide (deltametrina) para desinsetização de ambientes externos. Usado contra baratas, formigas, pulgas, moscas e mosquitos ao redor da casa, do galpão e das instalações.","ordem":10},{"nome":"Diazitop PM","marca":"Clarion","dep":"Defensivos","sub":"Inseticidas","un":"Sachê 25 g · uso rural","preco":null,"antigo":null,"top":false,"novo":false,"foto":"diazitop-pm.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Inseticida organofosforado em pó molhável, de uso veterinário e rural. Dilua em água conforme a tabela do sachê.","ordem":20},{"nome":"Butox P CE 25","marca":"MSD Saúde Animal","dep":"Defensivos","sub":"Carrapaticidas e mosquicidas","un":"Frasco 20 mL · carrapatos, moscas e sarna","preco":null,"antigo":null,"top":false,"novo":false,"foto":"butox-p-ce25.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Carrapaticida, mosquicida e sarnicida à base de deltametrina, de uso veterinário. Indicado para o gado e outros animais, aplicado por pulverização ou banho.","ordem":30},{"nome":"Triatox","marca":"MSD Saúde Animal","dep":"Defensivos","sub":"Carrapaticidas e mosquicidas","un":"Frasco 200 mL · carrapaticida para bovinos","preco":null,"antigo":null,"top":false,"novo":false,"foto":"triatox.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Carrapaticida para bovinos à base de amitraz, de uso veterinário. Aplicado por pulverização ou banho de imersão.","ordem":40},{"nome":"Colosso Pulverização","marca":"Ourofino","dep":"Defensivos","sub":"Carrapaticidas e mosquicidas","un":"Frasco 25 mL · carrapatos e moscas no gado","preco":null,"antigo":null,"top":false,"novo":false,"foto":"colosso-pulverizacao.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Carrapaticida e mosquicida da Ourofino para pulverização em bovinos. Respeite o período de carência (abate e leite) informado no rótulo.","ordem":50},{"nome":"Ficam VC Profissional","marca":"Envu","dep":"Defensivos","sub":"Uso profissional","un":"Sachê 15 g · escorpiões, baratas e mosquitos","preco":null,"antigo":null,"top":false,"novo":false,"foto":"ficam-vc.jpg","ilu":null,"icone":null,"restrito":true,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Inseticida profissional (bendiocarbe) para controle de escorpiões, baratas e mosquitos, inclusive o Aedes aegypti. Produto de venda restrita a dedetizadoras e órgãos públicos.","ordem":60},{"nome":"Enxada larga com cabo 145 cm","marca":"Tramontina","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Cabo de madeira","preco":79.9,"antigo":null,"top":true,"novo":false,"foto":"enxada-tramontina.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Enxada larga com cabo de madeira, para capinar, abrir sulcos e fazer leiras.","ordem":70},{"nome":"Cavadeira articulada","marca":null,"dep":"Ferramentas","sub":"Ferramentas manuais","un":"Cabos de madeira","preco":99.9,"antigo":114.9,"top":false,"novo":false,"foto":"cavadeira-articulada.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Cavadeira de duas hastes, para abrir buracos de mourão, cerca e plantio de mudas.","ordem":80},{"nome":"Pá de bico com cabo","marca":null,"dep":"Ferramentas","sub":"Ferramentas manuais","un":"Cabo longo de madeira","preco":64.9,"antigo":null,"top":false,"novo":false,"foto":"pa-de-bico.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Pá de bico com cabo longo, para cavar e revolver terra.","ordem":90},{"nome":"Pá quadrada com cabo","marca":"Tramontina","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Cabo longo de madeira","preco":null,"antigo":null,"top":false,"novo":false,"foto":"pa-quadrada-tramontina.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Pá quadrada com cabo longo, para recolher e transportar terra, areia, adubo e calcário.","ordem":100},{"nome":"Furadeira de impacto FIV 1050","marca":"Vonder","dep":"Ferramentas","sub":"Ferramentas elétricas","un":"Com fio · empunhadura auxiliar","preco":null,"antigo":null,"top":false,"novo":false,"foto":"furadeira-vonder-fiv1050.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Furadeira de impacto Vonder com fio, para furar madeira, metal e alvenaria. Acompanha empunhadura auxiliar e limitador de profundidade.","ordem":110},{"nome":"Parafusadeira e furadeira a bateria","marca":"Vonder","dep":"Ferramentas","sub":"Ferramentas elétricas","un":"Com maleta, carregador, brocas e bits","preco":null,"antigo":null,"top":false,"novo":false,"foto":"parafusadeira-vonder.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Parafusadeira e furadeira sem fio Vonder, com maleta, bateria, carregador, brocas e bits. Prática para montagem, manutenção e serviços no sítio.","ordem":120},{"nome":"Enxadão duas caras","marca":null,"dep":"Ferramentas","sub":"Ferramentas manuais","un":"Pá de um lado, corte do outro","preco":null,"antigo":null,"top":false,"novo":false,"foto":"enxadao-duas-caras.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Enxadão com dois lados: um largo para cavar e outro estreito para cortar raízes e terra dura.","ordem":130},{"nome":"Enxada","marca":"Tane","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Sem cabo","preco":null,"antigo":null,"top":false,"novo":false,"foto":"enxada-tane.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["1 lb","1,5 lb","2 lb","2,5 lb"],"opNome":"Peso","descricao":"Enxada Tane sem cabo, para capina e preparo do solo. Escolha o peso: quanto maior, mais larga e pesada.","ordem":140},{"nome":"Colher de pedreiro","marca":"Tramontina","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Cabo de madeira","preco":null,"antigo":null,"top":false,"novo":false,"foto":"colher-pedreiro-tramontina.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Colher de pedreiro Tramontina com cabo de madeira, para assentar tijolo e aplicar massa.","ordem":150},{"nome":"Marreta","marca":null,"dep":"Ferramentas","sub":"Ferramentas manuais","un":"Marreta de mão · cabo de madeira","preco":null,"antigo":null,"top":false,"novo":false,"foto":"paceta.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Marreta oitavada de mão (também chamada de paceta) com cabo de madeira, para quebrar, bater estaca, talhadeira e serviços de obra.","ordem":160},{"nome":"Chave de fenda","marca":"Vonder","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Unitária","preco":null,"antigo":null,"top":false,"novo":false,"foto":"chave-fenda-vonder.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\"","5/16\" × 8\""],"opNome":"Tamanho","descricao":"Chave de fenda Vonder unitária, com haste cromada e cabo emborrachado. Escolha o tamanho.","ordem":170},{"nome":"Chave Phillips","marca":"Vonder","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Unitária","preco":null,"antigo":null,"top":false,"novo":false,"foto":"chave-phillips-vonder.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\""],"opNome":"Tamanho","descricao":"Chave Phillips Vonder unitária, com haste cromada e cabo emborrachado. Escolha o tamanho.","ordem":180},{"nome":"Mangueira trançada","marca":"Mantac","dep":"Ferramentas","sub":"Jardinagem","un":"Vendida por metro","preco":7,"antigo":null,"top":false,"novo":false,"foto":"mangueira-mantac.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":true,"opcoes":[],"opNome":null,"descricao":"Mangueira de jardim trançada Mantac, vendida por metro: escolha a quantidade de metros no pedido. Pergunte pelos engates e esguichos.","ordem":190},{"nome":"Mangueira azul siliconada","marca":null,"dep":"Ferramentas","sub":"Jardinagem","un":"Vendida por metro","preco":null,"antigo":null,"top":false,"novo":false,"foto":"mangueira-azul-siliconada.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":true,"opcoes":[],"opNome":null,"descricao":"Mangueira siliconada azul, flexível e resistente, vendida por metro. Pergunte pelos engates e esguichos.","ordem":200},{"nome":"Cultivador de mão 3 dentes","marca":"Tramontina","dep":"Ferramentas","sub":"Jardinagem","un":"Cabo curto de madeira","preco":null,"antigo":null,"top":false,"novo":true,"foto":"cultivador-tramontina.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Cultivador de mão para afofar a terra e tirar matinho de canteiros e vasos.","ordem":210},{"nome":"Ancinho de jardim","marca":"Tramontina","dep":"Ferramentas","sub":"Jardinagem","un":"Com cabo","preco":44.9,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["ancinho"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Ancinho (rastelo) para juntar folhas e nivelar canteiros.","ordem":220},{"nome":"Tesoura de poda","marca":null,"dep":"Ferramentas","sub":"Jardinagem","un":"Cabo com mola · uso leve","preco":49.9,"antigo":null,"top":false,"novo":false,"foto":"tesoura-de-poda.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Tesoura de poda com mola, para galhos finos, flores, folhas e colheita.","ordem":230},{"nome":"Tesoura de poda para galhos","marca":null,"dep":"Ferramentas","sub":"Jardinagem","un":"Reforçada · galhos mais grossos","preco":null,"antigo":null,"top":false,"novo":false,"foto":"tesoura-poda-galhos.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Tesoura de poda reforçada, para galhos mais grossos de árvores frutíferas e cercas vivas.","ordem":240},{"nome":"Pulverizador costal PJH 20","marca":"Jacto","dep":"Máquinas","sub":"Pulverizadores","un":"Manual, 20 L · câmara metálica","preco":449,"antigo":489,"top":true,"novo":false,"foto":"pjh20-jacto.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Pulverizador costal manual de 20 litros, com câmara de pressão metálica. Clássico da Jacto para aplicação em lavoura, horta e pastagem.","ordem":250},{"nome":"Pulverizador manual 5 L","marca":"Brudden","dep":"Máquinas","sub":"Pulverizadores","un":"Com alças para as costas","preco":null,"antigo":null,"top":false,"novo":false,"foto":"pulverizador-brudden-5l.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Pulverizador manual de 5 litros, leve e com alças. Bom para horta, jardim e pequenas áreas.","ordem":260},{"nome":"Pulverizador lateral manual PL 005","marca":"Vonder","dep":"Máquinas","sub":"Pulverizadores","un":"5 L · compressão prévia","preco":null,"antigo":null,"top":false,"novo":false,"foto":"pulverizador-vonder-pl005.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Pulverizador de compressão prévia de 5 litros: bombeie antes e aplique com o gatilho. Leve, com alça de ombro, para jardim e horta.","ordem":270},{"nome":"Roçadeira a gasolina","marca":null,"dep":"Máquinas","sub":"Roçadeiras e aparadores","un":"Guidão duplo · fio de nylon","preco":null,"antigo":null,"top":false,"novo":false,"foto":"rocadeira-gasolina.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Roçadeira lateral com motor a gasolina e guidão duplo, para roçar mato, capim e beira de cerca. Usa fio de nylon ou lâmina.","ordem":280},{"nome":"Aparador de grama elétrico","marca":null,"dep":"Máquinas","sub":"Roçadeiras e aparadores","un":"Com fio · carretel de nylon","preco":null,"antigo":null,"top":false,"novo":false,"foto":"aparador-eletrico.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Aparador elétrico com fio de nylon, leve, para acabamento de grama e bordas no quintal e no jardim.","ordem":290},{"nome":"Alface Crespa Grand Rapids TBR","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":6.9,"antigo":null,"top":true,"novo":false,"foto":"alface-crespa-grand-rapids.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":300},{"nome":"Alface Grandes Lagos Americana","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"alface-grandes-lagos-americana.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":310},{"nome":"Alface Lisa Babá de Verão","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":6.9,"antigo":8.9,"top":false,"novo":false,"foto":"alface-lisa-baba-de-verao.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":320},{"nome":"Almeirão de Cabeça Pão de Açúcar","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"almeirao-de-cabeca-pao-de-acucar.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":330},{"nome":"Almeirão Amarelo (Radiche)","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":6.5,"antigo":null,"top":false,"novo":false,"foto":"almeirao-folha-larga-amarelo-radiche.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":340},{"nome":"Couve Manteiga da Geórgia","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":6.9,"antigo":null,"top":true,"novo":false,"foto":"couve-manteiga-da-georgia.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":350},{"nome":"Couve-Brócolis Piracicaba Precoce","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":7.5,"antigo":null,"top":false,"novo":false,"foto":"couve-brocolis-piracicaba-precoce.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":360},{"nome":"Rúcula Gigante Folha Larga","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":6.5,"antigo":null,"top":false,"novo":false,"foto":"rucula-gigante-folha-larga.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":370},{"nome":"Cebolinha Híbrida Sahara","marca":"Isla","dep":"Sementes","sub":"Folhosas e temperos","un":"Envelope","preco":9.9,"antigo":null,"top":false,"novo":true,"foto":"cebolinha-hibrido-sahara.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":380},{"nome":"Tomate Santa Cruz Kada (Paulista)","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":7.9,"antigo":null,"top":true,"novo":false,"foto":"tomate-santa-cruz-kada.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":390},{"nome":"Tomate Cereja","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":8.9,"antigo":null,"top":false,"novo":false,"foto":"tomate-cereja.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":400},{"nome":"Abóbora Híbrida Tetsukabuto F1","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":14.9,"antigo":null,"top":false,"novo":false,"foto":"abobora-hibrido-f1-tetsukabuto.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":410},{"nome":"Abóbora Menina Brasileira Precoce","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"abobora-precoce-menina-brasileira.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":420},{"nome":"Abóbora Itapuã 301 tipo Jacarezinho","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":7.5,"antigo":null,"top":false,"novo":false,"foto":"abobora-tipo-jacarezinho-itapua.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":430},{"nome":"Abobrinha de Tronco Caserta","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":6.9,"antigo":8.5,"top":false,"novo":false,"foto":"abobrinha-de-tronco-caserta.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":440},{"nome":"Moranga Exposição de Mesa","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":7.5,"antigo":null,"top":false,"novo":false,"foto":"moranga-exposicao-de-mesa.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":450},{"nome":"Melancia Crimson Sweet","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":7.9,"antigo":null,"top":true,"novo":false,"foto":"melancia-crimson-sweet.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":460},{"nome":"Melancia Charleston Gray Super","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":7.9,"antigo":null,"top":false,"novo":false,"foto":"melancia-charleston-gray.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":470},{"nome":"Melão Caipira Gaúcho","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":7.5,"antigo":null,"top":false,"novo":false,"foto":"melao-caipira-gaucho.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":480},{"nome":"Melão Redondo Gaúcho","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":7.5,"antigo":null,"top":false,"novo":false,"foto":"melao-redondo-gaucho.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":490},{"nome":"Pepino Melhorado Aodai","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"pepino-melhorado-aodai.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":500},{"nome":"Quiabo Santa Cruz 47","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"quiabo-santa-cruz.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":510},{"nome":"Jiló Verde Escuro Morro Grande","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"jilo-escuro-morro-grande-verde.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":520},{"nome":"Maxixe","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":6.5,"antigo":null,"top":false,"novo":false,"foto":"maxixe-maxixe.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":530},{"nome":"Feijão-Vagem Macarrão Trepador (Favorito)","marca":"Isla","dep":"Sementes","sub":"Frutos e legumes","un":"Envelope","preco":8.9,"antigo":10.9,"top":false,"novo":false,"foto":"feijao-vagem-macarrao-trepador-favorito.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":540},{"nome":"Beterraba Itapuã 202","marca":"Isla","dep":"Sementes","sub":"Raízes e bulbos","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"beterraba-itapua.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":550},{"nome":"Cebola Baia Periforme","marca":"Isla","dep":"Sementes","sub":"Raízes e bulbos","un":"Envelope","preco":6.9,"antigo":null,"top":false,"novo":false,"foto":"cebola-baia-periforme.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":560},{"nome":"Rabanete Gigante Sículo","marca":"Isla","dep":"Sementes","sub":"Raízes e bulbos","un":"Envelope","preco":5.9,"antigo":null,"top":false,"novo":false,"foto":"rabanete-vermelho-gigante-siculo.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.","ordem":570},{"nome":"Adubo NPK 10-10-10","marca":"Heringer","dep":"Insumos","sub":"Adubos","un":"Saco 50 kg","preco":219.9,"antigo":239.9,"top":true,"novo":false,"foto":"adubo-heringer.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Adubo mineral NPK. Os números são as porcentagens de nitrogênio (N), fósforo (P) e potássio (K). Fórmula equilibrada, de uso geral.","ordem":580},{"nome":"Adubo NPK 20-05-20","marca":"Heringer","dep":"Insumos","sub":"Adubos","un":"Saco 50 kg","preco":249.9,"antigo":null,"top":false,"novo":false,"foto":"adubo-heringer.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Adubo mineral NPK. Os números são as porcentagens de nitrogênio (N), fósforo (P) e potássio (K). Mais nitrogênio e potássio: muito usado em adubação de cobertura.","ordem":590},{"nome":"Adubo NPK 04-14-08","marca":"Heringer","dep":"Insumos","sub":"Adubos","un":"Saco 50 kg","preco":189.9,"antigo":null,"top":false,"novo":false,"foto":"adubo-heringer.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Adubo mineral NPK. Os números são as porcentagens de nitrogênio (N), fósforo (P) e potássio (K). Rico em fósforo: muito usado no plantio.","ordem":600},{"nome":"Calcário dolomítico PRNT 90%","marca":null,"dep":"Insumos","sub":"Calcário","un":"Saco 40 kg","preco":32.9,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["saco","CALCÁRIO|DOLOMÍTICO","#8a8f94","#e9e6df"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Corrige a acidez do solo e fornece cálcio e magnésio para as plantas. Aplique com antecedência ao plantio e incorpore à terra. A quantidade certa depende da análise de solo; pergunte no balcão.","ordem":610},{"nome":"Substrato para plantas Carolina Soil","marca":"Carolina Soil","dep":"Insumos","sub":"Terras e substratos","un":"Saco 45 L","preco":42.9,"antigo":null,"top":false,"novo":false,"foto":"carolina-soil.jpeg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Substrato pronto para produção de mudas em bandejas, copinhos e vasos. Leve, retém água e não precisa misturar.","ordem":620},{"nome":"Terra vegetal","marca":null,"dep":"Insumos","sub":"Terras e substratos","un":"Saco 25 kg","preco":16.9,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["saco","TERRA|VEGETAL","#2f6b3c","#5a3d26"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Terra rica em matéria orgânica para vasos, canteiros e jardins.","ordem":630},{"nome":"Húmus de minhoca","marca":null,"dep":"Insumos","sub":"Terras e substratos","un":"Saco 25 kg","preco":34.9,"antigo":39.9,"top":false,"novo":false,"foto":null,"ilu":["saco","HÚMUS DE|MINHOCA","#6b4a2f","#3a281b"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Adubo orgânico natural que melhora a terra e nutre as plantas. Bom para horta, vasos, jardim e plantio de mudas.","ordem":640},{"nome":"Muda de alface crespa Vanda","marca":null,"dep":"Mudas","sub":"Bandeja 200 mudas","un":"Bandeja com 200 mudas","preco":40,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","alface",200],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 200 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":650},{"nome":"Muda de alface americana","marca":null,"dep":"Mudas","sub":"Bandeja 200 mudas","un":"Bandeja com 200 mudas","preco":40,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","americana",200],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 200 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":660},{"nome":"Muda de rúcula","marca":null,"dep":"Mudas","sub":"Bandeja 200 mudas","un":"Bandeja com 200 mudas","preco":40,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","rucula",200],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 200 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":670},{"nome":"Muda de coentro","marca":null,"dep":"Mudas","sub":"Bandeja 200 mudas","un":"Bandeja com 200 mudas","preco":40,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","coentro",200],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 200 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":680},{"nome":"Muda de salsa","marca":null,"dep":"Mudas","sub":"Bandeja 200 mudas","un":"Bandeja com 200 mudas","preco":40,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","salsa",200],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 200 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":690},{"nome":"Muda de cebolinha","marca":null,"dep":"Mudas","sub":"Bandeja 200 mudas","un":"Bandeja com 200 mudas","preco":40,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","cebolinha",200],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 200 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":700},{"nome":"Muda de almeirão Pão de Açúcar","marca":null,"dep":"Mudas","sub":"Bandeja 200 mudas","un":"Bandeja com 200 mudas","preco":40,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","almeirao",200],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 200 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":710},{"nome":"Muda de pimentão híbrido Magali","marca":null,"dep":"Mudas","sub":"Bandeja 128 mudas","un":"Bandeja com 128 mudas","preco":60,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","pimentao",128],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 128 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":720},{"nome":"Muda de berinjela Napoli","marca":null,"dep":"Mudas","sub":"Bandeja 128 mudas","un":"Bandeja com 128 mudas","preco":60,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","berinjela",128],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 128 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":730},{"nome":"Muda de berinjela japonesa","marca":null,"dep":"Mudas","sub":"Bandeja 128 mudas","un":"Bandeja com 128 mudas","preco":60,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","berinjela",128],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 128 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":740},{"nome":"Muda de couve manteiga","marca":null,"dep":"Mudas","sub":"Bandeja 128 mudas","un":"Bandeja com 128 mudas","preco":60,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","couve",128],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 128 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":750},{"nome":"Muda de jiló","marca":null,"dep":"Mudas","sub":"Bandeja 128 mudas","un":"Bandeja com 128 mudas","preco":60,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["bandeja","jilo",128],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bandeja com 128 mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.","ordem":760},{"nome":"Muda de pimenta malagueta","marca":null,"dep":"Mudas","sub":"Mudas unitárias","un":"Muda pequena, tamanho de bandeja","preco":1,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["vaso","malagueta"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Muda pequena, do tamanho das de bandeja, pronta para plantar em vaso ou canteiro.","ordem":770},{"nome":"Muda de pimenta dedo-de-moça","marca":null,"dep":"Mudas","sub":"Mudas unitárias","un":"Muda pequena, tamanho de bandeja","preco":1,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["vaso","dedo"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Muda pequena, do tamanho das de bandeja, pronta para plantar em vaso ou canteiro.","ordem":780},{"nome":"Muda de café","marca":null,"dep":"Mudas","sub":"Mudas unitárias","un":"Tubete plástico de ~15 cm","preco":7,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["vaso","cafe"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Muda de café em tubete plástico de cerca de 15 cm, pronta para plantio.","ordem":790},{"nome":"Muda de maracujá azedo","marca":null,"dep":"Mudas","sub":"Mudas unitárias","un":"Saquinho 30 × 25 cm · para suco","preco":15,"antigo":null,"top":false,"novo":false,"foto":null,"ilu":["vaso","maracuja"],"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Muda de maracujá azedo (para suco) em saquinho de 30 × 25 cm. Precisa de espaldeira ou cerca para subir.","ordem":800},{"nome":"Botina de segurança com elástico","marca":null,"dep":"Ferragens e EPIs","sub":"EPIs","un":"Couro · vários números","preco":null,"antigo":null,"top":false,"novo":false,"foto":"botina-seguranca.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Botina de couro com elástico lateral, fácil de calçar, para o trabalho no campo e na obra.","ordem":810},{"nome":"Bota de PVC preta","marca":"Vonder","dep":"Ferragens e EPIs","sub":"EPIs","un":"Cano médio · vários números","preco":null,"antigo":null,"top":false,"novo":false,"foto":"bota-pvc-vonder.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bota de PVC impermeável Vonder, cano médio, solado antiderrapante. Para curral, horta e dias de chuva.","ordem":820},{"nome":"Bota de PVC branca cano longo","marca":null,"dep":"Ferragens e EPIs","sub":"EPIs","un":"Vários números","preco":null,"antigo":null,"top":false,"novo":false,"foto":"bota-pvc-branca.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Bota de PVC branca de cano longo, impermeável. Muito usada em ordenha, laticínio e cozinha industrial.","ordem":830},{"nome":"Protetor auricular tipo concha","marca":null,"dep":"Ferragens e EPIs","sub":"EPIs","un":"Abafador de ruído com haste ajustável","preco":null,"antigo":null,"top":false,"novo":false,"foto":"abafador.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Abafador de ruído tipo concha, para usar com roçadeira, motosserra, trator e outras máquinas barulhentas.","ordem":840},{"nome":"Protetor auditivo de silicone Pomp Plus","marca":"3M","dep":"Ferragens e EPIs","sub":"EPIs","un":"Par com cordão · caixinha","preco":null,"antigo":null,"top":false,"novo":false,"foto":"protetor-3m-pomp.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Protetor auditivo 3M de inserção, em silicone, com cordão e caixinha para guardar. Reutilizável.","ordem":850},{"nome":"Capa de chuva de PVC","marca":"Vonder","dep":"Ferragens e EPIs","sub":"EPIs","un":"Com manga e capuz · sem forro","preco":null,"antigo":null,"top":false,"novo":false,"foto":"capa-pvc-vonder.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["G","GG"],"opNome":"Tamanho","descricao":"Capa de chuva Vonder de PVC laminado, com manga e capuz, sem forro.","ordem":860},{"nome":"Arame farpado Motto","marca":"Belgo","dep":"Ferragens e EPIs","sub":"Cercas e arames","un":"Rolo 500 m","preco":null,"antigo":null,"top":false,"novo":false,"foto":"arame-farpado-motto.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Arame farpado galvanizado Belgo, em rolo de 500 metros, para cercas de divisa e pastagem.","ordem":870},{"nome":"Arame ovalado Z-700","marca":"Belgo","dep":"Ferragens e EPIs","sub":"Cercas e arames","un":"Rolo 1.000 m · arame liso","preco":null,"antigo":null,"top":false,"novo":false,"foto":"arame-ovalado-z700.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Arame liso ovalado de alta resistência Belgo, em rolo de 1.000 metros. Muito usado em cercas de gado e cerca elétrica.","ordem":880},{"nome":"Grampo polido para cerca 19×11","marca":"Gerdau","dep":"Ferragens e EPIs","sub":"Cercas e arames","un":"Pacote 1 kg","preco":null,"antigo":null,"top":false,"novo":false,"foto":"grampo-gerdau.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Grampo em U para fixar arame em mourões e estacas de madeira. Pacote de 1 kg.","ordem":890},{"nome":"Prego com cabeça","marca":"Gerdau","dep":"Ferragens e EPIs","sub":"Ferragens","un":"Pacote 1 kg","preco":null,"antigo":null,"top":false,"novo":false,"foto":"prego-gerdau.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["12×12","15×15","17×21","18×27","20×42"],"opNome":"Bitola","descricao":"Prego com cabeça Gerdau em pacote de 1 kg, para madeira, cerca, telhado e obra. Escolha a bitola.","ordem":900},{"nome":"Cadeado de latão","marca":"Pado","dep":"Ferragens e EPIs","sub":"Ferragens","un":"Com 2 chaves","preco":null,"antigo":null,"top":false,"novo":false,"foto":"cadeado-pado.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["20 mm","25 mm","30 mm","35 mm","40 mm","45 mm","50 mm","60 mm"],"opNome":"Tamanho","descricao":"Cadeado Pado de latão maciço, resistente à ferrugem, com 2 chaves. Escolha o tamanho.","ordem":910},{"nome":"Cadeado de latão","marca":"Papaiz","dep":"Ferragens e EPIs","sub":"Ferragens","un":"Com 2 chaves","preco":null,"antigo":null,"top":false,"novo":false,"foto":"cadeado-papaiz.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["20 mm","25 mm","30 mm","35 mm","40 mm","45 mm","50 mm","60 mm"],"opNome":"Tamanho","descricao":"Cadeado Papaiz de latão maciço, resistente à ferrugem, com 2 chaves. Escolha o tamanho.","ordem":920},{"nome":"Alicate universal","marca":"Gedore","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Cabo isolado 1000 V","preco":null,"antigo":null,"top":false,"novo":false,"foto":"alicate-gedore.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":[],"opNome":null,"descricao":"Alicate universal Gedore com cabo isolado para 1000 V. Corta, segura e torce fios e arames.","ordem":930},{"nome":"Martelo de unha","marca":"Vonder","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Cabo de madeira","preco":null,"antigo":null,"top":false,"novo":false,"foto":"martelo-vonder.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["25 mm","27 mm","29 mm"],"opNome":"Tamanho","descricao":"Martelo de unha Vonder com cabo de madeira. Prega e arranca pregos. Escolha o tamanho da cabeça.","ordem":940},{"nome":"Serrote","marca":"Irwin","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Linha profissional · cabo de madeira","preco":null,"antigo":null,"top":false,"novo":false,"foto":"serrote-irwin.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["18\"","20\"","22\"","24\""],"opNome":"Tamanho","descricao":"Serrote Irwin Jack, linha profissional, com dentes temperados e cabo de madeira. Corte rápido e preciso em madeira. Escolha o tamanho.","ordem":950},{"nome":"Serrote","marca":"Tramontina","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Uso geral · cabo de madeira","preco":null,"antigo":null,"top":false,"novo":false,"foto":"serrote-tramontina.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["16\"","18\"","20\"","22\"","24\""],"opNome":"Tamanho","descricao":"Serrote Tramontina de uso geral, com cabo de madeira. Bom custo-benefício para serviços do dia a dia no sítio e em casa.","ordem":960},{"nome":"Facão","marca":"Corneta","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Lâmina de aço","preco":null,"antigo":null,"top":false,"novo":false,"foto":"facao-16.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["10\"","12\"","14\"","16\"","18\"","20\""],"opNome":"Tamanho","descricao":"Facão Corneta para roçar, abrir picada e cortar galhos. Escolha o tamanho da lâmina.","ordem":970},{"nome":"Facão","marca":"Tramontina","dep":"Ferramentas","sub":"Ferramentas manuais","un":"Lâmina de aço carbono · cabo de madeira","preco":null,"antigo":null,"top":false,"novo":false,"foto":"facao-tramontina.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["12\"","14\"","16\""],"opNome":"Tamanho","descricao":"Facão Tramontina com lâmina de aço carbono e cabo de madeira, para mato e serviços do sítio. Escolha o tamanho.","ordem":980},{"nome":"Chave combinada","marca":null,"dep":"Ferramentas","sub":"Ferramentas manuais","un":"Boca e estria · unitária","preco":null,"antigo":null,"top":false,"novo":false,"foto":"chave-combinada.jpg","ilu":null,"icone":null,"restrito":false,"porMetro":false,"opcoes":["6 mm","7 mm","8 mm","9 mm","10 mm","11 mm","12 mm","13 mm","14 mm","15 mm","16 mm","17 mm","18 mm","19 mm","20 mm","21 mm","22 mm","23 mm","24 mm","25 mm","26 mm","27 mm","28 mm","30 mm","32 mm"],"opNome":"Medida","descricao":"Chave combinada (boca e estria) unitária, para porcas e parafusos de máquinas, implementos e manutenção. Escolha a medida.","ordem":990}]}/*FIM-DADOS-DEMO*/</script>
+
+<script>
+"use strict";
+/* =====================================================================
+   UTILITÁRIOS
+   ===================================================================== */
+const $ = (s, el = document) => el.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
+const semAcento = s => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+const moeda = v => v == null ? "" : Number(v).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+const num2 = v => v == null ? "" : Number(v).toLocaleString("pt-BR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const r2 = v => Math.round(v * 100) / 100;
+const slug = s => semAcento(s).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "produto";
+const lerJSON = (k) => { try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch { return null; } };
+const gravarJSON = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch { return false; } };
+
+/** "12,90" | "1.234,5" | "12.9" | "R$ 3" → número; "" → null; inválido → NaN */
+function lerPreco(txt) {
+  let s = String(txt ?? "").replace(/R\$|\s/gi, "");
+  if (!s) return null;
+  if (s.includes(",")) s = s.replace(/\./g, "").replace(",", ".");
+  else if (/^\d{1,3}(\.\d{3})+$/.test(s)) s = s.replace(/\./g, "");
+  if (!/^\d+(\.\d+)?$/.test(s)) return NaN;
+  return r2(parseFloat(s));
+}
+
+/* =====================================================================
+   PROCESSAMENTO DE FOTO (canvas): recorta bordas claras, centraliza num
+   quadrado branco com margem de 6% e exporta JPEG 500×500, qualidade 0,86.
+   ===================================================================== */
+const FOTO_LADO = 500, FOTO_MARGEM = 0.06, FOTO_QUALIDADE = 0.86;
+
+function carregarImagem(arquivo) {
+  return new Promise((ok, falha) => {
+    const url = URL.createObjectURL(arquivo);
+    const img = new Image();
+    img.onload = () => { URL.revokeObjectURL(url); ok(img); };
+    img.onerror = () => { URL.revokeObjectURL(url); falha(new Error("Não foi possível abrir essa imagem.")); };
+    img.src = url;
+  });
+}
+
+/** Caixa do conteúdo: ignora pixels claros/neutros (fundo branco) e transparentes. */
+function caixaConteudo(ctx, w, h) {
+  const d = ctx.getImageData(0, 0, w, h).data;
+  const ehFundo = i => {
+    if (d[i + 3] < 24) return true;
+    const r = d[i], g = d[i + 1], b = d[i + 2];
+    const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+    return mn >= 228 && mx - mn <= 28;
+  };
+  const col = new Uint32Array(w), lin = new Uint32Array(h);
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      if (!ehFundo((y * w + x) * 4)) { col[x]++; lin[y]++; }
+    }
+  }
+  // ignora poeira: exige alguns pixels por linha/coluna
+  const minC = Math.max(1, Math.round(h * 0.004)), minL = Math.max(1, Math.round(w * 0.004));
+  let x0 = 0, x1 = w - 1, y0 = 0, y1 = h - 1;
+  while (x0 < w && col[x0] < minC) x0++;
+  while (x1 > x0 && col[x1] < minC) x1--;
+  while (y0 < h && lin[y0] < minL) y0++;
+  while (y1 > y0 && lin[y1] < minL) y1--;
+  if (x0 >= w || y0 >= h || x1 - x0 < 4 || y1 - y0 < 4) return { x: 0, y: 0, w, h };
+  return { x: x0, y: y0, w: x1 - x0 + 1, h: y1 - y0 + 1 };
+}
+
+async function processarFoto(arquivo, recortar = true) {
+  if (!arquivo || !/^image\//.test(arquivo.type || "image/")) throw new Error("Escolha um arquivo de imagem.");
+  const img = await carregarImagem(arquivo);
+  // trabalha numa cópia reduzida (fotos de celular são enormes)
+  const maxLado = 1400;
+  const esc0 = Math.min(1, maxLado / Math.max(img.naturalWidth, img.naturalHeight));
+  const w = Math.max(1, Math.round(img.naturalWidth * esc0)), h = Math.max(1, Math.round(img.naturalHeight * esc0));
+  const tmp = document.createElement("canvas");
+  tmp.width = w; tmp.height = h;
+  const tctx = tmp.getContext("2d", { willReadFrequently: true });
+  tctx.fillStyle = "#fff"; tctx.fillRect(0, 0, w, h);
+  tctx.drawImage(img, 0, 0, w, h);
+  const cx = recortar ? caixaConteudo(tctx, w, h) : { x: 0, y: 0, w, h };
+
+  const out = document.createElement("canvas");
+  out.width = out.height = FOTO_LADO;
+  const octx = out.getContext("2d");
+  octx.fillStyle = "#fff"; octx.fillRect(0, 0, FOTO_LADO, FOTO_LADO);
+  octx.imageSmoothingEnabled = true; octx.imageSmoothingQuality = "high";
+  const util = FOTO_LADO * (1 - 2 * FOTO_MARGEM);
+  const k = Math.min(util / cx.w, util / cx.h);
+  const dw = cx.w * k, dh = cx.h * k;
+  octx.drawImage(tmp, cx.x, cx.y, cx.w, cx.h, (FOTO_LADO - dw) / 2, (FOTO_LADO - dh) / 2, dw, dh);
+  const blob = await new Promise((ok, falha) => out.toBlob(b => b ? ok(b) : falha(new Error("Falha ao gerar a foto.")), "image/jpeg", FOTO_QUALIDADE));
+  return { blob, url: URL.createObjectURL(blob), recorte: cx, original: { w: img.naturalWidth, h: img.naturalHeight } };
+}
+
+const blobParaDataURL = b => new Promise((ok, falha) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = falha; r.readAsDataURL(b); });
+
+/* =====================================================================
+   CAMADA DE DADOS
+   Formato interno de produto (igual às colunas do contrato + dep/sub):
+   { id, nome, marca, dep, sub, unidade, preco, preco_antigo, descricao,
+     foto_url (caminho no bucket), foto_publica (URL para exibir), ilustracao, icone, destaque, novidade, restrito,
+     por_metro, op_nome, opcoes:[nome…], ativo, ordem }
+   Departamentos: [{ id, nome, info, ordem, subcategorias:[{id,nome,ordem}] }]
+   A interface só conversa com `api`.
+   ===================================================================== */
+
+/* ---------- Implementação DEMO (localStorage) ---------- */
+function criarApiDemo() {
+  const CHAVE = "defema-admin-demo-v1", CHAVE_SESSAO = "defema-admin-demo-sessao";
+  const IMG_BASE = "../../site/img/";
+  let estado = null, sessao = lerJSON(CHAVE_SESSAO);
+
+  function inicial() {
+    let bruto = { departamentos: [], produtos: [] };
+    try { bruto = JSON.parse($("#dadosDemo").textContent.replace("/*DADOS-DEMO*/", "").replace("/*FIM-DADOS-DEMO*/", "")); } catch (e) { console.warn("Dados demo inválidos", e); }
+    let depId = 1, subId = 1;
+    const departamentos = (bruto.departamentos || []).map((d, i) => ({
+      id: depId++, nome: d.nome, info: d.info || "", ordem: d.ordem ?? i,
+      subcategorias: (d.subcategorias || []).map((s, j) => typeof s === "string" ? { id: subId++, nome: s, ordem: j + 1 } : { id: subId++, nome: s.nome, ordem: s.ordem ?? j + 1 }),
+    }));
+    const produtos = (bruto.produtos || []).map((p, i) => ({
+      id: "demo-" + (i + 1), nome: p.nome, marca: p.marca || "", dep: p.dep, sub: p.sub, unidade: p.un || "",
+      preco: p.preco ?? null, preco_antigo: p.antigo ?? null, descricao: p.descricao || "",
+      foto_url: p.foto || null, foto_data: null, ilustracao: p.ilu ?? null, icone: p.icone ?? null,
+      destaque: !!p.top, novidade: !!p.novo, restrito: !!p.restrito, por_metro: !!p.porMetro,
+      op_nome: p.opNome || "", opcoes: Array.isArray(p.opcoes) ? p.opcoes.slice() : [], ativo: p.ativo !== false, ordem: p.ordem ?? (i + 1) * 10,
+    }));
+    return { departamentos, produtos, seq: produtos.length + 1, subSeq: subId };
+  }
+  function carregar() { estado = lerJSON(CHAVE) || inicial(); }
+  function persistir() {
+    if (!gravarJSON(CHAVE, estado)) throw new Error("Sem espaço no aparelho para guardar (modo demonstração).");
+  }
+  const urlFoto = p => p.foto_data || (p.foto_url ? (/^(https?:|data:)/.test(p.foto_url) ? p.foto_url : IMG_BASE + p.foto_url) : null);
+  const copia = p => ({ ...p, opcoes: p.opcoes.slice(), foto_publica: urlFoto(p) });
+  const espera = (ms = 250) => new Promise(r => setTimeout(r, ms));
+
+  function garantirSub(dep, sub) {
+    const d = estado.departamentos.find(x => x.nome === dep);
+    if (!d) throw new Error("Departamento não encontrado.");
+    if (!d.subcategorias.some(s => s.nome === sub)) d.subcategorias.push({ id: estado.subSeq++, nome: sub, ordem: d.subcategorias.length + 1 });
+  }
+
+  return {
+    modo: "demo",
+    // modo demonstração: login pulado (entra direto); "Sair" leva à tela de login, que aceita qualquer coisa
+    async iniciar() { carregar(); return sessao || (sessao = { email: "Modo demonstração" }); },
+    async entrar(email, senha) {
+      await espera(300);
+      if (!email || !senha) throw new Error("Preencha e-mail e senha.");
+      sessao = { email }; gravarJSON(CHAVE_SESSAO, sessao); return sessao;
+    },
+    async sair() { sessao = null; try { localStorage.removeItem(CHAVE_SESSAO); } catch {} },
+    async listar() {
+      if (!estado) carregar();
+      return { departamentos: JSON.parse(JSON.stringify(estado.departamentos)), produtos: estado.produtos.map(copia) };
+    },
+    async subirFoto(blob, nomeBase) {
+      // no demo a foto fica guardada no próprio aparelho (data URL)
+      return { path: "demo/" + slug(nomeBase) + "-" + Date.now().toString(36) + ".jpg", data: await blobParaDataURL(blob) };
+    },
+    async salvar(p, foto) {
+      await espera();
+      const dup = estado.produtos.find(x => x.id !== p.id && semAcento(x.nome) === semAcento(p.nome) && semAcento(x.marca) === semAcento(p.marca));
+      if (dup) throw new Error("Já existe um produto com esse nome e marca.");
+      garantirSub(p.dep, p.sub);
+      const reg = {
+        id: p.id || "demo-" + (estado.seq++), nome: p.nome, marca: p.marca || "", dep: p.dep, sub: p.sub, unidade: p.unidade || "",
+        preco: p.preco, preco_antigo: p.preco_antigo, descricao: p.descricao || "",
+        foto_url: p.foto_url ?? null, foto_data: p.foto_data ?? null, ilustracao: p.ilustracao ?? null, icone: p.icone ?? null,
+        destaque: !!p.destaque, novidade: !!p.novidade, restrito: !!p.restrito, por_metro: !!p.por_metro,
+        op_nome: p.op_nome || "", opcoes: (p.opcoes || []).slice(), ativo: p.ativo !== false, ordem: p.ordem ?? (estado.produtos.length + 1) * 10,
+      };
+      if (foto === null) { reg.foto_url = null; reg.foto_data = null; }
+      else if (foto) { const up = await this.subirFoto(foto, p.nome); reg.foto_url = up.path; reg.foto_data = up.data; }
+      const i = estado.produtos.findIndex(x => x.id === reg.id);
+      const antes = i >= 0 ? estado.produtos[i] : null;
+      if (i >= 0) estado.produtos[i] = reg; else estado.produtos.push(reg);
+      try { persistir(); } catch (e) { if (i >= 0) estado.produtos[i] = antes; else estado.produtos.pop(); throw e; }
+      return copia(reg);
+    },
+    async excluir(id) {
+      await espera();
+      const i = estado.produtos.findIndex(x => x.id === id);
+      if (i < 0) throw new Error("Produto não encontrado.");
+      estado.produtos.splice(i, 1); persistir();
+    },
+    async reajuste(alteracoes) {
+      await espera(400);
+      for (const a of alteracoes) {
+        const p = estado.produtos.find(x => x.id === a.id);
+        if (p) { p.preco = a.preco; p.preco_antigo = a.preco_antigo; }
+      }
+      persistir();
+      return alteracoes.length;
+    },
+    async atualizarCampos(id, campos) {
+      await espera(200);
+      const p = estado.produtos.find(x => x.id === id);
+      if (!p) throw new Error("Produto não encontrado.");
+      const antes = { ...p }; Object.assign(p, campos);
+      try { persistir(); } catch (e) { Object.assign(p, antes); throw e; }
+      return copia(p);
+    },
+    async salvarDepartamento({ id, nome, info }) {
+      await espera(200);
+      if (estado.departamentos.some(d => d.id !== id && semAcento(d.nome) === semAcento(nome))) throw new Error("Já existe um departamento com esse nome.");
+      if (id) {
+        const d = estado.departamentos.find(x => x.id === id); if (!d) throw new Error("Departamento não encontrado.");
+        const velho = d.nome; d.nome = nome; d.info = info ?? d.info;
+        estado.produtos.forEach(p => { if (p.dep === velho) p.dep = nome; });
+      } else {
+        const novoId = Math.max(0, ...estado.departamentos.map(d => d.id)) + 1;
+        estado.departamentos.push({ id: novoId, nome, info: info || "", ordem: Math.max(0, ...estado.departamentos.map(d => d.ordem)) + 1, subcategorias: [] });
+      }
+      persistir();
+    },
+    async salvarSubcategoria({ id, depId, nome }) {
+      await espera(200);
+      const d = estado.departamentos.find(x => x.id === depId); if (!d) throw new Error("Departamento não encontrado.");
+      if (d.subcategorias.some(s => s.id !== id && semAcento(s.nome) === semAcento(nome))) throw new Error("Já existe essa subcategoria neste departamento.");
+      if (id) {
+        const sc = d.subcategorias.find(x => x.id === id); if (!sc) throw new Error("Subcategoria não encontrada.");
+        const velho = sc.nome; sc.nome = nome;
+        estado.produtos.forEach(p => { if (p.dep === d.nome && p.sub === velho) p.sub = nome; });
+      } else d.subcategorias.push({ id: estado.subSeq++, nome, ordem: d.subcategorias.length + 1 });
+      persistir();
+    },
+    async restaurar() { estado = inicial(); try { localStorage.removeItem(CHAVE); } catch {} },
+  };
+}
+
+/* ---------- Implementação SUPABASE ---------- */
+function criarApiSupabase(url, chave) {
+  const sb = window.supabase.createClient(url, chave, { auth: { persistSession: true, autoRefreshToken: true } });
+  const BUCKET = "produtos";
+  const urlFoto = path => !path ? null : /^https?:/.test(path) ? path : sb.storage.from(BUCKET).getPublicUrl(path.replace(/^produtos\//, "")).data.publicUrl;
+  let deps = [];
+  const falhou = (error, msg) => {
+    if (!error) return;
+    console.error(error);
+    if (error.code === "23505") throw new Error("Já existe um produto com esse nome e marca.");
+    if (error.code === "42501" || /row-level security|permission/i.test(error.message || "")) throw new Error("Sem permissão. Entre novamente com um usuário administrador.");
+    throw new Error(msg + (error.message ? " (" + error.message + ")" : ""));
+  };
+
+  async function verificarAdmin(user) {
+    const { data, error } = await sb.from("administradores").select("user_id").eq("user_id", user.id).maybeSingle();
+    if (error || !data) { await sb.auth.signOut(); throw new Error("Este usuário não está cadastrado como administrador da loja."); }
+    return { email: user.email };
+  }
+
+  async function garantirSub(depNome, subNome) {
+    const d = deps.find(x => x.nome === depNome);
+    if (!d) throw new Error("Departamento não encontrado.");
+    const s = d.subcategorias.find(x => x.nome === subNome);
+    if (s) return s.id;
+    const { data, error } = await sb.from("subcategorias").insert({ departamento_id: d.id, nome: subNome, ordem: d.subcategorias.length + 1 }).select("id").single();
+    falhou(error, "Não foi possível criar a subcategoria.");
+    d.subcategorias.push({ id: data.id, nome: subNome, ordem: d.subcategorias.length + 1 });
+    return data.id;
+  }
+
+  return {
+    modo: "supabase",
+    async iniciar() {
+      const { data } = await sb.auth.getSession();
+      if (!data.session) return null;
+      try { return await verificarAdmin(data.session.user); } catch { return null; }
+    },
+    async entrar(email, senha) {
+      const { data, error } = await sb.auth.signInWithPassword({ email, password: senha });
+      if (error) throw new Error(/invalid/i.test(error.message) ? "E-mail ou senha incorretos." : "Não foi possível entrar: " + error.message);
+      return verificarAdmin(data.user);
+    },
+    async sair() { await sb.auth.signOut(); },
+    async listar() {
+      const r1 = await sb.from("departamentos").select("id,nome,info,ordem,subcategorias(id,nome,ordem)").order("ordem");
+      falhou(r1.error, "Não foi possível carregar os departamentos.");
+      deps = r1.data.map(d => ({ ...d, subcategorias: (d.subcategorias || []).sort((a, b) => a.ordem - b.ordem || a.nome.localeCompare(b.nome)) }));
+      const subPorId = new Map();
+      deps.forEach(d => d.subcategorias.forEach(s => subPorId.set(s.id, { dep: d.nome, sub: s.nome })));
+      const r2_ = await sb.from("produtos").select("*, produto_opcoes(nome,ordem)").order("ordem").limit(5000);
+      falhou(r2_.error, "Não foi possível carregar os produtos.");
+      const produtos = r2_.data.map(p => {
+        const ds = subPorId.get(p.subcategoria_id) || { dep: "", sub: "" };
+        return {
+          id: p.id, nome: p.nome, marca: p.marca || "", dep: ds.dep, sub: ds.sub, unidade: p.unidade || "",
+          preco: p.preco == null ? null : Number(p.preco), preco_antigo: p.preco_antigo == null ? null : Number(p.preco_antigo),
+          descricao: p.descricao || "", foto_url: p.foto_url || null, foto_publica: urlFoto(p.foto_url),
+          ilustracao: p.ilustracao, icone: p.icone, destaque: !!p.destaque, novidade: !!p.novidade, restrito: !!p.restrito,
+          por_metro: !!p.por_metro, op_nome: p.op_nome || "", ativo: p.ativo !== false, ordem: p.ordem || 0,
+          opcoes: (p.produto_opcoes || []).sort((a, b) => a.ordem - b.ordem).map(o => o.nome),
+        };
+      });
+      return { departamentos: JSON.parse(JSON.stringify(deps)), produtos };
+    },
+    async subirFoto(blob, nomeBase) {
+      const path = slug(nomeBase) + "-" + Date.now().toString(36) + ".jpg";
+      const { error } = await sb.storage.from(BUCKET).upload(path, blob, { contentType: "image/jpeg", cacheControl: "31536000", upsert: false });
+      falhou(error, "Não foi possível enviar a foto.");
+      return { path, url: urlFoto(path) };
+    },
+    async salvar(p, foto) {
+      const subId = await garantirSub(p.dep, p.sub);
+      const fotoAntiga = p.foto_url_original || null;
+      let fotoPath = p.foto_url || null;
+      if (foto === null) fotoPath = null;
+      else if (foto) fotoPath = (await this.subirFoto(foto, p.nome)).path;
+      const linha = {
+        nome: p.nome, marca: p.marca || null, subcategoria_id: subId, unidade: p.unidade || null,
+        preco: p.preco, preco_antigo: p.preco_antigo, descricao: p.descricao || null, foto_url: fotoPath,
+        destaque: !!p.destaque, novidade: !!p.novidade, restrito: !!p.restrito, por_metro: !!p.por_metro,
+        op_nome: p.op_nome || null, ativo: p.ativo !== false,
+      };
+      let res;
+      const gravar = l => p.id ? sb.from("produtos").update(l).eq("id", p.id).select("id").single()
+                               : sb.from("produtos").insert({ ...l, ordem: p.ordem ?? 9999 }).select("id").single();
+      res = await gravar(linha);
+      if (res.error && res.error.code === "23502" && linha.marca === null) res = await gravar({ ...linha, marca: "" }); // banco com marca NOT NULL ''
+      falhou(res.error, "Não foi possível salvar o produto.");
+      const id = res.data.id;
+      const del = await sb.from("produto_opcoes").delete().eq("produto_id", id);
+      falhou(del.error, "Produto salvo, mas houve erro nas opções.");
+      if (p.opcoes && p.opcoes.length) {
+        const ins = await sb.from("produto_opcoes").insert(p.opcoes.map((nome, i) => ({ produto_id: id, nome, ordem: i + 1 })));
+        falhou(ins.error, "Produto salvo, mas houve erro nas opções.");
+      }
+      if (fotoAntiga && fotoAntiga !== fotoPath && !/^https?:/.test(fotoAntiga)) {
+        sb.storage.from(BUCKET).remove([fotoAntiga.replace(/^produtos\//, "")]).catch(() => {});
+      }
+      return { ...p, id, foto_url: fotoPath, foto_publica: urlFoto(fotoPath) };
+    },
+    async excluir(id, fotoPath) {
+      const { error } = await sb.from("produtos").delete().eq("id", id);
+      falhou(error, "Não foi possível excluir.");
+      if (fotoPath && !/^https?:/.test(fotoPath)) sb.storage.from(BUCKET).remove([fotoPath.replace(/^produtos\//, "")]).catch(() => {});
+    },
+    async atualizarCampos(id, campos) {
+      const { error } = await sb.from("produtos").update(campos).eq("id", id);
+      falhou(error, "Não foi possível salvar.");
+    },
+    async salvarDepartamento({ id, nome, info }) {
+      const r = id ? await sb.from("departamentos").update({ nome, info: info || null }).eq("id", id)
+                   : await sb.from("departamentos").insert({ nome, info: info || null, ordem: Math.max(0, ...deps.map(d => d.ordem || 0)) + 1 });
+      if (r.error?.code === "23505") throw new Error("Já existe um departamento com esse nome.");
+      falhou(r.error, "Não foi possível salvar o departamento.");
+    },
+    async salvarSubcategoria({ id, depId, nome }) {
+      const d = deps.find(x => x.id === depId);
+      const r = id ? await sb.from("subcategorias").update({ nome }).eq("id", id)
+                   : await sb.from("subcategorias").insert({ departamento_id: depId, nome, ordem: (d ? d.subcategorias.length : 0) + 1 });
+      if (r.error?.code === "23505") throw new Error("Já existe essa subcategoria neste departamento.");
+      falhou(r.error, "Não foi possível salvar a subcategoria.");
+    },
+    async reajuste(alteracoes) {
+      let n = 0;
+      for (let i = 0; i < alteracoes.length; i += 8) {
+        const lote = alteracoes.slice(i, i + 8);
+        const rs = await Promise.all(lote.map(a => sb.from("produtos").update({ preco: a.preco, preco_antigo: a.preco_antigo }).eq("id", a.id)));
+        rs.forEach(r => falhou(r.error, `Reajuste interrompido após ${n} produto(s).`));
+        n += lote.length;
+      }
+      return n;
+    },
+  };
+}
+
+const usarSupabase = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient);
+if (SUPABASE_URL && SUPABASE_ANON_KEY && !usarSupabase) console.warn("supabase-js não carregou; usando modo demonstração.");
+const api = usarSupabase ? criarApiSupabase(SUPABASE_URL, SUPABASE_ANON_KEY) : criarApiDemo();
+
+/* =====================================================================
+   INTERFACE
+   ===================================================================== */
+const ui = { deps: [], produtos: [], filtro: { q: "", dep: "", chip: "todos" }, editandoPreco: null };
+
+/* ---------- toasts ----------
+   Diálogos modais ficam numa camada acima de tudo; por isso o contêiner de
+   avisos é movido para dentro do diálogo aberto (e volta ao body ao fechar). */
+function posicionarToasts() {
+  const cont = $("#toasts"), d = document.querySelector("dialog[open]");
+  const host = d || document.body;
+  if (cont.parentElement !== host) host.appendChild(cont);
+}
+function toast(msg, tipo = "", ms = 2600) {
+  posicionarToasts();
+  // mostra um aviso por vez (além do "carregando"), para não empilhar
+  if (tipo !== "carregando") $("#toasts").querySelectorAll(".toast:not(.carregando)").forEach(t => t.remove());
+  const el = document.createElement("div");
+  el.className = "toast " + tipo;
+  el.setAttribute("role", tipo === "erro" ? "alert" : "status");
+  el.innerHTML = (tipo === "carregando" ? '<span class="spin" aria-hidden="true"></span>' : "") + "<span>" + esc(msg) + "</span>";
+  $("#toasts").appendChild(el);
+  const fechar = () => el.remove();
+  if (tipo !== "carregando") setTimeout(fechar, tipo === "erro" ? 4500 : ms);
+  return { fechar, el };
+}
+async function comFeedback(msgCarregando, msgOk, fn) {
+  const t = toast(msgCarregando, "carregando");
+  try { const r = await fn(); t.fechar(); if (msgOk) toast(msgOk, "ok"); return r; }
+  catch (e) { t.fechar(); toast(e.message || "Algo deu errado.", "erro"); throw e; }
+}
+
+/* ---------- telas ---------- */
+function mostrarTela(nome) {
+  $("#telaCarregando").hidden = true;
+  $("#telaLogin").hidden = nome !== "login";
+  $("#telaLista").hidden = nome !== "lista";
+  const logado = nome === "lista";
+  ["#btnSair", "#btnNovoTopo", "#btnReajusteTopo", "#btnDepsTopo", "#barraBaixo"].forEach(s => $(s).hidden = !logado);
+}
+
+async function recarregar() {
+  const r = await api.listar();
+  ui.deps = r.departamentos.sort((a, b) => a.ordem - b.ordem);
+  ui.produtos = r.produtos;
+  montarFiltroDeps();
+  renderLista();
+}
+
+function montarFiltroDeps() {
+  const opts = '<option value="">Todos os departamentos</option>' + ui.deps.map(d => `<option value="${esc(d.nome)}">${esc(d.nome)}</option>`).join("");
+  const sel = $("#filtroDep"); const atual = sel.value;
+  sel.innerHTML = opts; sel.value = ui.deps.some(d => d.nome === atual) ? atual : "";
+}
+
+const CHIPS = [
+  ["todos", "Todos", () => true],
+  ["ativo", "Ativos", p => p.ativo],
+  ["inativo", "Inativos", p => !p.ativo],
+  ["promo", "Promoção", p => p.preco_antigo != null],
+  ["semfoto", "Sem foto", p => !p.foto_publica],
+  ["sempreco", "Sem preço", p => p.preco == null],
+  ["destaque", "Destaque", p => p.destaque],
+  ["novo", "Novidade", p => p.novidade],
+];
+
+function ordemDep(nome) { const i = ui.deps.findIndex(d => d.nome === nome); return i < 0 ? 999 : i; }
+function ordemSub(dep, sub) { const d = ui.deps.find(x => x.nome === dep); const i = d ? d.subcategorias.findIndex(s => s.nome === sub) : -1; return i < 0 ? 999 : i; }
+
+/* ---------- busca sem acento e tolerante a erros de digitação ---------- */
+function distancia(a, b, max) { // Damerau-Levenshtein (trocas de letras contam 1), com corte em `max`
+  if (Math.abs(a.length - b.length) > max) return max + 1;
+  let ant2 = null, ant = Array.from({ length: b.length + 1 }, (_, j) => j);
+  for (let i = 1; i <= a.length; i++) {
+    const cur = [i]; let menor = i;
+    for (let j = 1; j <= b.length; j++) {
+      cur[j] = Math.min(ant[j] + 1, cur[j - 1] + 1, ant[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      if (ant2 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) cur[j] = Math.min(cur[j], ant2[j - 2] + 1);
+      if (cur[j] < menor) menor = cur[j];
+    }
+    if (menor > max) return max + 1;
+    ant2 = ant; ant = cur;
+  }
+  return ant[b.length];
+}
+const textoBusca = p => semAcento([p.nome, p.marca, p.sub, p.dep, p.unidade].join(" "));
+function termoParecido(t, palavras) {
+  const tol = t.length >= 7 ? 2 : t.length >= 4 ? 1 : 0;
+  if (!tol) return false;
+  return palavras.some(w => distancia(t, w, tol) <= tol || (w.length > t.length && distancia(t, w.slice(0, t.length), 1) <= 1));
+}
+function filtrarBusca(lista, q) {
+  const termos = semAcento(q).split(/[^a-z0-9,.]+/).filter(Boolean);
+  if (!termos.length) return { itens: lista, parecidos: false };
+  const exatos = lista.filter(p => { const alvo = textoBusca(p); return termos.every(t => alvo.includes(t)); });
+  if (exatos.length) return { itens: exatos, parecidos: false };
+  const itens = lista.filter(p => {
+    const alvo = textoBusca(p), palavras = alvo.split(/[^a-z0-9]+/).filter(Boolean);
+    return termos.every(t => alvo.includes(t) || termoParecido(t, palavras));
+  });
+  return { itens, parecidos: itens.length > 0 };
+}
+
+function htmlPreco(p) {
+  if (p.preco == null) return '<span class="consultar">Consultar</span>';
+  return (p.preco_antigo != null ? `<s>${moeda(p.preco_antigo)}</s>` : "") + `<b>${moeda(p.preco)}</b>` + (p.por_metro ? "<small>por metro</small>" : "");
+}
+function htmlAcoes(p) {
+  const nomeTxt = esc(p.nome + (p.marca ? " " + p.marca : ""));
+  const preco = ui.editandoPreco === p.id
+    ? `<form class="preco-form" data-form-preco="${esc(p.id)}" novalidate>
+        <label class="sr" for="ip-${esc(p.id)}">Novo preço de ${nomeTxt} (vazio = consultar)</label>
+        <input class="inp" id="ip-${esc(p.id)}" inputmode="decimal" enterkeyhint="done" autocomplete="off" placeholder="Consultar" value="${p.preco != null ? num2(p.preco) : ""}">
+        <div class="mini"><button type="button" data-cancelar aria-label="Cancelar">✕</button><button type="submit" class="okb">OK</button></div>
+      </form>`
+    : `<button type="button" class="preco-btn" data-preco="${esc(p.id)}" aria-label="Alterar preço de ${nomeTxt}: ${p.preco == null ? "consultar preço" : moeda(p.preco)}">${htmlPreco(p)}</button>`;
+  return `<div class="acoes">${preco}
+    <button type="button" class="sw-mini" role="switch" aria-checked="${p.ativo}" data-ativo="${esc(p.id)}" aria-label="${nomeTxt} aparece no site"><span>${p.ativo ? "No site" : "Oculto"}</span><span class="sw" aria-hidden="true"></span></button>
+  </div>`;
+}
+
+function renderLista() {
+  const { q, dep, chip } = ui.filtro;
+  const doDep = ui.produtos.filter(p => !dep || p.dep === dep);
+  const { itens: base, parecidos } = filtrarBusca(doDep, q);
+  // chips com contagem (respeitando busca e departamento)
+  $("#chips").innerHTML = CHIPS.map(([id, rot, f]) =>
+    `<button type="button" class="chip" data-chip="${id}" aria-pressed="${chip === id}">${rot} <span class="n">${base.filter(f).length}</span></button>`).join("");
+  const filtroChip = CHIPS.find(c => c[0] === chip)[2];
+  const vis = base.filter(filtroChip).sort((a, b) =>
+    ordemDep(a.dep) - ordemDep(b.dep) || ordemSub(a.dep, a.sub) - ordemSub(b.dep, b.sub) || (a.ordem - b.ordem) || a.nome.localeCompare(b.nome, "pt-BR"));
+  $("#resumo").textContent = (vis.length === ui.produtos.length ? `${vis.length} produtos` : `${vis.length} de ${ui.produtos.length} produtos`)
+    + (parecidos ? " · nenhum resultado exato, mostrando parecidos" : "");
+  if (!vis.length) {
+    $("#lista").innerHTML = `<li class="vazio">Nenhum produto encontrado.${q ? "<br>Tente outra palavra." : ""}</li>`;
+    return;
+  }
+  $("#lista").innerHTML = vis.map(p => {
+    const tags = [];
+    if (!p.ativo) tags.push('<span class="tag off">Inativo</span>');
+    if (p.preco_antigo != null) tags.push(`<span class="tag promo">Promoção${p.preco != null && p.preco_antigo > p.preco ? " −" + Math.round((1 - p.preco / p.preco_antigo) * 100) + "%" : ""}</span>`);
+    if (p.destaque) tags.push('<span class="tag top">Destaque</span>');
+    if (p.novidade) tags.push('<span class="tag novo">Novo</span>');
+    if (!p.foto_publica) tags.push('<span class="tag semfoto">Sem foto</span>');
+    if (p.opcoes.length) tags.push(`<span class="tag">${p.opcoes.length} opç${p.opcoes.length > 1 ? "ões" : "ão"}</span>`);
+    const thumb = p.foto_publica ? `<img src="${esc(p.foto_publica)}" alt="" loading="lazy" decoding="async">` : esc((p.nome || "?").trim()[0] || "?");
+    return `<li class="linha${p.ativo ? "" : " inativo"}"><button type="button" class="item" data-id="${esc(p.id)}" aria-label="Editar ${esc(p.nome)}${p.marca ? " " + esc(p.marca) : ""}">
+      <span class="thumb">${thumb}</span>
+      <span class="item-txt"><span class="item-nome">${esc(p.nome)}</span>
+        <span class="item-sub">${esc([p.marca, p.sub].filter(Boolean).join(" · "))}</span>
+        ${tags.length ? `<span class="tags">${tags.join("")}</span>` : ""}</span>
+      </button>${htmlAcoes(p)}</li>`;
+  }).join("");
+}
+
+/* ---------- ações rápidas na lista ---------- */
+function focarDepois(sel) { requestAnimationFrame(() => document.querySelector(sel)?.focus()); }
+function abrirPrecoRapido(id) {
+  ui.editandoPreco = id; renderLista();
+  requestAnimationFrame(() => { const i = document.getElementById("ip-" + id); if (i) { i.focus(); i.select(); } });
+}
+function fecharPrecoRapido(id) { ui.editandoPreco = null; renderLista(); focarDepois(`[data-preco="${CSS.escape(id)}"]`); }
+async function salvarPrecoRapido(id) {
+  const p = ui.produtos.find(x => String(x.id) === id); if (!p) return;
+  const inp = document.getElementById("ip-" + id);
+  const v = lerPreco(inp.value);
+  if (Number.isNaN(v)) { inp.setAttribute("aria-invalid", "true"); toast("Preço inválido. Use por exemplo 49,90.", "erro"); inp.focus(); return; }
+  const campos = { preco: v };
+  let fimPromo = false;
+  if (p.preco_antigo != null && (v == null || v >= p.preco_antigo)) { campos.preco_antigo = null; fimPromo = true; }
+  if (v === p.preco && !fimPromo) { fecharPrecoRapido(id); return; }
+  inp.disabled = true;
+  try {
+    await comFeedback("Salvando preço…", fimPromo ? "Preço salvo ✓ (promoção encerrada)" : "Preço salvo ✓", () => api.atualizarCampos(p.id, campos));
+    Object.assign(p, campos);
+    fecharPrecoRapido(id);
+  } catch { inp.disabled = false; inp.focus(); }
+}
+async function alternarAtivo(id, botao) {
+  const p = ui.produtos.find(x => String(x.id) === id); if (!p) return;
+  const novo = !p.ativo;
+  botao.disabled = true; botao.setAttribute("aria-checked", String(novo));
+  try {
+    await comFeedback(novo ? "Ativando…" : "Desativando…", novo ? "Produto voltou ao site ✓" : "Produto escondido do site ✓", () => api.atualizarCampos(p.id, { ativo: novo }));
+    p.ativo = novo; renderLista();
+    focarDepois(`[data-ativo="${CSS.escape(id)}"]`);
+  } catch { botao.disabled = false; botao.setAttribute("aria-checked", String(!novo)); }
+}
+
+/* ---------- DEPARTAMENTOS E SUBCATEGORIAS ---------- */
+function renderDeps() {
+  const abertos = new Set([...document.querySelectorAll("#depsLista details[open]")].map(d => d.dataset.dep));
+  $("#depsLista").innerHTML = ui.deps.map(d => {
+    const n = ui.produtos.filter(p => p.dep === d.nome).length;
+    const subs = d.subcategorias.map(sc => {
+      const ns = ui.produtos.filter(p => p.dep === d.nome && p.sub === sc.nome).length;
+      return `<form class="linha-form" data-form-sub="${sc.id}" data-dep-id="${d.id}" novalidate>
+        <label class="sr" for="sn${sc.id}">Subcategoria (${ns} produtos)</label>
+        <input class="inp" id="sn${sc.id}" name="nome" value="${esc(sc.nome)}" maxlength="60" autocomplete="off">
+        <small aria-hidden="true" title="produtos">${ns}</small>
+        <button class="btn btn-sec" type="submit">Salvar</button></form>`;
+    }).join("");
+    return `<details class="dep-card" data-dep="${d.id}"${abertos.has(String(d.id)) ? " open" : ""}>
+      <summary>${esc(d.nome)} <span class="n">${n} produto${n === 1 ? "" : "s"}</span></summary>
+      <div class="dep-corpo">
+        <form data-form-dep="${d.id}" novalidate>
+          <div class="campo" style="margin-top:12px"><label for="dn${d.id}">Nome do departamento</label>
+            <input class="inp" id="dn${d.id}" name="nome" value="${esc(d.nome)}" maxlength="60" autocomplete="off"></div>
+          <div class="campo"><label for="di${d.id}">Descrição curta (aparece no site)</label>
+            <input class="inp" id="di${d.id}" name="info" value="${esc(d.info || "")}" maxlength="120" autocomplete="off"></div>
+          <button class="btn btn-sec" type="submit" style="width:100%">Salvar departamento</button>
+        </form>
+        <h4>Subcategorias</h4>
+        ${subs || '<p class="dica">Nenhuma subcategoria ainda.</p>'}
+        <form class="linha-form" data-form-sub="" data-dep-id="${d.id}" novalidate>
+          <label class="sr" for="snova${d.id}">Nova subcategoria em ${esc(d.nome)}</label>
+          <input class="inp" id="snova${d.id}" name="nome" maxlength="60" placeholder="Nova subcategoria" autocomplete="off">
+          <button class="btn btn-pri" type="submit">Adicionar</button></form>
+      </div></details>`;
+  }).join("");
+}
+function abrirDeps() { renderDeps(); $("#dlgDeps").showModal(); $("#dlgDeps [data-fechar]").focus(); }
+async function salvarDepOuSub(ev) {
+  const f = ev.target; ev.preventDefault();
+  const nome = (f.elements.nome.value || "").trim().replace(/\s+/g, " ");
+  if (!nome) { f.elements.nome.setAttribute("aria-invalid", "true"); toast("Digite um nome.", "erro"); f.elements.nome.focus(); return; }
+  f.elements.nome.removeAttribute("aria-invalid");
+  const foco = f.elements.nome.id;
+  const botoes = f.querySelectorAll("button"); botoes.forEach(b => b.disabled = true);
+  try {
+    if (f.id === "formNovoDep") {
+      await comFeedback("Criando departamento…", "Departamento criado ✓", () => api.salvarDepartamento({ id: null, nome, info: "" }));
+      f.reset();
+    } else if (f.dataset.formDep) {
+      await comFeedback("Salvando…", "Departamento salvo ✓", () => api.salvarDepartamento({ id: +f.dataset.formDep, nome, info: f.elements.info.value.trim() }));
+    } else {
+      const id = f.dataset.formSub ? +f.dataset.formSub : null;
+      await comFeedback(id ? "Salvando…" : "Criando subcategoria…", id ? "Subcategoria salva ✓" : "Subcategoria criada ✓",
+        () => api.salvarSubcategoria({ id, depId: +f.dataset.depId, nome }));
+    }
+    await recarregar(); renderDeps();
+    focarDepois("#" + foco);
+  } catch { /* toast já mostrado */ }
+  finally { botoes.forEach(b => b.disabled = false); }
+}
+
+/* ---------- EDITOR ---------- */
+const ed = { produto: null, opcoes: [], foto: undefined /* undefined = sem mudança, null = remover, Blob = nova */, fotoArquivo: null, previewURL: null };
+const NOVA_SUB = "__nova__";
+
+function preencherSelectDeps(sel, valor) {
+  sel.innerHTML = ui.deps.map(d => `<option value="${esc(d.nome)}">${esc(d.nome)}</option>`).join("");
+  sel.value = valor && ui.deps.some(d => d.nome === valor) ? valor : (ui.deps[0]?.nome || "");
+}
+function preencherSelectSubs(dep, valor) {
+  const d = ui.deps.find(x => x.nome === dep);
+  const subs = d ? d.subcategorias.map(s => s.nome) : [];
+  if (valor && !subs.includes(valor)) subs.push(valor);
+  $("#eSub").innerHTML = subs.map(s => `<option value="${esc(s)}">${esc(s)}</option>`).join("") + `<option value="${NOVA_SUB}">+ Nova subcategoria…</option>`;
+  $("#eSub").value = valor && subs.includes(valor) ? valor : (subs[0] || NOVA_SUB);
+  atualizarSubNova();
+}
+function atualizarSubNova() {
+  const nova = $("#eSub").value === NOVA_SUB;
+  $("#campoSubNova").hidden = !nova;
+  if (!nova) $("#eSubNova").value = "";
+}
+
+function abrirEditor(p) {
+  const novo = !p;
+  ed.produto = p ? { ...p, opcoes: p.opcoes.slice() } : null;
+  ed.opcoes = p ? p.opcoes.slice() : [];
+  ed.foto = undefined; limparPreview();
+  $("#tEditor").textContent = novo ? "Novo produto" : "Editar produto";
+  const dep = p ? p.dep : (ui.filtro.dep || ui.deps[0]?.nome);
+  $("#eNome").value = p?.nome || "";
+  $("#eMarca").value = p?.marca || "";
+  $("#eUn").value = p?.unidade || "";
+  preencherSelectDeps($("#eDep"), dep);
+  preencherSelectSubs($("#eDep").value, p?.sub);
+  $("#eDesc").value = p?.descricao || "";
+  $("#ePreco").value = p?.preco != null ? num2(p.preco) : "";
+  $("#eAntigo").value = p?.preco_antigo != null ? num2(p.preco_antigo) : "";
+  $("#eOpNome").value = p?.op_nome || "";
+  $("#eAtivo").checked = p ? p.ativo : true;
+  $("#eTop").checked = !!p?.destaque; $("#eNovo").checked = !!p?.novidade;
+  $("#eRestrito").checked = !!p?.restrito; $("#eMetro").checked = !!p?.por_metro;
+  $("#fotoRecorte").checked = true;
+  $("#btnExcluir").hidden = novo;
+  $("#listaMarcas").innerHTML = [...new Set(ui.produtos.map(x => x.marca).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR")).map(m => `<option value="${esc(m)}">`).join("");
+  limparErros();
+  renderOpcoes(); renderFoto(); atualizarPromo(); atualizarAtivo();
+  $("#dlgEditor").showModal();
+  $("#dlgEditor .dlg-corpo").scrollTop = 0;
+  if (novo) $("#eNome").focus(); else $("#dlgEditor [data-fechar]").focus();
+}
+
+function renderOpcoes() {
+  const ul = $("#opcoes");
+  if (!ed.opcoes.length) { ul.innerHTML = '<li class="dica">Nenhuma opção. Use quando o produto tem tamanhos, pesos ou modelos diferentes.</li>'; return; }
+  const n = ed.opcoes.length;
+  ul.innerHTML = ed.opcoes.map((o, i) => `<li class="opcao">
+    <label class="sr" for="op${i}">Opção ${i + 1}</label>
+    <input class="inp" id="op${i}" data-op="${i}" value="${esc(o)}" maxlength="60" autocomplete="off">
+    <button type="button" class="btn-ico" data-mover="${i}" data-dir="-1" aria-label="Mover opção ${i + 1} para cima" ${i === 0 ? "disabled" : ""}>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 15l6-6 6 6"/></svg></button>
+    <button type="button" class="btn-ico" data-mover="${i}" data-dir="1" aria-label="Mover opção ${i + 1} para baixo" ${i === n - 1 ? "disabled" : ""}>
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+    <button type="button" class="btn-ico x" data-remover="${i}" aria-label="Remover opção ${i + 1}">
+      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </li>`).join("");
+  ul.querySelectorAll(".opcao .btn-ico[disabled]").forEach(b => b.style.opacity = ".35");
+}
+
+function limparPreview() { if (ed.previewURL) URL.revokeObjectURL(ed.previewURL); ed.previewURL = null; }
+function renderFoto() {
+  const box = $("#fotoPrev");
+  let url = null, selo = "";
+  if (ed.foto instanceof Blob) { url = ed.previewURL; selo = "Prévia"; }
+  else if (ed.foto === undefined && ed.produto?.foto_publica) url = ed.produto.foto_publica;
+  box.innerHTML = url ? `<img src="${esc(url)}" alt="Foto do produto${selo ? " (prévia)" : ""}">${selo ? `<span class="selo">${selo}</span>` : ""}` : "Sem foto";
+  $("#btnTirarFoto").hidden = !url;
+  $("#fotoDica").textContent = ed.foto instanceof Blob ? "Prévia da foto ajustada. Ela só será enviada quando você tocar em Salvar."
+    : ed.foto === null ? "A foto será removida ao salvar." : "A foto é ajustada para um quadrado branco (500×500).";
+}
+async function escolherFoto(arquivo) {
+  if (!arquivo) return;
+  ed.fotoArquivo = arquivo;
+  await refazerFoto();
+}
+async function refazerFoto() {
+  if (!ed.fotoArquivo) return;
+  const t = toast("Preparando a foto…", "carregando");
+  try {
+    const r = await processarFoto(ed.fotoArquivo, $("#fotoRecorte").checked);
+    limparPreview(); ed.foto = r.blob; ed.previewURL = r.url; ed.ultimoRecorte = r;
+    renderFoto();
+  } catch (e) { toast(e.message, "erro"); }
+  finally { t.fechar(); }
+}
+
+function atualizarPromo() {
+  const p = lerPreco($("#ePreco").value), a = lerPreco($("#eAntigo").value);
+  const box = $("#promoPrev");
+  if (p != null && a != null && !isNaN(p) && !isNaN(a) && a > p) {
+    const pct = Math.round((1 - p / a) * 100);
+    box.innerHTML = `Promoção no site: de <s>${moeda(a)}</s> por <b>${moeda(p)}</b> (−${pct}%)`;
+    box.hidden = false;
+  } else box.hidden = true;
+}
+function atualizarAtivo() {
+  const on = $("#eAtivo").checked;
+  $("#eAtivoTxt").textContent = on ? "Aparece no site" : "Inativo — acabou o estoque";
+  $("#eAtivoDica").textContent = on ? "Desligue quando acabar o estoque" : "Escondido do site até religar";
+  $("#chaveAtivo").classList.toggle("ativo-off", !on);
+}
+
+function limparErros() {
+  ["#eNome", "#ePreco", "#eAntigo", "#eSub", "#eSubNova"].forEach(s => $(s).removeAttribute("aria-invalid"));
+  ["#eNomeErro", "#ePrecoErro", "#eSubErro"].forEach(s => { $(s).hidden = true; $(s).textContent = ""; });
+}
+function erroCampo(inp, msgEl, msg) {
+  $(inp).setAttribute("aria-invalid", "true");
+  $(msgEl).textContent = msg; $(msgEl).hidden = false;
+}
+
+function lerFormulario() {
+  limparErros();
+  let primeiro = null; const marcar = (inp, el, msg) => { erroCampo(inp, el, msg); primeiro ||= inp; };
+  const nome = $("#eNome").value.trim().replace(/\s+/g, " ");
+  if (!nome) marcar("#eNome", "#eNomeErro", "Informe o nome do produto.");
+  const dep = $("#eDep").value;
+  let sub = $("#eSub").value;
+  if (sub === NOVA_SUB) {
+    sub = $("#eSubNova").value.trim().replace(/\s+/g, " ");
+    if (!sub) marcar("#eSubNova", "#eSubErro", "Digite o nome da nova subcategoria.");
+  }
+  const preco = lerPreco($("#ePreco").value), antigo = lerPreco($("#eAntigo").value);
+  if (Number.isNaN(preco)) marcar("#ePreco", "#ePrecoErro", "Preço inválido. Use por exemplo 49,90.");
+  else if (Number.isNaN(antigo)) marcar("#eAntigo", "#ePrecoErro", "Preço antigo inválido. Use por exemplo 59,90.");
+  else if (antigo != null && preco == null) marcar("#ePreco", "#ePrecoErro", "Para fazer promoção, preencha também o preço atual.");
+  else if (antigo != null && antigo <= preco) marcar("#eAntigo", "#ePrecoErro", "O preço antigo precisa ser MAIOR que o preço atual.");
+  const opcoes = ed.opcoes.map(o => o.trim()).filter(Boolean);
+  if (primeiro) { $(primeiro).focus(); $(primeiro).scrollIntoView({ block: "center", behavior: "smooth" }); return null; }
+  const base = ed.produto || {};
+  return {
+    ...base,
+    id: base.id || null, nome, marca: $("#eMarca").value.trim(), dep, sub, unidade: $("#eUn").value.trim(),
+    preco, preco_antigo: antigo, descricao: $("#eDesc").value.trim(),
+    op_nome: opcoes.length ? $("#eOpNome").value.trim() : $("#eOpNome").value.trim(), opcoes: [...new Set(opcoes)],
+    ativo: $("#eAtivo").checked, destaque: $("#eTop").checked, novidade: $("#eNovo").checked,
+    restrito: $("#eRestrito").checked, por_metro: $("#eMetro").checked,
+    foto_url_original: base.foto_url || null,
+  };
+}
+
+let salvando = false;
+async function salvarEditor(ev) {
+  ev.preventDefault();
+  if (salvando) return;
+  const p = lerFormulario();
+  if (!p) { toast("Confira os campos destacados.", "erro"); return; }
+  salvando = true; $("#btnSalvar").disabled = true; $("#btnSalvar").textContent = "Salvando…";
+  try {
+    await comFeedback("Salvando…", "Salvo ✓", () => api.salvar(p, ed.foto));
+    $("#dlgEditor").close();
+    await recarregar();
+  } catch { /* toast já mostrado */ }
+  finally { salvando = false; $("#btnSalvar").disabled = false; $("#btnSalvar").textContent = "Salvar"; }
+}
+
+async function excluirProduto() {
+  const p = ed.produto; if (!p) return;
+  if (!confirm(`Excluir “${p.nome}${p.marca ? " " + p.marca : ""}” do catálogo?\n\nIsso não pode ser desfeito. Se só acabou o estoque, prefira desligar “Aparece no site”.`)) return;
+  try {
+    await comFeedback("Excluindo…", "Produto excluído", () => api.excluir(p.id, p.foto_url));
+    $("#dlgEditor").close();
+    await recarregar();
+  } catch {}
+}
+
+/* ---------- REAJUSTE ---------- */
+function arred90(v) { return Math.max(0.9, Math.round(v - 0.9) + 0.9); }
+function calcularReajuste() {
+  const dep = $("#rDep").value, marca = $("#rMarca").value;
+  const pct = lerPreco(String($("#rPct").value).replace(/^\s*\+/, "").replace(/^\s*-\s*/, "")) ;
+  const neg = /^\s*-/.test($("#rPct").value);
+  const arred = $("#rArred").checked;
+  const alvo = ui.produtos.filter(p => (!dep || p.dep === dep) && (!marca || p.marca === marca));
+  const comPreco = alvo.filter(p => p.preco != null);
+  if (pct == null || Number.isNaN(pct)) return { alvo, comPreco, pct: null, alteracoes: [] };
+  const fator = 1 + (neg ? -pct : pct) / 100;
+  const alteracoes = [];
+  if (fator <= 0) return { alvo, comPreco, pct: neg ? -pct : pct, alteracoes, invalido: true };
+  for (const p of comPreco) {
+    let novo = r2(p.preco * fator); if (arred) novo = r2(arred90(novo));
+    let antigo = p.preco_antigo == null ? null : r2(p.preco_antigo * fator);
+    if (antigo != null && arred) antigo = r2(arred90(antigo));
+    let promoPerdida = false;
+    if (antigo != null && antigo <= novo) { antigo = null; promoPerdida = true; }
+    if (novo !== p.preco || antigo !== p.preco_antigo) alteracoes.push({ id: p.id, nome: p.nome, marca: p.marca, antes: p.preco, preco: novo, antigoAntes: p.preco_antigo, preco_antigo: antigo, promoPerdida });
+  }
+  return { alvo, comPreco, pct: neg ? -pct : pct, alteracoes };
+}
+function montarMarcasReajuste() {
+  const dep = $("#rDep").value, atual = $("#rMarca").value;
+  const marcas = [...new Set(ui.produtos.filter(p => !dep || p.dep === dep).map(p => p.marca).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR"));
+  $("#rMarca").innerHTML = '<option value="">Todas</option>' + marcas.map(m => `<option value="${esc(m)}">${esc(m)}</option>`).join("");
+  $("#rMarca").value = marcas.includes(atual) ? atual : "";
+}
+function renderPreviaReajuste() {
+  const r = calcularReajuste();
+  const box = $("#rPrevia"), btn = $("#btnAplicar");
+  const sem = r.alvo.length - r.comPreco.length;
+  const info = `${r.alvo.length} produto(s) no filtro${sem ? ` · ${sem} sem preço (não mudam)` : ""}.`;
+  if (r.invalido) { box.innerHTML = `<p class="prev-res" style="background:#fdf1ef;color:var(--erro)">Percentual inválido: o preço ficaria zero ou negativo.</p>`; btn.disabled = true; btn.textContent = "Aplicar"; return; }
+  if (r.pct == null) { box.innerHTML = `<p class="dica">${info} Digite o percentual para ver a prévia.</p>`; btn.disabled = true; btn.textContent = "Aplicar"; return; }
+  if (!r.alteracoes.length) { box.innerHTML = `<p class="dica">${info} Nenhum preço muda com esse ajuste.</p>`; btn.disabled = true; btn.textContent = "Aplicar"; return; }
+  const linhas = r.alteracoes.map(a => {
+    const cls = a.preco > a.antes ? "sobe" : "desce";
+    const de = a.antigoAntes != null ? `<br><small class="dica">de ${moeda(a.antigoAntes)} → ${a.preco_antigo != null ? moeda(a.preco_antigo) : "<b class='aviso'>sem promoção</b>"}</small>` : "";
+    return `<tr><td>${esc(a.nome)}${a.marca ? ` <span class="dica">${esc(a.marca)}</span>` : ""}${de}</td><td class="n">${moeda(a.antes)}</td><td class="n ${cls}">${moeda(a.preco)}</td></tr>`;
+  }).join("");
+  const perdidas = r.alteracoes.filter(a => a.promoPerdida).length;
+  box.innerHTML = `<p class="prev-res">${r.alteracoes.length} preço(s) vão mudar (${r.pct > 0 ? "+" : ""}${String(r.pct).replace(".", ",")}%).</p>
+    <p class="dica" style="margin:-4px 0 10px">${info}${perdidas ? ` <span class="aviso">${perdidas} promoção(ões) deixam de existir após o arredondamento.</span>` : ""}</p>
+    <div class="prev-wrap"><table class="prev-tab"><thead><tr><th scope="col">Produto</th><th scope="col" class="n">Antes</th><th scope="col" class="n">Depois</th></tr></thead><tbody>${linhas}</tbody></table></div>`;
+  btn.disabled = false; btn.textContent = `Aplicar em ${r.alteracoes.length}`;
+}
+function abrirReajuste() {
+  $("#rDep").innerHTML = '<option value="">Todos</option>' + ui.deps.map(d => `<option value="${esc(d.nome)}">${esc(d.nome)}</option>`).join("");
+  $("#rDep").value = ui.filtro.dep || "";
+  montarMarcasReajuste();
+  $("#rPct").value = ""; $("#rArred").checked = false;
+  renderPreviaReajuste();
+  $("#dlgReajuste").showModal();
+  $("#rPct").focus();
+}
+async function aplicarReajuste(ev) {
+  ev.preventDefault();
+  const r = calcularReajuste();
+  if (!r.alteracoes.length) return;
+  if (!confirm(`Alterar o preço de ${r.alteracoes.length} produto(s) em ${r.pct > 0 ? "+" : ""}${String(r.pct).replace(".", ",")}%?`)) return;
+  $("#btnAplicar").disabled = true;
+  try {
+    await comFeedback("Aplicando reajuste…", `${r.alteracoes.length} preço(s) atualizados ✓`, () => api.reajuste(r.alteracoes.map(a => ({ id: a.id, preco: a.preco, preco_antigo: a.preco_antigo }))));
+    $("#dlgReajuste").close();
+  } catch {}
+  await recarregar().catch(() => {});
+  $("#btnAplicar").disabled = false;
+}
+
+/* ---------- LOGIN ---------- */
+async function entrar(ev) {
+  ev.preventDefault();
+  const email = $("#lEmail").value.trim(), senha = $("#lSenha").value;
+  const err = $("#loginErro"); err.hidden = true;
+  if (!email || !senha) { err.textContent = "Preencha e-mail e senha."; err.hidden = false; return; }
+  $("#btnEntrar").disabled = true; $("#btnEntrar").textContent = "Entrando…";
+  try {
+    const s = await api.entrar(email, senha);
+    await posLogin(s);
+  } catch (e) { err.textContent = e.message; err.hidden = false; }
+  finally { $("#btnEntrar").disabled = false; $("#btnEntrar").textContent = "Entrar"; }
+}
+async function posLogin(sessao) {
+  $("#usuarioTxt").textContent = sessao?.email || "Catálogo da loja";
+  mostrarTela("lista");
+  try { await recarregar(); } catch (e) { toast(e.message || "Erro ao carregar.", "erro"); }
+}
+
+/* ---------- EVENTOS ---------- */
+function ligarEventos() {
+  $("#formLogin").addEventListener("submit", entrar);
+  $("#btnSair").addEventListener("click", async () => {
+    await api.sair(); $("#usuarioTxt").textContent = "Catálogo da loja"; $("#lSenha").value = "";
+    mostrarTela("login"); toast("Você saiu.");
+  });
+  let tBusca;
+  $("#busca").addEventListener("input", e => { clearTimeout(tBusca); tBusca = setTimeout(() => { ui.filtro.q = e.target.value; renderLista(); }, 120); });
+  $("#filtroDep").addEventListener("change", e => { ui.filtro.dep = e.target.value; renderLista(); });
+  $("#chips").addEventListener("click", e => {
+    const b = e.target.closest("[data-chip]"); if (!b) return;
+    ui.filtro.chip = b.dataset.chip === ui.filtro.chip ? "todos" : b.dataset.chip; renderLista();
+    $(`[data-chip="${ui.filtro.chip}"]`)?.focus();
+  });
+  $("#lista").addEventListener("click", e => {
+    const pr = e.target.closest("[data-preco]"); if (pr) { abrirPrecoRapido(pr.dataset.preco); return; }
+    const sw = e.target.closest("[data-ativo]"); if (sw) { alternarAtivo(sw.dataset.ativo, sw); return; }
+    const cx = e.target.closest("[data-cancelar]"); if (cx) { fecharPrecoRapido(cx.closest("form").dataset.formPreco); return; }
+    const b = e.target.closest("[data-id]"); if (!b) return;
+    const p = ui.produtos.find(x => String(x.id) === b.dataset.id); if (p) abrirEditor(p);
+  });
+  $("#lista").addEventListener("submit", e => { const f = e.target.closest("[data-form-preco]"); if (!f) return; e.preventDefault(); salvarPrecoRapido(f.dataset.formPreco); });
+  $("#lista").addEventListener("keydown", e => { const f = e.target.closest("[data-form-preco]"); if (f && e.key === "Escape") { e.preventDefault(); fecharPrecoRapido(f.dataset.formPreco); } });
+  ["#btnDeps", "#btnDepsTopo"].forEach(s => $(s).addEventListener("click", abrirDeps));
+  $("#depsLista").addEventListener("submit", salvarDepOuSub);
+  $("#formNovoDep").addEventListener("submit", salvarDepOuSub);
+  ["#btnNovo", "#btnNovoTopo"].forEach(s => $(s).addEventListener("click", () => abrirEditor(null)));
+  ["#btnReajuste", "#btnReajusteTopo"].forEach(s => $(s).addEventListener("click", abrirReajuste));
+  $("#btnRestaurar").addEventListener("click", async () => {
+    if (!confirm("Apagar as alterações feitas neste aparelho e voltar aos dados de exemplo?")) return;
+    await api.restaurar(); await recarregar(); toast("Dados de exemplo restaurados", "ok");
+  });
+
+  // editor
+  document.querySelectorAll("dialog [data-fechar]").forEach(b => b.addEventListener("click", () => b.closest("dialog").close()));
+  $("#formEditor").addEventListener("submit", salvarEditor);
+  $("#eDep").addEventListener("change", () => preencherSelectSubs($("#eDep").value));
+  $("#eSub").addEventListener("change", () => { atualizarSubNova(); if ($("#eSub").value === NOVA_SUB) $("#eSubNova").focus(); });
+  ["#ePreco", "#eAntigo"].forEach(s => {
+    $(s).addEventListener("input", () => { $(s).removeAttribute("aria-invalid"); $("#ePrecoErro").hidden = true; atualizarPromo(); });
+    $(s).addEventListener("blur", () => { const v = lerPreco($(s).value); if (v != null && !Number.isNaN(v)) $(s).value = num2(v); });
+  });
+  $("#eNome").addEventListener("input", () => { $("#eNome").removeAttribute("aria-invalid"); $("#eNomeErro").hidden = true; });
+  $("#eAtivo").addEventListener("change", atualizarAtivo);
+  $("#btnAddOpcao").addEventListener("click", () => {
+    ed.opcoes.push(""); renderOpcoes();
+    const inps = document.querySelectorAll("#opcoes [data-op]"); inps[inps.length - 1]?.focus();
+  });
+  $("#opcoes").addEventListener("input", e => { const i = e.target.dataset.op; if (i != null) ed.opcoes[+i] = e.target.value; });
+  $("#opcoes").addEventListener("click", e => {
+    const m = e.target.closest("[data-mover]"), x = e.target.closest("[data-remover]");
+    if (m) {
+      const i = +m.dataset.mover, j = i + +m.dataset.dir;
+      if (j < 0 || j >= ed.opcoes.length) return;
+      [ed.opcoes[i], ed.opcoes[j]] = [ed.opcoes[j], ed.opcoes[i]]; renderOpcoes();
+      $(`#opcoes [data-mover="${j}"][data-dir="${m.dataset.dir}"]:not([disabled])`)?.focus() || $(`#op${j}`).focus();
+    } else if (x) {
+      ed.opcoes.splice(+x.dataset.remover, 1); renderOpcoes();
+      (document.querySelector(`#op${Math.min(+x.dataset.remover, ed.opcoes.length - 1)}`) || $("#btnAddOpcao")).focus();
+    }
+  });
+  ["#fotoCamera", "#fotoArquivo"].forEach(s => $(s).addEventListener("change", async e => { await escolherFoto(e.target.files[0]); e.target.value = ""; }));
+  $("#fotoRecorte").addEventListener("change", refazerFoto);
+  $("#btnTirarFoto").addEventListener("click", () => {
+    limparPreview(); ed.fotoArquivo = null;
+    ed.foto = ed.produto?.foto_url ? null : undefined; renderFoto();
+  });
+  $("#btnExcluir").addEventListener("click", excluirProduto);
+  $("#dlgEditor").addEventListener("close", () => { limparPreview(); ed.fotoArquivo = null; });
+  document.querySelectorAll("dialog").forEach(d => d.addEventListener("close", posicionarToasts));
+
+  // reajuste
+  $("#formReajuste").addEventListener("submit", aplicarReajuste);
+  $("#rDep").addEventListener("change", () => { montarMarcasReajuste(); renderPreviaReajuste(); });
+  ["#rMarca", "#rArred"].forEach(s => $(s).addEventListener("change", renderPreviaReajuste));
+  $("#rPct").addEventListener("input", renderPreviaReajuste);
+}
+
+/* ---------- INÍCIO ---------- */
+(async function iniciar() {
+  ligarEventos();
+  if (api.modo === "demo") {
+    $("#faixaDemo").hidden = false;
+    $("#loginDica").innerHTML = "Modo demonstração: <b>qualquer e-mail e senha</b> entram.";
+  }
+  try {
+    const sessao = await api.iniciar();
+    if (sessao) await posLogin(sessao); else mostrarTela("login");
+  } catch (e) {
+    console.error(e); mostrarTela("login");
+    toast("Não foi possível conectar. Verifique a internet.", "erro");
+  }
+})();
+</script>
+</body>
+</html>
