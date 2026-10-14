@@ -388,21 +388,17 @@ const LOJA = {
 
 /* ===== DEPARTAMENTOS ===== */
 const DEPS = {
-  "Defensivos":  ["Inseticidas", "Carrapaticidas e mosquicidas", "Uso profissional"],
-  "Ferramentas": ["Ferramentas manuais", "Ferramentas elétricas", "Jardinagem"],
-  "Máquinas":    ["Pulverizadores", "Roçadeiras e aparadores"],
-  "Sementes":    ["Folhosas e temperos", "Frutos e legumes", "Raízes e bulbos"],
+  "Defensivos":  ["Inseticidas", "Carrapaticidas e mosquicidas", "Formicidas", "Lesmicidas", "Uso profissional"],
+  "Ferramentas": ["Ferramentas manuais", "Ferramentas elétricas", "Jardinagem", "Pulverizadores", "Roçadeiras e aparadores"],
+  "Sementes e mudas": ["Sementes de hortaliças", "Sementes de vegetais", "Bandeja 200 mudas", "Bandeja 128 mudas", "Mudas unitárias"],
   "Insumos":     ["Adubos", "Calcário", "Terras e substratos"],
-  "Mudas":       ["Bandeja 200 mudas", "Bandeja 128 mudas", "Mudas unitárias"],
   "Ferragens e EPIs": ["EPIs", "Cercas e arames", "Ferragens"]
 };
 const DEP_INFO = {
   "Defensivos":"Inseticidas, carrapaticidas e uso profissional",
-  "Ferramentas":"Enxadas, pás, martelos, furadeiras",
-  "Máquinas":"Pulverizadores, roçadeiras e aparadores",
-  "Sementes":"Hortaliças Isla",
+  "Ferramentas":"Enxadas, pulverizadores, roçadeiras e mais",
+  "Sementes e mudas":"Sementes Isla, bandejas de mudas, café e maracujá",
   "Insumos":"Adubo, calcário, substrato",
-  "Mudas":"Bandejas de hortaliças, café e maracujá",
   "Ferragens e EPIs":"Botas, arames, pregos e grampos"
 };
 
@@ -410,7 +406,7 @@ const DEP_INFO = {
    foto: caminho da imagem na pasta img/ (vazio = ilustração padrão)
    preco: null = "Consultar preço" · antigo = preço riscado (promoção) · top = mais vendido · novo = novidade */
 const S = (nome, sub, foto, preco, extra={}) =>
-  ({nome, marca:"Isla", dep:"Sementes", sub, un:"Envelope", preco, foto:"img/"+foto, ...extra});
+  ({nome, marca:"Isla", dep:"Sementes e mudas", sub: sub==="Folhosas e temperos" ? "Sementes de hortaliças" : "Sementes de vegetais", un:"Envelope", preco, foto:"img/"+foto, ...extra});
 
 const PRODUTOS = [
   /* Defensivos */
@@ -442,11 +438,11 @@ const PRODUTOS = [
   {nome:"Tesoura de poda para galhos", dep:"Ferramentas", sub:"Jardinagem", un:"Reforçada · galhos mais grossos", preco:null, foto:"img/tesoura-poda-galhos.jpg"},
 
   /* Máquinas */
-  {nome:"Pulverizador costal PJH 20", marca:"Jacto", dep:"Máquinas", sub:"Pulverizadores", un:"Manual, 20 L · câmara metálica", preco:449.0, antigo:489.0, top:true, foto:"img/pjh20-jacto.jpeg"},
-  {nome:"Pulverizador manual 5 L", marca:"Brudden", dep:"Máquinas", sub:"Pulverizadores", un:"Com alças para as costas", preco:null, foto:"img/pulverizador-brudden-5l.jpg"},
-  {nome:"Pulverizador lateral manual PL 005", marca:"Vonder", dep:"Máquinas", sub:"Pulverizadores", un:"5 L · compressão prévia", preco:null, foto:"img/pulverizador-vonder-pl005.jpg"},
-  {nome:"Roçadeira a gasolina", dep:"Máquinas", sub:"Roçadeiras e aparadores", un:"Guidão duplo · fio de nylon", preco:null, foto:"img/rocadeira-gasolina.jpg"},
-  {nome:"Aparador de grama elétrico", dep:"Máquinas", sub:"Roçadeiras e aparadores", un:"Com fio · carretel de nylon", preco:null, foto:"img/aparador-eletrico.jpg"},
+  {nome:"Pulverizador costal PJH 20", marca:"Jacto", dep:"Ferramentas", sub:"Pulverizadores", un:"Manual, 20 L · câmara metálica", preco:449.0, antigo:489.0, top:true, foto:"img/pjh20-jacto.jpeg"},
+  {nome:"Pulverizador manual 5 L", marca:"Brudden", dep:"Ferramentas", sub:"Pulverizadores", un:"Com alças para as costas", preco:null, foto:"img/pulverizador-brudden-5l.jpg"},
+  {nome:"Pulverizador lateral manual PL 005", marca:"Vonder", dep:"Ferramentas", sub:"Pulverizadores", un:"5 L · compressão prévia", preco:null, foto:"img/pulverizador-vonder-pl005.jpg"},
+  {nome:"Roçadeira a gasolina", dep:"Ferramentas", sub:"Roçadeiras e aparadores", un:"Guidão duplo · fio de nylon", preco:null, foto:"img/rocadeira-gasolina.jpg"},
+  {nome:"Aparador de grama elétrico", dep:"Ferramentas", sub:"Roçadeiras e aparadores", un:"Com fio · carretel de nylon", preco:null, foto:"img/aparador-eletrico.jpg"},
 
   /* Sementes Isla — Folhosas e temperos */
   S("Alface Crespa Grand Rapids TBR", "Folhosas e temperos", "alface-crespa-grand-rapids.jpeg", 6.9, {top:true}),
@@ -492,22 +488,22 @@ const PRODUTOS = [
   {nome:"Húmus de minhoca", dep:"Insumos", sub:"Terras e substratos", un:"Saco 25 kg", preco:34.9, antigo:39.9, ilu:["saco","HÚMUS DE|MINHOCA","#6b4a2f","#3a281b"]},
 
   /* Mudas */
-{nome:"Muda de alface crespa Vanda", dep:"Mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","alface",200]},
-  {nome:"Muda de alface americana", dep:"Mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","americana",200]},
-  {nome:"Muda de rúcula", dep:"Mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","rucula",200]},
-  {nome:"Muda de coentro", dep:"Mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","coentro",200]},
-  {nome:"Muda de salsa", dep:"Mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","salsa",200]},
-  {nome:"Muda de cebolinha", dep:"Mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","cebolinha",200]},
-  {nome:"Muda de almeirão Pão de Açúcar", dep:"Mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","almeirao",200]},
-  {nome:"Muda de pimentão híbrido Magali", dep:"Mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","pimentao",128]},
-  {nome:"Muda de berinjela Napoli", dep:"Mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
-  {nome:"Muda de berinjela japonesa", dep:"Mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
-  {nome:"Muda de couve manteiga", dep:"Mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","couve",128]},
-  {nome:"Muda de jiló", dep:"Mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","jilo",128]},
-  {nome:"Muda de pimenta malagueta", dep:"Mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","malagueta"]},
-  {nome:"Muda de pimenta dedo-de-moça", dep:"Mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","dedo"]},
-  {nome:"Muda de café", dep:"Mudas", sub:"Mudas unitárias", un:"Tubete plástico de ~15 cm", preco:7.0, ilu:["vaso","cafe"]},
-  {nome:"Muda de maracujá azedo", dep:"Mudas", sub:"Mudas unitárias", un:"Saquinho 30 × 25 cm · para suco", preco:15.0, ilu:["vaso","maracuja"]},
+{nome:"Muda de alface crespa Vanda", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","alface",200]},
+  {nome:"Muda de alface americana", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","americana",200]},
+  {nome:"Muda de rúcula", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","rucula",200]},
+  {nome:"Muda de coentro", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","coentro",200]},
+  {nome:"Muda de salsa", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","salsa",200]},
+  {nome:"Muda de cebolinha", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","cebolinha",200]},
+  {nome:"Muda de almeirão Pão de Açúcar", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","almeirao",200]},
+  {nome:"Muda de pimentão híbrido Magali", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","pimentao",128]},
+  {nome:"Muda de berinjela Napoli", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
+  {nome:"Muda de berinjela japonesa", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
+  {nome:"Muda de couve manteiga", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","couve",128]},
+  {nome:"Muda de jiló", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","jilo",128]},
+  {nome:"Muda de pimenta malagueta", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","malagueta"]},
+  {nome:"Muda de pimenta dedo-de-moça", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","dedo"]},
+  {nome:"Muda de café", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Tubete plástico de ~15 cm", preco:7.0, ilu:["vaso","cafe"]},
+  {nome:"Muda de maracujá azedo", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Saquinho 30 × 25 cm · para suco", preco:15.0, ilu:["vaso","maracuja"]},
 
   /* Ferragens e EPIs (itens do cartão da loja — confirmar modelos e preços) */
   {nome:"Botina de segurança com elástico", dep:"Ferragens e EPIs", sub:"EPIs", un:"Couro · vários números", preco:null, foto:"img/botina-seguranca.jpg"},
@@ -561,6 +557,7 @@ const ICON = {
   "Máquinas":'<rect x="6" y="7" width="10" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M9 7V4h4v3M16 11h2l2 2v3M20 16l1 2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
   "Sementes":'<path d="M7 3h10v18H7z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 16v-4M12 12c0-2 1.5-3.5 3.5-3.5 0 2-1.5 3.5-3.5 3.5ZM12 13.5c0-1.6-1.2-3-3-3 0 1.6 1.2 3 3 3Z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>',
   "Insumos":'<path d="M6 5h12l1 15H5z M9 5V3h6v2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M9 12h6M9 15h6" stroke="currentColor" stroke-width="1.6"/>',
+  "Sementes e mudas":'<path d="M12 21v-9M12 12c0-4 3-7 7-7 0 4-3 7-7 7ZM12 14c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 21h10" stroke="currentColor" stroke-width="1.6"/>',
   "Mudas":'<path d="M12 21v-9M12 12c0-4 3-7 7-7 0 4-3 7-7 7ZM12 14c0-3-2.5-5.5-6-5.5 0 3 2.5 5.5 6 5.5Z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 21h10" stroke="currentColor" stroke-width="1.6"/>',
   "Ferragens e EPIs":'<path d="M4 16a8 8 0 0 1 16 0M3 16h18v2H3zM12 8V5M9 9l-1-3M15 9l1-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>'
 };
@@ -577,8 +574,8 @@ const ITEM_ICON = {
   serrote:'<path d="M3 15L15 5l3 3-2 2v6H3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M15 9l5-3v8l-4 2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 16l1 2 1-2 1 2 1-2 1 2 1-2 1 2 1-2" fill="none" stroke="currentColor" stroke-width="1.1"/>',
   facao:'<path d="M3 17C9 15 15 9 20 4c0 6-6 13-14 14z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 17l-1 3 4-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
 };
-const TINT = {"Defensivos":"#f4ece3","Ferramentas":"#eef0ec","Máquinas":"#eef0ec","Sementes":"#fbf3dc","Insumos":"#f4ece3","Mudas":"#e9f1e6","Ferragens e EPIs":"#f6efe2"};
-const INK  = {"Defensivos":"#7b5434","Ferramentas":"#1f4d2d","Máquinas":"#1f4d2d","Sementes":"#7b5434","Insumos":"#7b5434","Mudas":"#1f4d2d","Ferragens e EPIs":"#7b5434"};
+const TINT = {"Defensivos":"#f4ece3","Ferramentas":"#eef0ec","Máquinas":"#eef0ec","Sementes":"#fbf3dc","Insumos":"#f4ece3","Mudas":"#e9f1e6","Sementes e mudas":"#e9f1e6","Ferragens e EPIs":"#f6efe2"};
+const INK  = {"Defensivos":"#7b5434","Ferramentas":"#1f4d2d","Máquinas":"#1f4d2d","Sementes":"#7b5434","Insumos":"#7b5434","Mudas":"#1f4d2d","Sementes e mudas":"#1f4d2d","Ferragens e EPIs":"#7b5434"};
 
 /* ===== ILUSTRAÇÕES PROVISÓRIAS (até ter a foto real) =====
    Use no produto: ilu:["saco","TERRA VEGETAL","#5a3d26"] · ["bandeja","alface"] · ["vaso","cafe"] · ["ancinho"] */
@@ -749,7 +746,7 @@ function descricao(p){
   if(DESC_MARCA[p.nome+"|"+p.marca]) return DESC_MARCA[p.nome+"|"+p.marca];
   if(DESC[p.nome]) return DESC[p.nome];
   if(NPK[p.nome]) return `Adubo mineral NPK. Os números são as porcentagens de nitrogênio (N), fósforo (P) e potássio (K). ${NPK[p.nome]}`;
-  if(p.dep==="Sementes") return "Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.";
+  if(/^Sementes de/.test(p.sub) || p.dep==="Sementes") return "Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.";
   if(p.sub==="Bandeja 200 mudas"||p.sub==="Bandeja 128 mudas") return `Bandeja com ${p.sub.match(/\d+/)[0]} mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.`;
   if(p.nome.includes("pimenta")) return "Muda pequena, do tamanho das de bandeja, pronta para plantar em vaso ou canteiro.";
   if(p.nome==="Muda de café") return "Muda de café em tubete plástico de cerca de 15 cm, pronta para plantio.";
@@ -769,7 +766,7 @@ function midia(p, grande){
   if(p.icone) return `<svg viewBox="0 0 24 24" aria-hidden="true">${ITEM_ICON[p.icone]}</svg>`;
   return icon(p.dep);
 }
-const nomeCompleto = p => (p.dep==="Sementes" ? "Semente " : "") + p.nome + (p.marca ? ` (${p.marca})` : "");
+const nomeCompleto = p => (/^Sementes de/.test(p.sub) || p.dep==="Sementes" ? "Semente " : "") + p.nome + (p.marca ? ` (${p.marca})` : "");
 const comOpcao = p => nomeCompleto(p) + (p.opcoes ? ` – ${p.opNome||"opção"}: ${opAtual(p)}` : "");
 function msgUnica(p){
   return p.restrito
