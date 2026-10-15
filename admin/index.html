@@ -86,7 +86,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .m-lista .m-txt{flex:1;min-width:0}
 .m-lista .m-txt b{display:block;font-weight:600}
 .m-lista small{color:var(--muted)}
-.m-barra{height:10px;border-radius:999px;background:var(--leaf-soft);overflow:hidden;margin-top:6px}
+.m-barra{display:block;height:10px;border-radius:999px;background:var(--leaf-soft);overflow:hidden;margin-top:6px}
 .m-barra span{display:block;height:100%;background:var(--ok);border-radius:999px}
 .m-num{font-variant-numeric:tabular-nums;font-weight:700;white-space:nowrap}
 .nf-item{display:flex;align-items:center;gap:12px;padding:12px;border:1.5px solid var(--seed-line);background:var(--seed);color:var(--seed-ink);border-radius:12px;margin-bottom:8px}
@@ -460,6 +460,60 @@ html:has(dialog[open]){overflow:hidden}
   .dlg-pe{padding:10px 18px}
 }
 
+/* ---------- mudas v2 ---------- */
+.h3-acao{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.voltar-preco{padding:0;font-family:var(--body);font-size:14px}
+.m-qtd-linha{display:flex;gap:8px}
+.m-qtd-linha .inp{flex:1;min-width:0}
+.m-qtd-linha .btn{flex:none}
+.m-pedido h3 small{font:600 13px var(--body);color:var(--muted)}
+.m-ped-lista li{padding:8px 10px}
+.btn-x{border:0;background:none;color:var(--erro);font-weight:700;cursor:pointer;width:28px;height:28px;border-radius:8px;flex:none}
+.btn-x:hover{background:var(--erro-soft)}
+.m-total{display:flex;justify-content:space-between;align-items:baseline;margin:10px 0 8px;padding-top:10px;border-top:1px dashed var(--line)}
+.m-total span{color:var(--muted);font-weight:600}
+.m-total strong{font-size:24px;color:var(--leaf-ink);font-variant-numeric:tabular-nums}
+.m-ped-acoes{display:flex;gap:8px;margin-bottom:12px}
+.m-ped-acoes .btn-pri{flex:1}
+.m-band{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.m-band li{display:flex;align-items:center;gap:10px;padding:5px 8px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.m-band .m-txt{flex:1;min-width:0}
+.m-band .m-txt b{font-weight:600;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block}
+.m-band .m-barra{height:6px;margin-top:4px;position:relative}
+.m-band .m-barra i{position:absolute;top:0;bottom:0;background:var(--ok);opacity:.35}
+.m-band .m-num{font-size:14px;text-align:right;line-height:1.1}
+.m-band .m-num small{color:var(--muted);font-weight:500}
+.m-band .m-num em{display:block;font-style:normal;font-size:11px;color:var(--ok);font-weight:700}
+.m-band .m-num em.nf{color:var(--seed-ink);background:var(--seed);border-radius:6px;padding:0 4px;margin-top:2px}
+.bandeja-svg{width:74px;height:auto;flex:none;display:block}
+.bandeja-svg .bd{fill:var(--soil-soft);stroke:var(--soil);stroke-width:.6}
+.bandeja-svg .c0{fill:var(--surface);stroke:var(--line);stroke-width:.3}
+.bandeja-svg .c1{fill:var(--ok)}
+.bandeja-svg .c2{fill:var(--ok);opacity:.35}
+.m-hist li{align-items:flex-start}
+.m-hist .m-txt small{display:block}
+.m-h-nf b{color:var(--seed-ink)}
+@media (min-width:1024px){
+  #dlgMudas{width:min(1560px,96vw);max-height:96vh}
+  #dlgMudas .dlg-corpo{overflow:hidden}
+  .m-grade{grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) minmax(0,.95fr);gap:14px;padding:12px 16px;height:calc(96vh - 62px);max-height:860px}
+  .m-col{display:flex;flex-direction:column;min-height:0}
+  .m-col .secao{margin-bottom:12px;padding:12px 14px 4px}
+  .m-col .secao>h3{font-size:16px;margin-bottom:8px}
+  .m-col .campo{margin-bottom:10px}
+  .m-col .inp{min-height:42px;padding:8px 12px}
+  .atalhos button{min-height:34px;padding:4px 12px}
+  .m-pedido{flex:1;min-height:0;display:flex;flex-direction:column}
+  .m-ped-lista{flex:1;min-height:0;overflow:auto;align-content:start}
+  .m-andamento{flex:1;min-height:0;display:flex;flex-direction:column}
+  .m-band{flex:1;min-height:0;overflow:auto;align-content:start}
+  .m-hist-sec{flex:1;min-height:0;display:flex;flex-direction:column}
+  .m-hist{flex:1;min-height:0;overflow:auto;align-content:start;padding-bottom:10px}
+  .m-hist li{padding:8px 10px}
+  .nf-item{padding:8px 10px;margin-bottom:6px}
+  #mNF{max-height:170px;overflow:auto}
+}
+
 /* toast */
 .toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:100;display:grid;gap:8px;width:min(92vw,420px);pointer-events:none}
 .toast{background:#1b2a1f;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-weight:600;display:flex;gap:10px;align-items:center;animation:sobe .2s ease-out}
@@ -657,7 +711,7 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
       </div>
 
       <div class="secao">
-        <h3>Preço</h3>
+        <h3 class="h3-acao">Preço <button class="link-btn voltar-preco" type="button" id="btnVoltarPreco" hidden>↺ Voltar ao preço original</button></h3>
         <div class="grade2">
           <div class="campo">
             <label for="ePreco" id="ePrecoRot">Preço</label>
@@ -740,39 +794,49 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
       </button>
     </div>
     <div class="dlg-corpo m-grade">
-      <div class="ed-col">
-      <form class="secao" id="formMuda" novalidate style="margin-top:0">
-        <h3>Registrar venda no balcão</h3>
-        <div class="campo">
-          <label for="mProduto">Muda</label>
-          <select class="inp" id="mProduto"></select>
+      <div class="ed-col m-col">
+        <form class="secao" id="formMuda" novalidate>
+          <h3>Registrar venda</h3>
+          <div class="campo">
+            <label for="mProduto">Muda</label>
+            <select class="inp" id="mProduto"></select>
+          </div>
+          <div class="campo">
+            <label for="mQtd">Quantas mudas?</label>
+            <div class="m-qtd-linha">
+              <input class="inp" id="mQtd" inputmode="numeric" enterkeyhint="done" placeholder="ex.: 20" autocomplete="off" aria-describedby="mQtdDica">
+              <button class="btn btn-pri" type="submit" id="btnRegistrar">Adicionar</button>
+            </div>
+            <div class="atalhos" id="mAtalhos" aria-label="Atalhos de quantidade"></div>
+            <p class="dica" id="mQtdDica" style="margin:4px 0 0"></p>
+          </div>
+        </form>
+        <div class="secao m-pedido">
+          <h3>Pedido atual <small id="mPedQtd"></small></h3>
+          <ul class="m-lista m-ped-lista" id="mPedido"></ul>
+          <div class="m-total"><span>Total</span><strong id="mTotal">R$ 0,00</strong></div>
+          <div class="m-ped-acoes">
+            <button class="btn btn-sec" type="button" id="btnLimparPedido">Limpar</button>
+            <button class="btn btn-pri" type="button" id="btnSalvarPedido">Salvar pedido</button>
+          </div>
         </div>
-        <div class="campo">
-          <label for="mQtd">Quantas mudas saíram?</label>
-          <input class="inp" id="mQtd" inputmode="numeric" enterkeyhint="done" placeholder="ex.: 20" autocomplete="off" aria-describedby="mQtdDica">
-          <div class="atalhos" id="mAtalhos" aria-label="Atalhos de quantidade"></div>
-          <p class="dica" id="mQtdDica" style="margin:6px 0 0"></p>
+      </div>
+      <div class="ed-col m-col">
+        <div class="secao">
+          <h3>Para emitir NF</h3>
+          <div id="mNF" aria-live="polite"></div>
         </div>
-        <button class="btn btn-pri" type="submit" id="btnRegistrar" style="width:100%">Registrar</button>
-      </form>
-      <div class="secao">
-        <h3>Para emitir NF</h3>
-        <div id="mNF" aria-live="polite"></div>
+        <div class="secao m-andamento">
+          <h3>Andamento das bandejas</h3>
+          <ul class="m-band" id="mProgresso"></ul>
+        </div>
       </div>
+      <div class="ed-col m-col">
+        <div class="secao m-hist-sec">
+          <h3>Últimos registros</h3>
+          <ul class="m-lista m-hist" id="mHist"></ul>
+        </div>
       </div>
-      <div class="ed-col">
-      <div class="secao">
-        <h3>Andamento de cada muda</h3>
-        <ul class="m-lista" id="mProgresso"></ul>
-      </div>
-      <div class="secao">
-        <h3>Últimos registros</h3>
-        <ul class="m-lista" id="mHist"></ul>
-      </div>
-      </div>
-    </div>
-    <div class="dlg-pe">
-      <button class="btn btn-sec" type="button" data-fechar style="flex:1">Fechar</button>
     </div>
   </div>
 </dialog>
@@ -1047,10 +1111,24 @@ function criarApiDemo() {
     async registrarMuda(produto_id, tipo, mudas) {
       await espera(200);
       estado.mudas ||= []; estado.mudaSeq ||= 1;
-      const m = { id: estado.mudaSeq++, produto_id, tipo, mudas, criado_em: new Date().toISOString() };
+      const m = { id: estado.mudaSeq++, produto_id, tipo, mudas, valor: null, pedido: null, criado_em: new Date().toISOString() };
       estado.mudas.push(m);
       try { persistir(); } catch (e) { estado.mudas.pop(); throw e; }
       return m;
+    },
+    async salvarPedidoMudas(itens) {
+      await espera(300);
+      estado.mudas ||= []; estado.mudaSeq ||= 1;
+      const pedido = novoId(), agora = new Date().toISOString(), n = estado.mudas.length;
+      itens.forEach(it => estado.mudas.push({ id: estado.mudaSeq++, produto_id: it.produto_id, tipo: "venda", mudas: it.mudas, valor: it.valor, pedido, criado_em: agora }));
+      try { persistir(); } catch (e) { estado.mudas.length = n; throw e; }
+    },
+    async desfazerPedidoMudas(pedido) {
+      await espera(200);
+      const antes = (estado.mudas || []).length;
+      estado.mudas = (estado.mudas || []).filter(m => m.pedido !== pedido);
+      if (estado.mudas.length === antes) throw new Error("Pedido não encontrado.");
+      persistir();
     },
     async desfazerMuda(id) {
       await espera(200);
@@ -1191,7 +1269,7 @@ function criarApiSupabase(url, chave) {
       falhou(r.error, "Não foi possível salvar a subcategoria.");
     },
     async listarMudas() {
-      const { data, error } = await sb.from("mudas_movimentos").select("id,produto_id,tipo,mudas,criado_em").order("criado_em", { ascending: false }).limit(20000);
+      const { data, error } = await sb.from("mudas_movimentos").select("*").order("criado_em", { ascending: false }).limit(20000);
       if (error && (error.code === "42P01" || error.code === "PGRST205" || /mudas_movimentos/.test(error.message || "")))
         throw new Error("A contagem de mudas ainda não foi ativada no banco (falta rodar o 07_mudas_balcao.sql no Supabase).");
       falhou(error, "Não foi possível carregar as vendas de mudas.");
@@ -1205,6 +1283,19 @@ function criarApiSupabase(url, chave) {
     },
     async desfazerMuda(id) {
       const { data, error } = await sb.from("mudas_movimentos").delete().eq("id", id).select("id");
+      falhou(error, "Não foi possível desfazer.");
+      if (!data || !data.length) throw new Error(NAO_GRAVOU);
+    },
+    async salvarPedidoMudas(itens) {
+      const pedido = novoId();
+      const { data, error } = await sb.from("mudas_movimentos").insert(itens.map(it => ({ produto_id: it.produto_id, tipo: "venda", mudas: it.mudas, valor: it.valor, pedido }))).select("id");
+      if (error && /valor|pedido/.test(error.message || "") && /column|schema/i.test(error.message || ""))
+        throw new Error("Falta atualizar o banco para guardar o valor (rodar o 08_mudas_pedido.sql no Supabase).");
+      falhou(error, "Não foi possível salvar o pedido.");
+      if (!data || data.length !== itens.length) throw new Error(NAO_GRAVOU);
+    },
+    async desfazerPedidoMudas(pedido) {
+      const { data, error } = await sb.from("mudas_movimentos").delete().eq("pedido", pedido).select("id");
       falhou(error, "Não foi possível desfazer.");
       if (!data || !data.length) throw new Error(NAO_GRAVOU);
     },
@@ -1230,6 +1321,7 @@ if (semBiblioteca) console.error("supabase-js não carregou; o painel não pode 
 const api = usarSupabase ? criarApiSupabase(SUPABASE_URL, SUPABASE_ANON_KEY) : criarApiDemo();
 
 /* ---------- mudas de bandeja: 200 → lote de 10, 128 → lote de 4 ---------- */
+const novoId = () => (crypto.randomUUID ? crypto.randomUUID() : "xxxxxxxx-xxxx-4xxx-8xxx-xxxxxxxxxxxx".replace(/x/g, () => (Math.random() * 16 | 0).toString(16)));
 function tamBandeja(sub) { const m = /^Bandeja (\d+) mudas$/.exec(sub || ""); return m ? +m[1] : 0; }
 const loteDe = t => t === 128 ? 4 : 10;
 
@@ -1580,6 +1672,8 @@ function abrirEditor(p) {
   $("#ePreco").value = p?.preco != null ? num2(p.preco) : "";
   $("#eAntigo").value = p?.preco_antigo != null ? num2(p.preco_antigo) : "";
   $("#eBandeja").value = p?.preco_bandeja != null ? num2(p.preco_bandeja) : "";
+  ed.precosIniciais = { ePreco: $("#ePreco").value, eAntigo: $("#eAntigo").value, eBandeja: $("#eBandeja").value };
+  $("#btnVoltarPreco").hidden = true;
   $("#eOpNome").value = p?.op_nome || "";
   $("#eAtivo").checked = p ? p.ativo : true;
   $("#eTop").checked = !!p?.destaque; $("#eNovo").checked = !!p?.novidade;
@@ -1638,7 +1732,12 @@ async function refazerFoto() {
   finally { t.fechar(); }
 }
 
+function atualizarVoltarPreco() {
+  const ini = ed.precosIniciais || {};
+  $("#btnVoltarPreco").hidden = !Object.keys(ini).some(k => $("#" + k).value !== ini[k]);
+}
 function atualizarPromo() {
+  atualizarVoltarPreco();
   const p = lerPreco($("#ePreco").value), a = lerPreco($("#eAntigo").value);
   const box = $("#promoPrev");
   const ok = v => v != null && !Number.isNaN(v);
@@ -1812,26 +1911,62 @@ async function aplicarReajuste(ev) {
 }
 
 /* ---------- MUDAS – BALCÃO ----------
-   Cada venda de balcão soma mudas; ao completar uma bandeja (200 ou 128) ela aparece
-   em "Para emitir NF". "NF emitida" desconta uma bandeja; o que passou continua contando. */
-const mudasUi = { movs: [] };
+   As vendas entram num "pedido atual" (fica neste aparelho até salvar). Ao salvar, viram
+   registros no banco com o valor. Cada bandeja (200 ou 128) completa aparece em "Para emitir NF";
+   "NF emitida" desconta uma bandeja e o que passou continua contando. */
+const mudasUi = { movs: [], pedido: lerPedidoMudas() };
+function lerPedidoMudas() { const v = lerJSON("defema-mudas-pedido"); return Array.isArray(v) ? v : []; }
+function gravarPedidoMudas() { gravarJSON("defema-mudas-pedido", mudasUi.pedido); }
 const produtosBandeja = () => ui.produtos.filter(p => tamBandeja(p.sub))
   .sort((a, b) => tamBandeja(b.sub) - tamBandeja(a.sub) || a.nome.localeCompare(b.nome, "pt-BR"));
-const nomeMuda = p => p ? p.nome.replace(/^Muda de /, "") : "(muda excluída)";
-function saldoMudas() {
+const maiuscula = s => s ? s.charAt(0).toLocaleUpperCase("pt-BR") + s.slice(1) : s;
+const nomeMuda = p => p ? maiuscula(p.nome.replace(/^Muda de /i, "")) : "(muda excluída)";
+const valorVenda = (p, mudas) => { const t = tamBandeja(p?.sub); return p && t && p.preco != null ? r2(mudas / loteDe(t) * p.preco) : null; };
+function saldoMudas(comPedido) {
   const s = new Map();
   for (const m of mudasUi.movs) s.set(m.produto_id, (s.get(m.produto_id) || 0) + (m.tipo === "venda" ? m.mudas : -m.mudas));
+  if (comPedido) for (const it of mudasUi.pedido) s.set(it.produto_id, (s.get(it.produto_id) || 0) + it.mudas);
   return s;
 }
 function dataCurta(iso) {
   const d = new Date(iso);
   return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }) + " " + d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
 }
+/* desenho da bandeja: grade de células que vão "enchendo" (cheias = vendidas, claras = no pedido atual) */
+function svgBandeja(t, vendidas, pendentes) {
+  const cols = t === 128 ? 16 : 20, rows = t === 128 ? 8 : 10, cel = 4, gap = 1.2;
+  const w = cols * (cel + gap) + gap, h = rows * (cel + gap) + gap;
+  const cheio = Math.round(vendidas / t * cols * rows), pend = Math.min(cols * rows - cheio, Math.round(pendentes / t * cols * rows));
+  let r = "";
+  for (let i = 0; i < cols * rows; i++) {
+    const c = Math.floor(i / rows), l = rows - 1 - (i % rows); // enche coluna a coluna, de baixo para cima
+    const cls = i < cheio ? "c1" : i < cheio + pend ? "c2" : "c0";
+    r += `<rect class="${cls}" x="${(gap + c * (cel + gap)).toFixed(1)}" y="${(gap + l * (cel + gap)).toFixed(1)}" width="${cel}" height="${cel}" rx="1"/>`;
+  }
+  return `<svg class="bandeja-svg" viewBox="0 0 ${w.toFixed(1)} ${h.toFixed(1)}" aria-hidden="true"><rect class="bd" x=".3" y=".3" width="${(w - .6).toFixed(1)}" height="${(h - .6).toFixed(1)}" rx="2.5"/>${r}</svg>`;
+}
 function renderAtalhosMuda() {
   const p = ui.produtos.find(x => String(x.id) === $("#mProduto").value);
   const t = p ? tamBandeja(p.sub) : 0, l = loteDe(t);
-  $("#mAtalhos").innerHTML = t ? [1, 2, 3, 5].map(k => `<button type="button" data-qtd="${k * l}">${k * l}</button>`).join("") : "";
-  $("#mQtdDica").textContent = t ? `Esta bandeja tem ${t} mudas e é vendida de ${l} em ${l}.` : "";
+  $("#mAtalhos").innerHTML = t ? [1, 2, 3, 4, 5].map(k => `<button type="button" data-qtd="${k * l}">${k * l}</button>`).join("") : "";
+  $("#mQtdDica").textContent = t ? `Bandeja de ${t} · vendida de ${l} em ${l}${p.preco != null ? ` · ${moeda(p.preco)} o lote` : " · preço a consultar"}` : "";
+}
+function renderPedidoMudas() {
+  const porId = new Map(ui.produtos.map(p => [String(p.id), p]));
+  const itens = mudasUi.pedido;
+  $("#mPedido").innerHTML = itens.length ? itens.map((it, i) => {
+    const p = porId.get(String(it.produto_id));
+    return `<li><span class="m-txt"><b>${it.mudas} × ${esc(nomeMuda(p))}</b></span>
+      <span class="m-num">${it.valor != null ? moeda(it.valor) : "consultar"}</span>
+      <button class="btn-x" type="button" data-tirar="${i}" aria-label="Tirar ${esc(nomeMuda(p))} do pedido">✕</button></li>`;
+  }).join("") : '<li class="nf-vazio">Nenhuma muda no pedido. Adicione ao lado.</li>';
+  const total = itens.reduce((s, it) => s + (it.valor || 0), 0);
+  const semPreco = itens.some(it => it.valor == null);
+  $("#mTotal").textContent = moeda(r2(total)) + (semPreco ? " + consultar" : "");
+  const n = itens.reduce((s, it) => s + it.mudas, 0);
+  $("#mPedQtd").textContent = n ? `· ${n} mudas` : "";
+  $("#btnSalvarPedido").disabled = !itens.length;
+  $("#btnLimparPedido").disabled = !itens.length;
 }
 function renderMudas() {
   const lista = produtosBandeja();
@@ -1840,54 +1975,86 @@ function renderMudas() {
     : '<option value="">Nenhuma muda de bandeja cadastrada</option>';
   if (lista.some(p => String(p.id) === atual)) sel.value = atual;
   renderAtalhosMuda();
-  const saldo = saldoMudas();
+  renderPedidoMudas();
+  const saldo = saldoMudas(false), pend = new Map();
+  for (const it of mudasUi.pedido) pend.set(String(it.produto_id), (pend.get(String(it.produto_id)) || 0) + it.mudas);
   const nf = [], prog = [];
   for (const p of lista) {
     const t = tamBandeja(p.sub), s = Math.max(0, saldo.get(p.id) || 0);
-    const prontas = Math.floor(s / t), resto = s % t;
+    const prontas = Math.floor(s / t), resto = s % t, pe = pend.get(String(p.id)) || 0;
     if (prontas) nf.push({ p, t, prontas });
-    prog.push({ p, t, prontas, resto });
+    prog.push({ p, t, prontas, resto, pe });
   }
   $("#mNF").innerHTML = nf.length ? nf.map(({ p, t, prontas }) => `<div class="nf-item">
       <span class="m-txt"><b>${prontas} bandeja${prontas > 1 ? "s" : ""} de ${esc(nomeMuda(p))}</b><small>${t} mudas por bandeja</small></span>
       <button class="btn btn-pri" type="button" data-nf="${esc(p.id)}">NF emitida</button></div>`).join("")
     : '<p class="nf-vazio">Nenhuma bandeja completa ainda.</p>';
-  prog.sort((a, b) => b.prontas - a.prontas || b.resto / b.t - a.resto / a.t || a.p.nome.localeCompare(b.p.nome, "pt-BR"));
-  $("#mProgresso").innerHTML = prog.map(({ p, t, prontas, resto }) => `<li><span class="m-txt"><b>${esc(nomeMuda(p))}</b>
-      <span class="m-barra" role="progressbar" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${resto}" aria-label="${esc(nomeMuda(p))}: ${resto} de ${t}"><span style="width:${(resto / t * 100).toFixed(1)}%"></span></span></span>
-      <span class="m-num">${resto} de ${t}${prontas ? `<br><small>+ ${prontas} p/ NF</small>` : ""}</span></li>`).join("") || '<li class="nf-vazio">Nenhuma muda de bandeja cadastrada.</li>';
+  prog.sort((a, b) => b.prontas - a.prontas || (b.resto + b.pe) / b.t - (a.resto + a.pe) / a.t || a.p.nome.localeCompare(b.p.nome, "pt-BR"));
+  $("#mProgresso").innerHTML = prog.map(({ p, t, prontas, resto, pe }) => `<li title="${esc(nomeMuda(p))}: ${resto} de ${t}${pe ? ` (+${pe} no pedido atual)` : ""}">
+      ${svgBandeja(t, resto, pe)}
+      <span class="m-txt"><b>${esc(nomeMuda(p))}</b>
+        <span class="m-barra" role="progressbar" aria-valuemin="0" aria-valuemax="${t}" aria-valuenow="${resto}" aria-label="${esc(nomeMuda(p))}: ${resto} de ${t}"><span style="width:${(resto / t * 100).toFixed(1)}%"></span><i style="left:${(resto / t * 100).toFixed(1)}%;width:${(Math.min(pe, t - resto) / t * 100).toFixed(1)}%"></i></span></span>
+      <span class="m-num">${resto}<small>/${t}</small>${pe ? `<em>+${pe}</em>` : ""}${prontas ? `<em class="nf">${prontas} NF</em>` : ""}</span></li>`).join("") || '<li class="nf-vazio">Nenhuma muda de bandeja cadastrada.</li>';
+  renderHistMudas();
+}
+function renderHistMudas() {
   const porId = new Map(ui.produtos.map(p => [p.id, p]));
-  $("#mHist").innerHTML = mudasUi.movs.slice(0, 15).map(m => {
-    const p = porId.get(m.produto_id);
-    const txt = m.tipo === "venda" ? `Venda: ${m.mudas} mudas` : `NF emitida: 1 bandeja (${m.mudas})`;
-    return `<li><span class="m-txt"><b>${txt}</b><small>${esc(nomeMuda(p))} · ${dataCurta(m.criado_em)}</small></span>
-      <button class="btn btn-sec" type="button" data-desfazer="${m.id}">Desfazer</button></li>`;
+  const grupos = [];
+  for (const m of mudasUi.movs) {
+    const g = m.pedido && grupos.find(x => x.pedido === m.pedido);
+    if (g) g.itens.push(m); else grupos.push({ pedido: m.pedido || null, id: m.id, tipo: m.tipo, criado_em: m.criado_em, itens: [m] });
+  }
+  $("#mHist").innerHTML = grupos.slice(0, 30).map(g => {
+    if (g.tipo === "nf") {
+      const p = porId.get(g.itens[0].produto_id);
+      return `<li class="m-h-nf"><span class="m-txt"><b>NF emitida · ${esc(nomeMuda(p))}</b><small>1 bandeja (${g.itens[0].mudas}) · ${dataCurta(g.criado_em)}</small></span>
+        <button class="btn btn-sec" type="button" data-desfazer="${g.id}">Desfazer</button></li>`;
+    }
+    const total = g.itens.reduce((s, m) => s + (m.valor != null ? Number(m.valor) : (valorVenda(porId.get(m.produto_id), m.mudas) || 0)), 0);
+    const estimado = g.itens.some(m => m.valor == null);
+    const desc = g.itens.map(m => `${m.mudas} ${esc(nomeMuda(porId.get(m.produto_id)))}`).join(" · ");
+    return `<li><span class="m-txt"><b>${g.pedido ? "Pedido" : "Venda"} · ${moeda(r2(total))}${estimado ? "*" : ""}</b><small>${desc}</small><small>${dataCurta(g.criado_em)}</small></span>
+      <button class="btn btn-sec" type="button" ${g.pedido ? `data-desfazer-pedido="${esc(g.pedido)}"` : `data-desfazer="${g.id}"`}>Desfazer</button></li>`;
   }).join("") || '<li class="nf-vazio">Nada registrado ainda.</li>';
 }
 async function recarregarMudas() { mudasUi.movs = await api.listarMudas(); renderMudas(); }
 async function abrirMudas() {
+  mudasUi.pedido = lerPedidoMudas();
   renderMudas();
   $("#dlgMudas").showModal();
   $("#mQtd").value = "";
   try { await comFeedback("Carregando vendas…", "", recarregarMudas); } catch { /* toast já mostrado */ }
+  $("#mQtd").focus();
 }
-async function registrarVendaMuda(ev) {
+function adicionarAoPedido(ev) {
   ev.preventDefault();
   const id = $("#mProduto").value, p = ui.produtos.find(x => String(x.id) === id);
   const txt = $("#mQtd").value.trim(), qtd = Number(txt);
   if (!p) { toast("Escolha a muda.", "erro"); return; }
-  if (!/^\d+$/.test(txt) || qtd < 1 || qtd > 10000) { $("#mQtd").setAttribute("aria-invalid", "true"); toast("Digite quantas mudas saíram (ex.: 20).", "erro"); $("#mQtd").focus(); return; }
+  if (!/^\d+$/.test(txt) || qtd < 1 || qtd > 10000) { $("#mQtd").setAttribute("aria-invalid", "true"); toast("Digite quantas mudas (ex.: 20).", "erro"); $("#mQtd").focus(); return; }
   $("#mQtd").removeAttribute("aria-invalid");
-  const t = tamBandeja(p.sub), antes = Math.floor(Math.max(0, saldoMudas().get(p.id) || 0) / t);
-  $("#btnRegistrar").disabled = true;
+  const ja = mudasUi.pedido.find(it => String(it.produto_id) === String(p.id));
+  if (ja) { ja.mudas += qtd; ja.valor = valorVenda(p, ja.mudas); }
+  else mudasUi.pedido.push({ produto_id: p.id, mudas: qtd, valor: valorVenda(p, qtd) });
+  gravarPedidoMudas();
+  $("#mQtd").value = "";
+  renderMudas();
+  $("#mQtd").focus();
+}
+async function salvarPedidoMudas() {
+  if (!mudasUi.pedido.length) return;
+  const itens = mudasUi.pedido.map(it => ({ ...it }));
+  const t = itens.reduce((s, it) => s + (it.valor || 0), 0);
+  const antes = saldoMudas(false);
+  $("#btnSalvarPedido").disabled = true;
   try {
-    await comFeedback("Registrando…", `${qtd} mudas de ${nomeMuda(p)} registradas ✓`, () => api.registrarMuda(p.id, "venda", qtd));
-    $("#mQtd").value = "";
+    await comFeedback("Salvando pedido…", `Pedido salvo ✓ ${moeda(r2(t))}`, () => api.salvarPedidoMudas(itens));
+    mudasUi.pedido = []; gravarPedidoMudas();
     await recarregarMudas();
-    const depois = Math.floor(Math.max(0, saldoMudas().get(p.id) || 0) / t);
-    if (depois > antes) toast(`Bandeja de ${nomeMuda(p)} completa: pronta para emitir NF`, "ok", 4500);
-  } catch { /* toast já mostrado */ }
-  finally { $("#btnRegistrar").disabled = false; $("#mQtd").focus(); }
+    const depois = saldoMudas(false);
+    const completas = produtosBandeja().filter(p => Math.floor(Math.max(0, depois.get(p.id) || 0) / tamBandeja(p.sub)) > Math.floor(Math.max(0, antes.get(p.id) || 0) / tamBandeja(p.sub)));
+    if (completas.length) toast(`Bandeja completa: ${completas.map(nomeMuda).join(", ")} · pronta para NF`, "ok", 4500);
+  } catch { $("#btnSalvarPedido").disabled = false; }
 }
 async function marcarNF(id, botao) {
   const p = ui.produtos.find(x => String(x.id) === id); if (!p) return;
@@ -1907,6 +2074,15 @@ async function desfazerMov(id, botao) {
   botao.disabled = true;
   try {
     await comFeedback("Desfazendo…", "Registro desfeito ✓", () => api.desfazerMuda(m.id));
+    await recarregarMudas();
+  } catch { botao.disabled = false; }
+}
+async function desfazerPedido(pedido, botao) {
+  const itens = mudasUi.movs.filter(m => m.pedido === pedido); if (!itens.length) return;
+  if (!confirm(`Desfazer o pedido de ${dataCurta(itens[0].criado_em)} (${itens.length} item${itens.length > 1 ? "s" : ""})?`)) return;
+  botao.disabled = true;
+  try {
+    await comFeedback("Desfazendo…", "Pedido desfeito ✓", () => api.desfazerPedidoMudas(pedido));
     await recarregarMudas();
   } catch { botao.disabled = false; }
 }
@@ -1997,6 +2173,12 @@ function ligarEventos() {
     inp.removeAttribute("aria-invalid"); $("#ePrecoErro").hidden = true;
     atualizarPromo();
   });
+  $("#btnVoltarPreco").addEventListener("click", () => {
+    const ini = ed.precosIniciais || {};
+    Object.keys(ini).forEach(k => { $("#" + k).value = ini[k]; $("#" + k).removeAttribute("aria-invalid"); });
+    $("#ePrecoErro").hidden = true; atualizarPromo();
+    toast("Preços voltaram ao que estava.", "ok", 1800); $("#ePreco").focus();
+  });
   $("#btnMostrarOpcoes").addEventListener("click", () => {
     mostrarOpcoes(true);
     if (!ed.opcoes.length) { ed.opcoes.push(""); renderOpcoes(); }
@@ -2031,12 +2213,21 @@ function ligarEventos() {
 
   // mudas – balcão
   ["#btnMudas", "#btnMudasTopo"].forEach(s => $(s).addEventListener("click", abrirMudas));
-  $("#formMuda").addEventListener("submit", registrarVendaMuda);
+  $("#formMuda").addEventListener("submit", adicionarAoPedido);
+  $("#btnSalvarPedido").addEventListener("click", salvarPedidoMudas);
+  $("#btnLimparPedido").addEventListener("click", () => {
+    if (!confirm("Limpar o pedido atual (ainda não salvo)?")) return;
+    mudasUi.pedido = []; gravarPedidoMudas(); renderMudas(); $("#mQtd").focus();
+  });
+  $("#mPedido").addEventListener("click", e => { const b = e.target.closest("[data-tirar]"); if (b) { mudasUi.pedido.splice(+b.dataset.tirar, 1); gravarPedidoMudas(); renderMudas(); } });
   $("#mProduto").addEventListener("change", renderAtalhosMuda);
   $("#mQtd").addEventListener("input", () => $("#mQtd").removeAttribute("aria-invalid"));
   $("#mAtalhos").addEventListener("click", e => { const b = e.target.closest("[data-qtd]"); if (b) { $("#mQtd").value = b.dataset.qtd; $("#mQtd").focus(); } });
   $("#mNF").addEventListener("click", e => { const b = e.target.closest("[data-nf]"); if (b) marcarNF(b.dataset.nf, b); });
-  $("#mHist").addEventListener("click", e => { const b = e.target.closest("[data-desfazer]"); if (b) desfazerMov(b.dataset.desfazer, b); });
+  $("#mHist").addEventListener("click", e => {
+    const g = e.target.closest("[data-desfazer-pedido]"); if (g) { desfazerPedido(g.dataset.desfazerPedido, g); return; }
+    const b = e.target.closest("[data-desfazer]"); if (b) desfazerMov(b.dataset.desfazer, b);
+  });
 
   // reajuste
   $("#formReajuste").addEventListener("submit", aplicarReajuste);
