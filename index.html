@@ -53,7 +53,7 @@ img{max-width:100%}
 header{background:var(--leaf);color:#f2f6ee;position:sticky;top:0;z-index:20}
 .top{display:flex;align-items:center;gap:20px;padding-block:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;flex:0 0 auto}
-.logo{background:#fff;border-radius:10px;padding:4px 8px;display:grid;place-items:center;flex:0 0 auto;box-shadow:0 0 0 2px #fff1c9}
+.logo{background:linear-gradient(140deg,#fffdf4 0%,#fff1c2 38%,#ffd978 78%,#f7c45a 100%);border-radius:12px;padding:4px 9px;display:grid;place-items:center;flex:0 0 auto;box-shadow:0 0 0 1.5px rgba(255,241,201,.85),0 6px 18px rgba(0,0,0,.28)}
 .logo-svg{display:block;width:92px;height:auto}
 .brand b{font-family:var(--display);font-size:1.75rem;line-height:1;display:block;letter-spacing:.02em}
 .brand small{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
@@ -301,6 +301,18 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.88rem;padd
   .crumb{font-size:.78rem}
   .pedido-bar button{padding:10px 14px}
 }
+
+/* ===== Céu de amanhecer ao fundo ===== */
+body{background:var(--bg)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%201600%20520%22%3E%3Cg%20fill%3D%22%23ffffff%22%3E%3Cg%20transform%3D%22translate%28180%20120%29%20scale%281.1%29%22%20opacity%3D%220.85%22%3E%3Cellipse%20cx%3D%220%22%20cy%3D%220%22%20rx%3D%2290%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%22-55%22%20cy%3D%228%22%20rx%3D%2260%22%20ry%3D%2226%22/%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2210%22%20rx%3D%2270%22%20ry%3D%2224%22/%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%22-26%22%20rx%3D%2252%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%2240%22%20cy%3D%22-18%22%20rx%3D%2242%22%20ry%3D%2228%22/%3E%3C/g%3E%3Cg%20transform%3D%22translate%28560%2070%29%20scale%280.7%29%22%20opacity%3D%220.7%22%3E%3Cellipse%20cx%3D%220%22%20cy%3D%220%22%20rx%3D%2290%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%22-55%22%20cy%3D%228%22%20rx%3D%2260%22%20ry%3D%2226%22/%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2210%22%20rx%3D%2270%22%20ry%3D%2224%22/%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%22-26%22%20rx%3D%2252%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%2240%22%20cy%3D%22-18%22%20rx%3D%2242%22%20ry%3D%2228%22/%3E%3C/g%3E%3Cg%20transform%3D%22translate%281000%20150%29%20scale%281.25%29%22%20opacity%3D%220.8%22%3E%3Cellipse%20cx%3D%220%22%20cy%3D%220%22%20rx%3D%2290%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%22-55%22%20cy%3D%228%22%20rx%3D%2260%22%20ry%3D%2226%22/%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2210%22%20rx%3D%2270%22%20ry%3D%2224%22/%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%22-26%22%20rx%3D%2252%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%2240%22%20cy%3D%22-18%22%20rx%3D%2242%22%20ry%3D%2228%22/%3E%3C/g%3E%3Cg%20transform%3D%22translate%281420%2080%29%20scale%280.8%29%22%20opacity%3D%220.75%22%3E%3Cellipse%20cx%3D%220%22%20cy%3D%220%22%20rx%3D%2290%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%22-55%22%20cy%3D%228%22%20rx%3D%2260%22%20ry%3D%2226%22/%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2210%22%20rx%3D%2270%22%20ry%3D%2224%22/%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%22-26%22%20rx%3D%2252%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%2240%22%20cy%3D%22-18%22%20rx%3D%2242%22%20ry%3D%2228%22/%3E%3C/g%3E%3Cg%20transform%3D%22translate%28780%20260%29%20scale%280.6%29%22%20opacity%3D%220.55%22%3E%3Cellipse%20cx%3D%220%22%20cy%3D%220%22%20rx%3D%2290%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%22-55%22%20cy%3D%228%22%20rx%3D%2260%22%20ry%3D%2226%22/%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2210%22%20rx%3D%2270%22%20ry%3D%2224%22/%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%22-26%22%20rx%3D%2252%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%2240%22%20cy%3D%22-18%22%20rx%3D%2242%22%20ry%3D%2228%22/%3E%3C/g%3E%3Cg%20transform%3D%22translate%281300%20300%29%20scale%280.55%29%22%20opacity%3D%220.5%22%3E%3Cellipse%20cx%3D%220%22%20cy%3D%220%22%20rx%3D%2290%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%22-55%22%20cy%3D%228%22%20rx%3D%2260%22%20ry%3D%2226%22/%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2210%22%20rx%3D%2270%22%20ry%3D%2224%22/%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%22-26%22%20rx%3D%2252%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%2240%22%20cy%3D%22-18%22%20rx%3D%2242%22%20ry%3D%2228%22/%3E%3C/g%3E%3Cg%20transform%3D%22translate%2890%20330%29%20scale%280.5%29%22%20opacity%3D%220.45%22%3E%3Cellipse%20cx%3D%220%22%20cy%3D%220%22%20rx%3D%2290%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%22-55%22%20cy%3D%228%22%20rx%3D%2260%22%20ry%3D%2226%22/%3E%3Cellipse%20cx%3D%2260%22%20cy%3D%2210%22%20rx%3D%2270%22%20ry%3D%2224%22/%3E%3Cellipse%20cx%3D%22-10%22%20cy%3D%22-26%22%20rx%3D%2252%22%20ry%3D%2234%22/%3E%3Cellipse%20cx%3D%2240%22%20cy%3D%22-18%22%20rx%3D%2242%22%20ry%3D%2228%22/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") top center / max(1600px,100%) auto no-repeat,
+    radial-gradient(circle at 82% 0%, var(--sol-1) 0, var(--sol-2) 16%, transparent 42%),
+    linear-gradient(180deg, var(--ceu-1) 0%, var(--ceu-2) 28%, var(--ceu-3) 62%, var(--bg) 100%);}
+:root{--ceu-1:#ffeeb8;--ceu-2:#fff5d6;--ceu-3:#fdfbf2;--sol-1:rgba(255,206,84,.55);--sol-2:rgba(255,224,140,.28)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ceu-1:#1d2a1f;--ceu-2:#16201a;--ceu-3:#121a14;--sol-1:rgba(255,196,84,.18);--sol-2:rgba(255,196,84,.06)}
+  :root:not([data-theme="light"]) body::before{opacity:.9}}
+:root[data-theme="dark"]{--ceu-1:#1d2a1f;--ceu-2:#16201a;--ceu-3:#121a14;--sol-1:rgba(255,196,84,.18);--sol-2:rgba(255,196,84,.06)}
 </style>
 </head>
 <body>
@@ -311,7 +323,7 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.88rem;padd
   <div class="wrap top">
     <a class="brand" href="#inicio" data-go="inicio">
       <span class="logo"><svg class="logo-svg" viewBox="0 0 240 150" role="img" aria-label="Defema">
-  <path d="M14 112 A106 106 0 0 1 226 112 L178 140 L62 140 Z" fill="#fff" stroke="#3a3a3a" stroke-width="2.2" stroke-linejoin="round"/>
+  <defs><linearGradient id="ceuLogo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffef8"/><stop offset=".7" stop-color="#fff6d8"/><stop offset="1" stop-color="#ffe9a8"/></linearGradient></defs><path d="M14 112 A106 106 0 0 1 226 112 L178 140 L62 140 Z" fill="url(#ceuLogo)" stroke="#3a3a3a" stroke-width="2.2" stroke-linejoin="round"/>
   <path d="M14 112 H226" stroke="#3a3a3a" stroke-width="2"/>
   <rect x="62" y="112" width="116" height="28" fill="#141414"/>
   <path d="M62 112 A58 58 0 0 1 178 112" fill="none" stroke="#3a3a3a" stroke-width="2.2"/>
@@ -388,7 +400,7 @@ const LOJA = {
 
 /* ===== DEPARTAMENTOS ===== */
 const DEPS = {
-  "Defensivos":  ["Inseticidas", "Carrapaticidas e mosquicidas", "Formicidas", "Lesmicidas", "Uso profissional"],
+  "Defensivos":  ["Inseticidas", "Carrapaticidas e mosquicidas", "Formicidas e lesmicidas", "Uso profissional"],
   "Ferramentas": ["Ferramentas manuais", "Ferramentas elétricas", "Jardinagem", "Pulverizadores", "Roçadeiras e aparadores"],
   "Sementes e mudas": ["Sementes de hortaliças", "Sementes de vegetais", "Bandeja 200 mudas", "Bandeja 128 mudas", "Mudas unitárias"],
   "Insumos":     ["Adubos", "Calcário", "Terras e substratos"],
@@ -415,7 +427,14 @@ const PRODUTOS = [
   {nome:"Butox P CE 25", marca:"MSD Saúde Animal", dep:"Defensivos", sub:"Carrapaticidas e mosquicidas", un:"Frasco 20 mL · carrapatos, moscas e sarna", preco:null, foto:"img/butox-p-ce25.jpg"},
   {nome:"Triatox", marca:"MSD Saúde Animal", dep:"Defensivos", sub:"Carrapaticidas e mosquicidas", un:"Frasco 200 mL · carrapaticida para bovinos", preco:null, foto:"img/triatox.jpg"},
   {nome:"Colosso Pulverização", marca:"Ourofino", dep:"Defensivos", sub:"Carrapaticidas e mosquicidas", un:"Frasco 25 mL · carrapatos e moscas no gado", preco:null, foto:"img/colosso-pulverizacao.jpg"},
+  {nome:"Baygon Universal Spray", marca:"SC Johnson", dep:"Defensivos", sub:"Inseticidas", un:"Aerossol", preco:null, novo:true, foto:"img/baygon-universal.jpg", descricao:"Inseticida em aerossol de ação rápida contra mosquitos, baratas e moscas, para uso doméstico."},
+  {nome:"Atratex Mata Mosca", dep:"Defensivos", sub:"Inseticidas", un:"Sachê 25 g · isca granulada", preco:null, novo:true, foto:"img/atratex-mata-mosca.jpg", descricao:"Isca mosquicida granulada à base de tiametoxam, de venda livre, eficaz contra a mosca doméstica. Espalhe em locais onde as moscas pousam, longe de crianças e animais. Leia o rótulo antes de usar."},
+  {nome:"Formicida Pó 50 S", marca:"Pikapau", dep:"Defensivos", sub:"Formicidas e lesmicidas", un:"Caixa 1 kg", preco:null, novo:true, foto:"img/formicida-po-pikapau.jpg", descricao:"Formicida em pó à base de deltametrina, de venda livre, eficaz contra formigas. Aplique nos olheiros e trilhas, de preferência com polvilhadeira."},
+  {nome:"Grão Verde formicida isca granulada", marca:"Dipil", dep:"Defensivos", sub:"Formicidas e lesmicidas", un:"Pacote 500 g (10 × 50 g)", preco:null, novo:true, foto:"img/grao-verde-dipil.jpg", descricao:"Isca formicida granulada para formigas cortadeiras (saúva e quenquém), linha jardinagem amadora. Distribua ao lado das trilhas ativas, em dia seco."},
+  {nome:"Mata-formiga (polvilhadeira)", marca:"Guarany", dep:"Defensivos", sub:"Formicidas e lesmicidas", un:"Bomba manual com mangueira", preco:null, novo:true, foto:"img/mata-formiga-guarany.jpg", descricao:"Aplicador manual para formicida em pó: bombeie e injete o pó direto no formigueiro pela mangueira, sem contato com o produto."},
+  {nome:"Lesmicida", marca:"Kelldrin", dep:"Defensivos", sub:"Formicidas e lesmicidas", un:"Pacote 50 g · resistente à água", preco:null, novo:true, foto:"img/lesmicida-kelldrin-50g.jpg", descricao:"Isca granulada eficaz contra lesmas e caracóis em hortas e jardins, resistente à água."},
   {nome:"Ficam VC Profissional", marca:"Envu", dep:"Defensivos", sub:"Uso profissional", un:"Sachê 15 g · escorpiões, baratas e mosquitos", preco:null, restrito:true, foto:"img/ficam-vc.jpg"},
+  {nome:"Lesmicida Metaldeído 5%", marca:"Kelldrin", dep:"Defensivos", sub:"Uso profissional", un:"Pacote 250 g", preco:null, restrito:true, novo:true, foto:"img/lesmicida-metaldeido-250g.jpg", descricao:"Moluscicida à base de metaldeído 5% contra lesmas e caracóis. Produto de venda restrita a instituições ou empresas especializadas."},
 
   /* Ferramentas */
   {nome:"Enxada larga com cabo 145 cm", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo de madeira", preco:79.9, top:true, foto:"img/enxada-tramontina.jpg"},
@@ -431,7 +450,6 @@ const PRODUTOS = [
   {nome:"Chave de fenda", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\"","5/16\" × 8\""], opNome:"Tamanho", foto:"img/chave-fenda-vonder.jpg"},
   {nome:"Chave Phillips", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\""], opNome:"Tamanho", foto:"img/chave-phillips-vonder.jpg"},
   {nome:"Mangueira trançada", marca:"Mantac", dep:"Ferramentas", sub:"Jardinagem", un:"Vendida por metro", preco:7.0, porMetro:true, foto:"img/mangueira-mantac.jpg"},
-  {nome:"Mangueira azul siliconada", dep:"Ferramentas", sub:"Jardinagem", un:"Vendida por metro", preco:null, porMetro:true, foto:"img/mangueira-azul-siliconada.jpg"},
   {nome:"Cultivador de mão 3 dentes", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Cabo curto de madeira", preco:null, novo:true, foto:"img/cultivador-tramontina.jpg"},
   {nome:"Ancinho de jardim", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Com cabo", preco:44.9, ilu:["ancinho"]},
   {nome:"Tesoura de poda", dep:"Ferramentas", sub:"Jardinagem", un:"Cabo com mola · uso leve", preco:49.9, foto:"img/tesoura-de-poda.jpg"},
