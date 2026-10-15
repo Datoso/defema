@@ -1,0 +1,46 @@
+# Copia o catálogo do Supabase para dentro do index.html (a cópia que o site usa se o Supabase
+# não responder) e baixa para img/ as fotos novas do painel. Roda todo dia e pelo botão
+# "Run workflow" em Actions > Sincronizar catálogo. Só grava se algo mudou.
+name: Sincronizar catálogo
+
+on:
+  schedule:
+    - cron: "0 9 * * *"   # 6h da manhã em Brasília
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sincronizar-catalogo
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Testes
+        run: |
+          node sistema/scripts/sincronizar-embutido.teste.mjs
+          node sistema/site/teste.mjs
+
+      - name: Buscar no Supabase e atualizar o index.html
+        run: node sistema/scripts/sincronizar-embutido.mjs
+
+      - name: Gravar no GitHub (se mudou)
+        run: |
+          git add index.html img/
+          if git diff --cached --quiet; then
+            echo "Nada mudou."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Catálogo embutido: sincronizado com o Supabase"
+          git push

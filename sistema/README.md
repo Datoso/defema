@@ -239,6 +239,13 @@ a cópia salva no aparelho e, em poucos segundos, a página se atualiza sozinha 
 
 **Plano B sem o painel:** no Supabase, **Table Editor → produtos**, edite a célula (`preco`, `preco_antigo`, `ativo`...) e salve.
 
+**Cópia de reserva dentro do site:** o `index.html` traz uma cópia do catálogo (entre os marcadores
+`<catalogo-embutido>`), usada quando o Supabase não responde. Ela é atualizada **sozinha todo dia às 6h**
+pelo GitHub Actions (**Actions → Sincronizar catálogo**), que também baixa para `img/` as fotos novas do painel.
+Para atualizar na hora, abra essa tela e clique em **Run workflow**. Essa visita diária ao banco também evita
+que o plano grátis do Supabase pause o projeto por falta de acesso. Não edite essa parte do `index.html` à mão:
+a próxima sincronização sobrescreve. Para conferir sem gravar: `node sistema/scripts/sincronizar-embutido.mjs --simular`.
+
 ---
 
 ## 9. Problemas comuns
@@ -250,7 +257,7 @@ a cópia salva no aparelho e, em poucos segundos, a página se atualiza sozinha 
 | `HTTP 400` / "column does not exist" | Os SQLs não rodaram completos ou fora de ordem. Rode `01` e depois `02`. |
 | Login do painel funciona, mas não salva ("row-level security") | O usuário não está em `administradores`. Refaça o passo 3.4. |
 | Foto não aparece (só o ícone) | O nome do arquivo no Storage tem de ser **igual** ao cadastrado (maiúsculas e acentos contam) e o bucket `produtos` tem de ser público. |
-| "Project paused" | No plano grátis o projeto pausa após alguns dias **sem nenhum acesso**. No Supabase, clique em **Restore project**. Enquanto isso o site usa a cópia salva/os dados embutidos. |
+| "Project paused" | No plano grátis o projeto pausa após alguns dias **sem nenhum acesso** (a sincronização diária da seção 8 evita isso). No Supabase, clique em **Restore project**. Enquanto isso o site usa a cópia salva/os dados embutidos. |
 | Esqueci a senha do painel | **Authentication → Users** → envie a recuperação de senha, ou crie o usuário de novo e refaça o passo 3.4. |
 | `importar.mjs` reclama de `SUPABASE_URL` | As variáveis têm de estar na **mesma linha/janela** do comando (veja o exemplo do Windows na seção 4). |
 | O domínio não abre | O DNS pode levar até 24 h. Confira os registros no Registro.br. |

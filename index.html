@@ -440,28 +440,24 @@ const LOJA = {
   mapsBusca: "Rua Tiradentes, 535, Centro, Pirapozinho - SP, 19200-000"
 };
 
-/* ===== DEPARTAMENTOS ===== */
+/* <catalogo-embutido> gerado por sistema/scripts/sincronizar-embutido.mjs a partir do Supabase.
+   Não edite à mão: mude no painel e rode a sincronização (GitHub > Actions > Sincronizar catálogo).
+   foto: imagem em img/ · preco: null = "Consultar preço" · antigo = preço riscado (promoção)
+   top = mais procurado · novo = novidade · ilu = ilustração provisória (sem foto) */
 const DEPS = {
-  "Defensivos":  ["Inseticidas", "Carrapaticidas e mosquicidas", "Formicidas e lesmicidas", "Uso profissional"],
-  "Ferramentas": ["Ferramentas manuais", "Ferramentas elétricas", "Jardinagem", "Pulverizadores", "Roçadeiras e aparadores"],
-  "Sementes e mudas": ["Sementes de hortaliças", "Sementes de vegetais", "Bandeja 200 mudas", "Bandeja 128 mudas", "Mudas unitárias"],
-  "Insumos":     ["Adubos", "Calcário", "Terras e substratos"],
-  "Ferragens e EPIs": ["EPIs", "Cercas e arames", "Ferragens"]
+  "Defensivos": ["Inseticidas","Carrapaticidas e mosquicidas","Formicidas e lesmicidas","Uso profissional"],
+  "Ferramentas": ["Ferramentas manuais","Ferramentas elétricas","Jardinagem","Pulverizadores","Roçadeiras e aparadores"],
+  "Sementes e mudas": ["Sementes de hortaliças","Sementes de vegetais","Bandeja 200 mudas","Bandeja 128 mudas","Mudas unitárias"],
+  "Insumos": ["Adubos","Calcário","Terras e substratos"],
+  "Ferragens e EPIs": ["EPIs","Cercas e arames","Ferragens"]
 };
 const DEP_INFO = {
-  "Defensivos":"Inseticidas, carrapaticidas e uso profissional",
-  "Ferramentas":"Enxadas, pulverizadores, roçadeiras e mais",
-  "Sementes e mudas":"Sementes Isla, bandejas de mudas, café e maracujá",
-  "Insumos":"Adubo, calcário, substrato",
-  "Ferragens e EPIs":"Botas, arames, pregos e grampos"
+  "Defensivos": "Inseticidas, carrapaticidas e uso profissional",
+  "Ferramentas": "Enxadas, pulverizadores, roçadeiras e mais",
+  "Sementes e mudas": "Sementes Isla, bandejas de mudas, café e maracujá",
+  "Insumos": "Adubo, calcário, substrato",
+  "Ferragens e EPIs": "Botas, arames, pregos e grampos"
 };
-
-/* ===== PRODUTOS =====
-   foto: caminho da imagem na pasta img/ (vazio = ilustração padrão)
-   preco: null = "Consultar preço" · antigo = preço riscado (promoção) · top = mais vendido · novo = novidade */
-const S = (nome, sub, foto, preco, extra={}) =>
-  ({nome, marca:"Isla", dep:"Sementes e mudas", sub: sub==="Folhosas e temperos" ? "Sementes de hortaliças" : "Sementes de vegetais", un:"Envelope", preco, foto:"img/"+foto, ...extra});
-
 const PRODUTOS = [
   /* Defensivos */
   {nome:"K-Othrine SC 25", marca:"Bayer", dep:"Defensivos", sub:"Inseticidas", un:"Frasco 30 mL · ambientes externos", preco:null, foto:"img/k-othrine-sc25.jpg"},
@@ -476,8 +472,7 @@ const PRODUTOS = [
   {nome:"Mata-formiga (polvilhadeira)", marca:"Guarany", dep:"Defensivos", sub:"Formicidas e lesmicidas", un:"Bomba manual com mangueira", preco:null, novo:true, foto:"img/mata-formiga-guarany.jpg", descricao:"Aplicador manual para formicida em pó: bombeie e injete o pó direto no formigueiro pela mangueira, sem contato com o produto."},
   {nome:"Lesmicida", marca:"Kelldrin", dep:"Defensivos", sub:"Formicidas e lesmicidas", un:"Pacote 50 g · resistente à água", preco:null, novo:true, foto:"img/lesmicida-kelldrin-50g.jpg", descricao:"Isca granulada eficaz contra lesmas e caracóis em hortas e jardins, resistente à água."},
   {nome:"Ficam VC Profissional", marca:"Envu", dep:"Defensivos", sub:"Uso profissional", un:"Sachê 15 g · escorpiões, baratas e mosquitos", preco:null, restrito:true, foto:"img/ficam-vc.jpg"},
-  {nome:"Lesmicida Metaldeído 5%", marca:"Kelldrin", dep:"Defensivos", sub:"Uso profissional", un:"Pacote 250 g", preco:null, restrito:true, novo:true, foto:"img/lesmicida-metaldeido-250g.jpg", descricao:"Moluscicida à base de metaldeído 5% contra lesmas e caracóis. Produto de venda restrita a instituições ou empresas especializadas."},
-
+  {nome:"Lesmicida Metaldeído 5%", marca:"Kelldrin", dep:"Defensivos", sub:"Uso profissional", un:"Pacote 250 g", preco:null, novo:true, restrito:true, foto:"img/lesmicida-metaldeido-250g.jpg", descricao:"Moluscicida à base de metaldeído 5% contra lesmas e caracóis. Produto de venda restrita a instituições ou empresas especializadas."},
   /* Ferramentas */
   {nome:"Enxada larga com cabo 145 cm", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo de madeira", preco:79.9, top:true, foto:"img/enxada-tramontina.jpg"},
   {nome:"Cavadeira articulada", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabos de madeira", preco:99.9, antigo:114.9, foto:"img/cavadeira-articulada.jpg"},
@@ -491,53 +486,45 @@ const PRODUTOS = [
   {nome:"Marreta", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Marreta de mão · cabo de madeira", preco:null, foto:"img/paceta.jpg"},
   {nome:"Chave de fenda", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\"","5/16\" × 8\""], opNome:"Tamanho", foto:"img/chave-fenda-vonder.jpg"},
   {nome:"Chave Phillips", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\""], opNome:"Tamanho", foto:"img/chave-phillips-vonder.jpg"},
-  {nome:"Mangueira trançada", marca:"Mantac", dep:"Ferramentas", sub:"Jardinagem", un:"Vendida por metro", preco:7.0, porMetro:true, foto:"img/mangueira-mantac.jpg"},
+  {nome:"Mangueira trançada", marca:"Mantac", dep:"Ferramentas", sub:"Jardinagem", un:"Vendida por metro", preco:7, porMetro:true, foto:"img/mangueira-mantac.jpg"},
   {nome:"Cultivador de mão 3 dentes", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Cabo curto de madeira", preco:null, novo:true, foto:"img/cultivador-tramontina.jpg"},
   {nome:"Ancinho de jardim", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Com cabo", preco:44.9, ilu:["ancinho"]},
   {nome:"Tesoura de poda", dep:"Ferramentas", sub:"Jardinagem", un:"Cabo com mola · uso leve", preco:49.9, foto:"img/tesoura-de-poda.jpg"},
   {nome:"Tesoura de poda para galhos", dep:"Ferramentas", sub:"Jardinagem", un:"Reforçada · galhos mais grossos", preco:null, foto:"img/tesoura-poda-galhos.jpg"},
-
-  /* Máquinas */
-  {nome:"Pulverizador costal PJH 20", marca:"Jacto", dep:"Ferramentas", sub:"Pulverizadores", un:"Manual, 20 L · câmara metálica", preco:449.0, antigo:489.0, top:true, foto:"img/pjh20-jacto.jpeg"},
+  {nome:"Pulverizador costal PJH 20", marca:"Jacto", dep:"Ferramentas", sub:"Pulverizadores", un:"Manual, 20 L · câmara metálica", preco:449, antigo:489, top:true, foto:"img/pjh20-jacto.jpeg"},
   {nome:"Pulverizador manual 5 L", marca:"Brudden", dep:"Ferramentas", sub:"Pulverizadores", un:"Com alças para as costas", preco:null, foto:"img/pulverizador-brudden-5l.jpg"},
   {nome:"Pulverizador lateral manual PL 005", marca:"Vonder", dep:"Ferramentas", sub:"Pulverizadores", un:"5 L · compressão prévia", preco:null, foto:"img/pulverizador-vonder-pl005.jpg"},
   {nome:"Roçadeira a gasolina", dep:"Ferramentas", sub:"Roçadeiras e aparadores", un:"Guidão duplo · fio de nylon", preco:null, foto:"img/rocadeira-gasolina.jpg"},
   {nome:"Aparador de grama elétrico", dep:"Ferramentas", sub:"Roçadeiras e aparadores", un:"Com fio · carretel de nylon", preco:null, foto:"img/aparador-eletrico.jpg"},
-
-  /* Sementes Isla — Folhosas e temperos */
-  S("Alface Crespa Grand Rapids TBR", "Folhosas e temperos", "alface-crespa-grand-rapids.jpeg", 6.9, {top:true}),
-  S("Alface Grandes Lagos Americana", "Folhosas e temperos", "alface-grandes-lagos-americana.jpeg", 6.9),
-  S("Alface Lisa Babá de Verão", "Folhosas e temperos", "alface-lisa-baba-de-verao.jpeg", 6.9, {antigo:8.9}),
-  S("Almeirão de Cabeça Pão de Açúcar", "Folhosas e temperos", "almeirao-de-cabeca-pao-de-acucar.jpg", 6.9),
-  S("Almeirão Amarelo (Radiche)", "Folhosas e temperos", "almeirao-folha-larga-amarelo-radiche.jpg", 6.5),
-  S("Couve Manteiga da Geórgia", "Folhosas e temperos", "couve-manteiga-da-georgia.jpg", 6.9, {top:true}),
-  S("Couve-Brócolis Piracicaba Precoce", "Folhosas e temperos", "couve-brocolis-piracicaba-precoce.jpg", 7.5),
-  S("Rúcula Gigante Folha Larga", "Folhosas e temperos", "rucula-gigante-folha-larga.jpeg", 6.5),
-  S("Cebolinha Híbrida Sahara", "Folhosas e temperos", "cebolinha-hibrido-sahara.jpg", 9.9, {novo:true}),
-
-  /* Sementes Isla — Frutos e legumes */
-  S("Tomate Santa Cruz Kada (Paulista)", "Frutos e legumes", "tomate-santa-cruz-kada.jpg", 7.9, {top:true}),
-  S("Tomate Cereja", "Frutos e legumes", "tomate-cereja.jpg", 8.9),
-  S("Abóbora Híbrida Tetsukabuto F1", "Frutos e legumes", "abobora-hibrido-f1-tetsukabuto.jpg", 14.9),
-  S("Abóbora Menina Brasileira Precoce", "Frutos e legumes", "abobora-precoce-menina-brasileira.jpg", 6.9),
-  S("Abóbora Itapuã 301 tipo Jacarezinho", "Frutos e legumes", "abobora-tipo-jacarezinho-itapua.jpg", 7.5),
-  S("Abobrinha de Tronco Caserta", "Frutos e legumes", "abobrinha-de-tronco-caserta.jpg", 6.9, {antigo:8.5}),
-  S("Moranga Exposição de Mesa", "Frutos e legumes", "moranga-exposicao-de-mesa.jpg", 7.5),
-  S("Melancia Crimson Sweet", "Frutos e legumes", "melancia-crimson-sweet.jpg", 7.9, {top:true}),
-  S("Melancia Charleston Gray Super", "Frutos e legumes", "melancia-charleston-gray.jpeg", 7.9),
-  S("Melão Caipira Gaúcho", "Frutos e legumes", "melao-caipira-gaucho.jpeg", 7.5),
-  S("Melão Redondo Gaúcho", "Frutos e legumes", "melao-redondo-gaucho.jpeg", 7.5),
-  S("Pepino Melhorado Aodai", "Frutos e legumes", "pepino-melhorado-aodai.jpeg", 6.9),
-  S("Quiabo Santa Cruz 47", "Frutos e legumes", "quiabo-santa-cruz.jpg", 6.9),
-  S("Jiló Verde Escuro Morro Grande", "Frutos e legumes", "jilo-escuro-morro-grande-verde.jpg", 6.9),
-  S("Maxixe", "Frutos e legumes", "maxixe-maxixe.jpg", 6.5),
-  S("Feijão-Vagem Macarrão Trepador (Favorito)", "Frutos e legumes", "feijao-vagem-macarrao-trepador-favorito.jpg", 8.9, {antigo:10.9}),
-
-  /* Sementes Isla — Raízes e bulbos */
-  S("Beterraba Itapuã 202", "Raízes e bulbos", "beterraba-itapua.jpg", 6.9),
-  S("Cebola Baia Periforme", "Raízes e bulbos", "cebola-baia-periforme.jpg", 6.9),
-  S("Rabanete Gigante Sículo", "Raízes e bulbos", "rabanete-vermelho-gigante-siculo.jpg", 5.9),
-
+  /* Sementes e mudas */
+  {nome:"Alface Crespa Grand Rapids TBR", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:6.9, top:true, foto:"img/alface-crespa-grand-rapids.jpeg"},
+  {nome:"Alface Grandes Lagos Americana", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:6.9, foto:"img/alface-grandes-lagos-americana.jpeg"},
+  {nome:"Alface Lisa Babá de Verão", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:6.9, antigo:8.9, foto:"img/alface-lisa-baba-de-verao.jpeg"},
+  {nome:"Almeirão de Cabeça Pão de Açúcar", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:6.9, foto:"img/almeirao-de-cabeca-pao-de-acucar.jpg"},
+  {nome:"Almeirão Amarelo (Radiche)", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:6.5, foto:"img/almeirao-folha-larga-amarelo-radiche.jpg"},
+  {nome:"Couve Manteiga da Geórgia", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:6.9, top:true, foto:"img/couve-manteiga-da-georgia.jpg"},
+  {nome:"Couve-Brócolis Piracicaba Precoce", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:7.5, foto:"img/couve-brocolis-piracicaba-precoce.jpg"},
+  {nome:"Rúcula Gigante Folha Larga", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:6.5, foto:"img/rucula-gigante-folha-larga.jpeg"},
+  {nome:"Cebolinha Híbrida Sahara", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de hortaliças", un:"Envelope", preco:9.9, novo:true, foto:"img/cebolinha-hibrido-sahara.jpg"},
+  {nome:"Tomate Santa Cruz Kada (Paulista)", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:7.9, top:true, foto:"img/tomate-santa-cruz-kada.jpg"},
+  {nome:"Tomate Cereja", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:8.9, foto:"img/tomate-cereja.jpg"},
+  {nome:"Abóbora Híbrida Tetsukabuto F1", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:14.9, foto:"img/abobora-hibrido-f1-tetsukabuto.jpg"},
+  {nome:"Abóbora Menina Brasileira Precoce", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.9, foto:"img/abobora-precoce-menina-brasileira.jpg"},
+  {nome:"Abóbora Itapuã 301 tipo Jacarezinho", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:7.5, foto:"img/abobora-tipo-jacarezinho-itapua.jpg"},
+  {nome:"Abobrinha de Tronco Caserta", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.9, antigo:8.5, foto:"img/abobrinha-de-tronco-caserta.jpg"},
+  {nome:"Moranga Exposição de Mesa", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:7.5, foto:"img/moranga-exposicao-de-mesa.jpg"},
+  {nome:"Melancia Crimson Sweet", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:7.9, top:true, foto:"img/melancia-crimson-sweet.jpg"},
+  {nome:"Melancia Charleston Gray Super", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:7.9, foto:"img/melancia-charleston-gray.jpeg"},
+  {nome:"Melão Caipira Gaúcho", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:7.5, foto:"img/melao-caipira-gaucho.jpeg"},
+  {nome:"Melão Redondo Gaúcho", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:7.5, foto:"img/melao-redondo-gaucho.jpeg"},
+  {nome:"Pepino Melhorado Aodai", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.9, foto:"img/pepino-melhorado-aodai.jpeg"},
+  {nome:"Quiabo Santa Cruz 47", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.9, foto:"img/quiabo-santa-cruz.jpg"},
+  {nome:"Jiló Verde Escuro Morro Grande", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.9, foto:"img/jilo-escuro-morro-grande-verde.jpg"},
+  {nome:"Maxixe", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.5, foto:"img/maxixe-maxixe.jpg"},
+  {nome:"Feijão-Vagem Macarrão Trepador (Favorito)", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:8.9, antigo:10.9, foto:"img/feijao-vagem-macarrao-trepador-favorito.jpg"},
+  {nome:"Beterraba Itapuã 202", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.9, foto:"img/beterraba-itapua.jpg"},
+  {nome:"Cebola Baia Periforme", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:6.9, foto:"img/cebola-baia-periforme.jpg"},
+  {nome:"Rabanete Gigante Sículo", marca:"Isla", dep:"Sementes e mudas", sub:"Sementes de vegetais", un:"Envelope", preco:5.9, foto:"img/rabanete-vermelho-gigante-siculo.jpg"},
   /* Insumos */
   {nome:"Adubo NPK 10-10-10", marca:"Heringer", dep:"Insumos", sub:"Adubos", un:"Saco 50 kg", preco:219.9, antigo:239.9, top:true, foto:"img/adubo-heringer.jpg"},
   {nome:"Adubo NPK 20-05-20", marca:"Heringer", dep:"Insumos", sub:"Adubos", un:"Saco 50 kg", preco:249.9, foto:"img/adubo-heringer.jpg"},
@@ -546,46 +533,46 @@ const PRODUTOS = [
   {nome:"Substrato para plantas Carolina Soil", marca:"Carolina Soil", dep:"Insumos", sub:"Terras e substratos", un:"Saco 45 L", preco:42.9, foto:"img/carolina-soil.jpeg"},
   {nome:"Terra vegetal", dep:"Insumos", sub:"Terras e substratos", un:"Saco 25 kg", preco:16.9, ilu:["saco","TERRA|VEGETAL","#2f6b3c","#5a3d26"]},
   {nome:"Húmus de minhoca", dep:"Insumos", sub:"Terras e substratos", un:"Saco 25 kg", preco:34.9, antigo:39.9, ilu:["saco","HÚMUS DE|MINHOCA","#6b4a2f","#3a281b"]},
-
-  /* Mudas */
-{nome:"Muda de alface crespa Vanda", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","alface",200]},
-  {nome:"Muda de alface americana", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","americana",200]},
-  {nome:"Muda de rúcula", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","rucula",200]},
-  {nome:"Muda de coentro", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","coentro",200]},
-  {nome:"Muda de salsa", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","salsa",200]},
-  {nome:"Muda de cebolinha", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","cebolinha",200]},
-  {nome:"Muda de almeirão Pão de Açúcar", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","almeirao",200]},
-  {nome:"Muda de pimentão híbrido Magali", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","pimentao",128]},
-  {nome:"Muda de berinjela Napoli", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
-  {nome:"Muda de berinjela japonesa", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
-  {nome:"Muda de couve manteiga", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","couve",128]},
-  {nome:"Muda de jiló", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","jilo",128]},
-  {nome:"Muda de pimenta malagueta", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","malagueta"]},
-  {nome:"Muda de pimenta dedo-de-moça", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","dedo"]},
-  {nome:"Muda de café", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Tubete plástico de ~15 cm", preco:7.0, ilu:["vaso","cafe"]},
-  {nome:"Muda de maracujá azedo", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Saquinho 30 × 25 cm · para suco", preco:15.0, ilu:["vaso","maracuja"]},
-
-  /* Ferragens e EPIs (itens do cartão da loja — confirmar modelos e preços) */
+  /* Sementes e mudas */
+  {nome:"Muda de alface crespa Vanda", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40, ilu:["bandeja","alface",200]},
+  {nome:"Muda de alface americana", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40, ilu:["bandeja","americana",200]},
+  {nome:"Muda de rúcula", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40, ilu:["bandeja","rucula",200]},
+  {nome:"Muda de coentro", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40, ilu:["bandeja","coentro",200]},
+  {nome:"Muda de salsa", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40, ilu:["bandeja","salsa",200]},
+  {nome:"Muda de cebolinha", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40, ilu:["bandeja","cebolinha",200]},
+  {nome:"Muda de almeirão Pão de Açúcar", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40, ilu:["bandeja","almeirao",200]},
+  {nome:"Muda de pimentão híbrido Magali", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60, ilu:["bandeja","pimentao",128]},
+  {nome:"Muda de berinjela Napoli", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60, ilu:["bandeja","berinjela",128]},
+  {nome:"Muda de berinjela japonesa", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60, ilu:["bandeja","berinjela",128]},
+  {nome:"Muda de couve manteiga", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60, ilu:["bandeja","couve",128]},
+  {nome:"Muda de jiló", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60, ilu:["bandeja","jilo",128]},
+  {nome:"Muda de pimenta malagueta", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1, ilu:["vaso","malagueta"]},
+  {nome:"Muda de pimenta dedo-de-moça", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1, ilu:["vaso","dedo"]},
+  {nome:"Muda de café", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Tubete plástico de ~15 cm", preco:7, ilu:["vaso","cafe"]},
+  {nome:"Muda de maracujá azedo", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Saquinho 30 × 25 cm · para suco", preco:15, ilu:["vaso","maracuja"]},
+  /* Ferragens e EPIs */
   {nome:"Botina de segurança com elástico", dep:"Ferragens e EPIs", sub:"EPIs", un:"Couro · vários números", preco:null, foto:"img/botina-seguranca.jpg"},
   {nome:"Bota de PVC preta", marca:"Vonder", dep:"Ferragens e EPIs", sub:"EPIs", un:"Cano médio · vários números", preco:null, foto:"img/bota-pvc-vonder.jpg"},
   {nome:"Bota de PVC branca cano longo", dep:"Ferragens e EPIs", sub:"EPIs", un:"Vários números", preco:null, foto:"img/bota-pvc-branca.jpg"},
   {nome:"Protetor auricular tipo concha", dep:"Ferragens e EPIs", sub:"EPIs", un:"Abafador de ruído com haste ajustável", preco:null, foto:"img/abafador.jpg"},
   {nome:"Protetor auditivo de silicone Pomp Plus", marca:"3M", dep:"Ferragens e EPIs", sub:"EPIs", un:"Par com cordão · caixinha", preco:null, foto:"img/protetor-3m-pomp.jpg"},
-  {nome:"Capa de chuva de PVC", marca:"Vonder", dep:"Ferragens e EPIs", sub:"EPIs", un:"Com manga e capuz · sem forro", preco:null, foto:"img/capa-pvc-vonder.jpg", opcoes:["G","GG"], opNome:"Tamanho"},
+  {nome:"Capa de chuva de PVC", marca:"Vonder", dep:"Ferragens e EPIs", sub:"EPIs", un:"Com manga e capuz · sem forro", preco:null, opcoes:["G","GG"], opNome:"Tamanho", foto:"img/capa-pvc-vonder.jpg"},
   {nome:"Arame farpado Motto", marca:"Belgo", dep:"Ferragens e EPIs", sub:"Cercas e arames", un:"Rolo 500 m", preco:null, foto:"img/arame-farpado-motto.jpg"},
   {nome:"Arame ovalado Z-700", marca:"Belgo", dep:"Ferragens e EPIs", sub:"Cercas e arames", un:"Rolo 1.000 m · arame liso", preco:null, foto:"img/arame-ovalado-z700.jpg"},
   {nome:"Grampo polido para cerca 19×11", marca:"Gerdau", dep:"Ferragens e EPIs", sub:"Cercas e arames", un:"Pacote 1 kg", preco:null, foto:"img/grampo-gerdau.jpg"},
   {nome:"Prego com cabeça", marca:"Gerdau", dep:"Ferragens e EPIs", sub:"Ferragens", un:"Pacote 1 kg", preco:null, opcoes:["12×12","15×15","17×21","18×27","20×42"], opNome:"Bitola", foto:"img/prego-gerdau.jpg"},
   {nome:"Cadeado de latão", marca:"Pado", dep:"Ferragens e EPIs", sub:"Ferragens", un:"Com 2 chaves", preco:null, opcoes:["20 mm","25 mm","30 mm","35 mm","40 mm","45 mm","50 mm","60 mm"], opNome:"Tamanho", foto:"img/cadeado-pado.jpg"},
   {nome:"Cadeado de latão", marca:"Papaiz", dep:"Ferragens e EPIs", sub:"Ferragens", un:"Com 2 chaves", preco:null, opcoes:["20 mm","25 mm","30 mm","35 mm","40 mm","45 mm","50 mm","60 mm"], opNome:"Tamanho", foto:"img/cadeado-papaiz.jpg"},
+  /* Ferramentas */
   {nome:"Alicate universal", marca:"Gedore", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo isolado 1000 V", preco:null, foto:"img/alicate-gedore.jpg"},
   {nome:"Martelo de unha", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo de madeira", preco:null, opcoes:["25 mm","27 mm","29 mm"], opNome:"Tamanho", foto:"img/martelo-vonder.jpg"},
   {nome:"Serrote", marca:"Irwin", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Linha profissional · cabo de madeira", preco:null, opcoes:["18\"","20\"","22\"","24\""], opNome:"Tamanho", foto:"img/serrote-irwin.jpg"},
   {nome:"Serrote", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Uso geral · cabo de madeira", preco:null, opcoes:["16\"","18\"","20\"","22\"","24\""], opNome:"Tamanho", foto:"img/serrote-tramontina.jpg"},
   {nome:"Facão", marca:"Corneta", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Lâmina de aço", preco:null, opcoes:["10\"","12\"","14\"","16\"","18\"","20\""], opNome:"Tamanho", foto:"img/facao-16.jpg"},
   {nome:"Facão", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Lâmina de aço carbono · cabo de madeira", preco:null, opcoes:["12\"","14\"","16\""], opNome:"Tamanho", foto:"img/facao-tramontina.jpg"},
-  {nome:"Chave combinada", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Boca e estria · unitária", preco:null, opcoes:["6 mm","7 mm","8 mm","9 mm","10 mm","11 mm","12 mm","13 mm","14 mm","15 mm","16 mm","17 mm","18 mm","19 mm","20 mm","21 mm","22 mm","23 mm","24 mm","25 mm","26 mm","27 mm","28 mm","30 mm","32 mm"], opNome:"Medida", foto:"img/chave-combinada.jpg"},
+  {nome:"Chave combinada", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Boca e estria · unitária", preco:null, opcoes:["6 mm","7 mm","8 mm","9 mm","10 mm","11 mm","12 mm","13 mm","14 mm","15 mm","16 mm","17 mm","18 mm","19 mm","20 mm","21 mm","22 mm","23 mm","24 mm","25 mm","26 mm","27 mm","28 mm","30 mm","32 mm"], opNome:"Medida", foto:"img/chave-combinada.jpg"}
 ];
+/* </catalogo-embutido> */
 PRODUTOS.forEach((p,i)=>p.id=i);
 
 /* ===== CATÁLOGO ONLINE (Supabase) =====
