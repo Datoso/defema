@@ -432,8 +432,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
 /* ===== CONFIGURAÇÃO DA LOJA (troque pelos dados reais) ===== */
 const LOJA = {
   nome: "Defema",
-  whatsapp: "5518981997337",          // DDI + DDD + número, só dígitos
-  whatsappTexto: "(18) 98199-7337",
+  whatsapp: "5518900000000",          // FICTÍCIO por enquanto (o real é 5518981997337). DDI + DDD + número, só dígitos
+  whatsappTexto: "(18) 90000-0000",
   telefone: "(18) 3269-1186",
   email: "jorge.defema@hotmail.com",
   endereco: "Rua Tiradentes, 535 – Centro, Pirapozinho/SP · CEP&nbsp;19200&#8209;000",
@@ -1196,8 +1196,18 @@ function atualizarCatalogo(d){
 coresPadrao();
 renderAtalhos();
 render();
-if(TEM_SUPABASE) carregarCatalogo({ ...SUPABASE, fallback: EMBUTIDO, onAtualizar: atualizarCatalogo })
-  .then(atualizarCatalogo);
+function buscarCatalogo(){
+  carregarCatalogo({ ...SUPABASE, fallback: EMBUTIDO, onAtualizar: atualizarCatalogo }).then(atualizarCatalogo);
+}
+if(TEM_SUPABASE){
+  buscarCatalogo();
+  /* aba ou app que ficou aberto: ao voltar para o site, confere se a loja mudou preços/produtos */
+  let ultimaBusca = Date.now();
+  document.addEventListener("visibilitychange", ()=>{
+    if(document.visibilityState!=="visible" || Date.now()-ultimaBusca < 30000) return;
+    ultimaBusca = Date.now(); buscarCatalogo();
+  });
+}
 </script>
 </body>
 </html>
