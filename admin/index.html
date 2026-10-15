@@ -276,6 +276,91 @@ dialog::backdrop{background:rgba(15,30,20,.5)}
 .linha-form .btn{flex:none;padding:8px 10px}
 .linha-form small{flex:none;font-size:12px;color:var(--muted);min-width:24px;text-align:right}
 
+
+/* ---------- painel: lateral + conteúdo ---------- */
+.lat-tit{display:none}
+.lat-acoes{display:none}
+.link-btn{background:none;border:0;padding:0 0 14px;color:var(--leaf-ink);font-weight:600;cursor:pointer;font-size:14px;text-align:left}
+.link-btn:hover{text-decoration:underline}
+.bloco-opcoes{border:1px dashed var(--line);border-radius:12px;padding:12px 12px 0;margin-bottom:14px}
+dialog .dlg-corpo{overscroll-behavior:contain}
+html:has(dialog[open]){overflow:hidden}
+.dlg-pe #btnExcluir{margin-right:auto}
+.dlg-pe #btnExcluir[hidden]{display:none}
+@media (max-width:759px){.dlg-pe #btnExcluir{padding:10px 12px}}
+
+@media (max-width:1023px){
+  .painel{display:flex;flex-direction:column}
+  .painel[hidden]{display:none}
+  .lateral,.conteudo{display:contents}
+  .ferr{order:1} .lateral .chips{order:2} .resumo{order:3} .lista{order:4}
+}
+@media (min-width:1024px){
+  .topo{padding:12px 28px}
+  .topo-in{max-width:none}
+  .marca h1{font-size:22px}
+  main{max-width:none;padding:0}
+  .painel{display:grid;grid-template-columns:264px minmax(0,1fr);min-height:calc(100vh - 62px);align-items:start}
+  .painel[hidden]{display:none}
+  .lateral{position:sticky;top:62px;height:calc(100vh - 62px);overflow-y:auto;border-right:1px solid var(--line);background:var(--surface);padding:20px 14px;display:flex;flex-direction:column;gap:4px}
+  .lat-tit{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 10px 6px}
+  .lat-tit.lat-so-largo{margin-top:22px}
+  .lateral .chips{flex-direction:column;overflow:visible;gap:2px;margin:0;padding:0}
+  .lateral .chip{width:100%;justify-content:space-between;min-height:42px;border:0;border-radius:10px;background:none;padding:8px 12px;font-size:15px;font-weight:500}
+  .lateral .chip:hover{background:var(--bg)}
+  .lateral .chip .n{background:none;color:var(--muted);font-variant-numeric:tabular-nums;font-size:13px;padding:0}
+  .lateral .chip[aria-pressed="true"]{background:var(--leaf-soft);color:var(--leaf-ink);font-weight:700}
+  .lateral .chip[aria-pressed="true"] .n{background:none;color:var(--leaf-ink)}
+  .lat-acoes{display:flex;flex-direction:column;gap:6px}
+  .lat-btn{display:flex;align-items:center;gap:10px;min-height:44px;width:100%;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-weight:600;font-size:15px;cursor:pointer;text-align:left}
+  .lat-btn:hover{border-color:var(--leaf-ink);color:var(--leaf-ink)}
+  .lat-btn svg{width:19px;height:19px;flex:none;color:var(--leaf-ink)}
+  .lat-btn.pri{background:var(--leaf);border-color:var(--leaf);color:#fff;margin-bottom:6px}
+  .lat-btn.pri svg{color:#fff}
+  .lat-btn.pri:hover{background:var(--leaf-2);color:#fff}
+  .lat-btn[hidden]{display:none}
+  .conteudo{padding:22px 28px 40px;min-width:0}
+  .ferr{grid-template-columns:minmax(0,1fr) 300px;margin-bottom:14px}
+  .resumo{margin-bottom:12px}
+  .lista{grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:12px}
+  .linha{min-height:96px;transition:box-shadow .15s,border-color .15s}
+  .linha:hover{border-color:var(--campo-line);box-shadow:0 4px 16px rgba(22,58,34,.08)}
+  .item{padding:12px 6px 12px 12px;gap:14px}
+  .thumb{width:72px;height:72px}
+  .barra-baixo{display:none}
+  .toasts{bottom:28px}
+  dialog .toasts{bottom:90px}
+
+  /* diálogos largos */
+  dialog{width:min(1180px,92vw);max-height:90vh}
+  #dlgReajuste,#dlgDeps{width:min(820px,92vw)}
+  #dlgMudas{width:min(1100px,92vw)}
+  .ed-grade{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;align-items:start;padding:20px 22px}
+  .ed-col{min-width:0}
+  .ed-grade .secao{margin-bottom:16px}
+  .ed-grade .foto-area{grid-template-columns:1fr}
+  .ed-grade .foto-prev{max-width:210px;margin:0 auto}
+  .ed-grade .foto-btns{grid-template-columns:1fr 1fr}
+  .ed-grade .foto-btns .btn{min-height:42px;font-size:14px;padding:6px 10px}
+  .ed-grade .foto-btns .check-mini{grid-column:1 / -1;min-height:32px}
+  .ed-grade .foto-btns #btnTirarFoto{grid-column:1 / -1}
+  .ed-grade #fotoDica{margin:8px 0 10px !important}
+  .ed-grade .chaves{grid-template-columns:1fr;gap:6px}
+  .ed-grade .chave{min-height:48px;padding:6px 12px}
+  .ed-grade .chave small{font-size:12px}
+  .bloco-opcoes .opcoes{grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+  .bloco-opcoes .opcao .inp{min-height:40px;padding:6px 10px}
+  .bloco-opcoes .opcao .btn-ico{width:36px;min-height:36px}
+  .ed-grade textarea.inp{min-height:120px}
+  .m-grade{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;align-items:start;padding:20px 22px}
+  .dlg-pe{padding:12px 22px}
+  .dlg-pe .btn-pri{flex:0 0 220px}
+  .dlg-pe [data-fechar]{min-width:140px}
+}
+@media (min-width:1600px){
+  .lista{grid-template-columns:repeat(auto-fill,minmax(380px,1fr))}
+}
+
 /* toast */
 .toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:100;display:grid;gap:8px;width:min(92vw,420px);pointer-events:none}
 .toast{background:#1b2a1f;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-weight:600;display:flex;gap:10px;align-items:center;animation:sobe .2s ease-out}
@@ -305,10 +390,6 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <small id="usuarioTxt">Catálogo da loja</small>
       </div>
     </div>
-    <button class="btn btn-claro so-largo" id="btnMudasTopo" type="button" hidden>Mudas – balcão</button>
-    <button class="btn btn-claro so-largo" id="btnDepsTopo" type="button" hidden>Departamentos</button>
-    <button class="btn btn-claro so-largo" id="btnReajusteTopo" type="button" hidden>Reajuste em lote</button>
-    <button class="btn btn-claro so-largo" id="btnNovoTopo" type="button" hidden>+ Novo produto</button>
     <button class="btn btn-claro btn-ico" id="btnTema" type="button" aria-label="Mudar para modo escuro"><svg class="ico-lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="ico-sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <button class="btn btn-claro" id="btnSair" type="button" hidden>Sair</button>
   </div>
@@ -336,7 +417,19 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
   </section>
 
   <!-- LISTA -->
-  <section id="telaLista" hidden aria-label="Produtos">
+  <section id="telaLista" class="painel" hidden aria-label="Produtos">
+    <aside class="lateral" aria-label="Filtros e ações">
+      <p class="lat-tit">Produtos</p>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por situação"></div>
+      <p class="lat-tit lat-so-largo">Ações</p>
+      <div class="lat-acoes">
+        <button class="lat-btn pri" id="btnNovoTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Novo produto</button>
+        <button class="lat-btn" id="btnMudasTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15h14l-1.5 6h-11zM12 15V9M12 11c0-3 2-5 5.5-5 0 3-2 5-5.5 5zM12 12.5c0-2.4-1.7-4-4.3-4 0 2.4 1.7 4 4.3 4z"/></svg>Mudas – balcão</button>
+        <button class="lat-btn" id="btnReajusteTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19L19 5"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>Reajuste em lote</button>
+        <button class="lat-btn" id="btnDepsTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Departamentos</button>
+      </div>
+    </aside>
+    <div class="conteudo">
     <div class="ferr">
       <div class="busca">
         <label for="busca" class="sr">Buscar produto</label>
@@ -348,9 +441,9 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <select class="inp" id="filtroDep"><option value="">Todos os departamentos</option></select>
       </div>
     </div>
-    <div class="chips" id="chips" role="group" aria-label="Filtrar por situação"></div>
     <p class="resumo"><span id="resumo" aria-live="polite"></span></p>
     <ul class="lista" id="lista"></ul>
+    </div>
   </section>
 </main>
 
@@ -374,7 +467,8 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <div class="dlg-corpo">
+    <div class="dlg-corpo ed-grade">
+      <div class="ed-col ed-esq">
       <div class="secao">
         <h3>Foto</h3>
         <div class="foto-area">
@@ -396,6 +490,18 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         </div>
         <p class="dica" id="fotoDica" style="margin:10px 0 12px">A foto é ajustada para um quadrado branco (500×500).</p>
       </div>
+      <div class="secao">
+        <h3>Situação e selos</h3>
+        <div class="chaves">
+          <label class="chave" id="chaveAtivo"><input type="checkbox" id="eAtivo"><span class="sw" aria-hidden="true"></span><span><b id="eAtivoTxt">Aparece no site</b><small id="eAtivoDica">Desligue quando acabar o estoque</small></span></label>
+          <label class="chave"><input type="checkbox" id="eTop"><span class="sw" aria-hidden="true"></span><span><b>Mais procurado</b><small>Destaque no site</small></span></label>
+          <label class="chave"><input type="checkbox" id="eNovo"><span class="sw" aria-hidden="true"></span><span><b>Novidade</b><small>Selo “novo”</small></span></label>
+          <label class="chave"><input type="checkbox" id="eRestrito"><span class="sw" aria-hidden="true"></span><span><b>Venda restrita</b><small>Uso profissional / receita</small></span></label>
+          <label class="chave"><input type="checkbox" id="eMetro"><span class="sw" aria-hidden="true"></span><span><b>Vendido por metro</b><small>Preço por metro</small></span></label>
+        </div>
+      </div>
+      </div>
+      <div class="ed-col ed-dir">
 
       <div class="secao">
         <h3>Produto</h3>
@@ -430,6 +536,15 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
           <input class="inp" id="eSubNova" maxlength="60" autocomplete="off" aria-describedby="eSubErro">
         </div>
         <span class="erro-txt" id="eSubErro" hidden style="display:block;margin:-6px 0 12px"></span>
+        <div class="bloco-opcoes" id="blocoOpcoes" hidden>
+          <div class="campo">
+            <label for="eOpNome">Tamanhos / pesos: rótulo</label>
+            <input class="inp" id="eOpNome" maxlength="40" placeholder="ex.: Tamanho, Peso, Bitola" autocomplete="off">
+          </div>
+          <ul class="opcoes" id="opcoes" aria-label="Lista de opções"></ul>
+          <button class="btn btn-sec" type="button" id="btnAddOpcao" style="margin-bottom:14px">+ Adicionar opção</button>
+        </div>
+        <button class="link-btn" type="button" id="btnMostrarOpcoes">+ Este produto tem tamanhos ou pesos diferentes</button>
         <div class="campo">
           <label for="eDesc">Descrição</label>
           <textarea class="inp" id="eDesc" maxlength="1000" rows="3"></textarea>
@@ -458,30 +573,11 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         </div>
       </div>
 
-      <div class="secao">
-        <h3>Opções (tamanhos, pesos…)</h3>
-        <div class="campo">
-          <label for="eOpNome">Rótulo das opções</label>
-          <input class="inp" id="eOpNome" maxlength="40" placeholder="ex.: Tamanho, Peso, Bitola" autocomplete="off">
-        </div>
-        <ul class="opcoes" id="opcoes" aria-label="Lista de opções"></ul>
-        <button class="btn btn-sec" type="button" id="btnAddOpcao" style="margin-bottom:14px">+ Adicionar opção</button>
-      </div>
 
-      <div class="secao">
-        <h3>Situação e selos</h3>
-        <div class="chaves">
-          <label class="chave" id="chaveAtivo"><input type="checkbox" id="eAtivo"><span class="sw" aria-hidden="true"></span><span><b id="eAtivoTxt">Aparece no site</b><small id="eAtivoDica">Desligue quando acabar o estoque</small></span></label>
-          <label class="chave"><input type="checkbox" id="eTop"><span class="sw" aria-hidden="true"></span><span><b>Mais procurado</b><small>Destaque no site</small></span></label>
-          <label class="chave"><input type="checkbox" id="eNovo"><span class="sw" aria-hidden="true"></span><span><b>Novidade</b><small>Selo “novo”</small></span></label>
-          <label class="chave"><input type="checkbox" id="eRestrito"><span class="sw" aria-hidden="true"></span><span><b>Venda restrita</b><small>Uso profissional / receita</small></span></label>
-          <label class="chave"><input type="checkbox" id="eMetro"><span class="sw" aria-hidden="true"></span><span><b>Vendido por metro</b><small>Preço por metro</small></span></label>
-        </div>
       </div>
-
-      <button class="btn btn-perigo" type="button" id="btnExcluir" style="width:100%">Excluir produto</button>
     </div>
     <div class="dlg-pe">
+      <button class="btn btn-perigo" type="button" id="btnExcluir">Excluir produto</button>
       <button class="btn btn-sec" type="button" data-fechar>Cancelar</button>
       <button class="btn btn-pri" type="submit" id="btnSalvar">Salvar</button>
     </div>
@@ -538,7 +634,8 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <div class="dlg-corpo">
+    <div class="dlg-corpo m-grade">
+      <div class="ed-col">
       <form class="secao" id="formMuda" novalidate style="margin-top:0">
         <h3>Registrar venda no balcão</h3>
         <div class="campo">
@@ -557,6 +654,8 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <h3>Para emitir NF</h3>
         <div id="mNF" aria-live="polite"></div>
       </div>
+      </div>
+      <div class="ed-col">
       <div class="secao">
         <h3>Andamento de cada muda</h3>
         <ul class="m-lista" id="mProgresso"></ul>
@@ -564,6 +663,7 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
       <div class="secao">
         <h3>Últimos registros</h3>
         <ul class="m-lista" id="mHist"></ul>
+      </div>
       </div>
     </div>
     <div class="dlg-pe">
@@ -1155,13 +1255,14 @@ function renderLista() {
   const { q, dep, chip } = ui.filtro;
   const doDep = ui.produtos.filter(p => !dep || p.dep === dep);
   const { itens: base, parecidos } = filtrarBusca(doDep, q);
-  // chips com contagem (respeitando busca e departamento)
+  // contagem sempre do catálogo inteiro ("Todos" = todos os produtos cadastrados)
   $("#chips").innerHTML = CHIPS.map(([id, rot, f]) =>
-    `<button type="button" class="chip" data-chip="${id}" aria-pressed="${chip === id}">${rot} <span class="n">${base.filter(f).length}</span></button>`).join("");
+    `<button type="button" class="chip" data-chip="${id}" aria-pressed="${chip === id}"><span class="chip-rot">${rot}</span> <span class="n">${ui.produtos.filter(f).length}</span></button>`).join("");
   const filtroChip = CHIPS.find(c => c[0] === chip)[2];
   const vis = base.filter(filtroChip).sort((a, b) =>
     ordemDep(a.dep) - ordemDep(b.dep) || ordemSub(a.dep, a.sub) - ordemSub(b.dep, b.sub) || (a.ordem - b.ordem) || a.nome.localeCompare(b.nome, "pt-BR"));
-  $("#resumo").textContent = (vis.length === ui.produtos.length ? `${vis.length} produtos` : `${vis.length} de ${ui.produtos.length} produtos`)
+  const filtros = [dep && `em ${dep}`, q.trim() && `buscando “${q.trim()}”`].filter(Boolean).join(", ");
+  $("#resumo").textContent = (vis.length === ui.produtos.length ? `${vis.length} produtos` : `Mostrando ${vis.length} de ${ui.produtos.length} produtos`) + (filtros ? ` · ${filtros}` : "")
     + (parecidos ? " · nenhum resultado exato, mostrando parecidos" : "");
   if (!vis.length) {
     $("#lista").innerHTML = `<li class="vazio">Nenhum produto encontrado.${q ? "<br>Tente outra palavra." : ""}</li>`;
@@ -1322,7 +1423,7 @@ function abrirEditor(p) {
   $("#btnExcluir").hidden = novo;
   $("#listaMarcas").innerHTML = [...new Set(ui.produtos.map(x => x.marca).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR")).map(m => `<option value="${esc(m)}">`).join("");
   limparErros();
-  renderOpcoes(); renderFoto(); atualizarPromo(); atualizarAtivo(); atualizarBandeja();
+  renderOpcoes(); renderFoto(); atualizarPromo(); atualizarAtivo(); atualizarBandeja(); mostrarOpcoes(ed.opcoes.length > 0);
   $("#dlgEditor").showModal();
   $("#dlgEditor .dlg-corpo").scrollTop = 0;
   if (novo) $("#eNome").focus(); else $("#dlgEditor [data-fechar]").focus();
@@ -1381,10 +1482,17 @@ function atualizarPromo() {
     box.hidden = false;
   } else box.hidden = true;
 }
+function mostrarOpcoes(sim) {
+  const bandeja = tamBandeja($("#eSub").value === NOVA_SUB ? $("#eSubNova").value.trim() : $("#eSub").value);
+  $("#blocoOpcoes").hidden = !sim || !!bandeja;
+  $("#btnMostrarOpcoes").hidden = sim || !!bandeja;
+}
 function atualizarBandeja() {
   const sub = $("#eSub").value === NOVA_SUB ? $("#eSubNova").value.trim() : $("#eSub").value;
   const t = tamBandeja(sub);
   $("#campoBandeja").hidden = !t;
+  if (t) { $("#blocoOpcoes").hidden = true; $("#btnMostrarOpcoes").hidden = true; }
+  else if ($("#blocoOpcoes").hidden) $("#btnMostrarOpcoes").hidden = false;
   $("#ePrecoRot").textContent = t ? `Preço do lote (${loteDe(t)} mudas)` : "Preço";
   $("#eBandejaRot").textContent = t ? `Preço da bandeja fechada (${t} mudas) · encomenda` : "Preço da bandeja fechada";
 }
@@ -1697,6 +1805,11 @@ function ligarEventos() {
   });
   $("#eNome").addEventListener("input", () => { $("#eNome").removeAttribute("aria-invalid"); $("#eNomeErro").hidden = true; });
   $("#eAtivo").addEventListener("change", atualizarAtivo);
+  $("#btnMostrarOpcoes").addEventListener("click", () => {
+    mostrarOpcoes(true);
+    if (!ed.opcoes.length) { ed.opcoes.push(""); renderOpcoes(); }
+    $("#eOpNome").focus();
+  });
   $("#btnAddOpcao").addEventListener("click", () => {
     ed.opcoes.push(""); renderOpcoes();
     const inps = document.querySelectorAll("#opcoes [data-op]"); inps[inps.length - 1]?.focus();
