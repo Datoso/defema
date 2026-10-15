@@ -389,6 +389,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .card .btn-add{padding:9px 10px;white-space:nowrap}
   .card .acoes{margin-top:4px}
 }
+footer .disclaimer{display:block;margin-top:6px;font-size:.72rem;opacity:.75;line-height:1.4}
 </style>
 </head>
 <body>
@@ -437,7 +438,8 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   <main id="view"></main>
 </div>
 
-<footer><div class="wrap">Defema · <span id="footAddr"></span> · Seg a sex 8h–17h, sáb 8h–12h · Preços sujeitos a alteração.</div></footer>
+<footer><div class="wrap">Defema · <span id="footAddr"></span> · Seg a sex 8h–17h, sáb 8h–12h · Preços sujeitos a alteração.
+  <small class="disclaimer">Defensivos de venda livre no balcão. Produtos de uso profissional (venda restrita) só para empresas de controle de pragas e órgãos públicos, com autorização de engenheiro agrônomo. Leia sempre o rótulo.</small></div></footer>
 
 <a class="wa-float" id="waFloat" target="_blank" rel="noopener">
   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>
@@ -479,7 +481,7 @@ const LOJA = {
 /* ===== DEPARTAMENTOS ===== */
 const DEPS = {
   "Defensivos":  ["Inseticidas", "Carrapaticidas e mosquicidas", "Formicidas e lesmicidas", "Uso profissional"],
-  "Ferramentas": ["Ferramentas manuais", "Ferramentas elétricas", "Jardinagem", "Pulverizadores", "Roçadeiras e aparadores"],
+  "Ferramentas": ["Enxadas e enxadões", "Pás", "Cavadeiras", "Martelos e marretas", "Chaves", "Serrotes e facões", "Ferramentas manuais", "Ferramentas elétricas", "Jardinagem", "Pulverizadores", "Roçadeiras e aparadores"],
   "Sementes e mudas": ["Sementes de hortaliças", "Sementes de vegetais", "Bandeja 200 mudas", "Bandeja 128 mudas", "Mudas unitárias"],
   "Insumos":     ["Adubos", "Calcário", "Terras e substratos"],
   "Ferragens e EPIs": ["EPIs", "Cercas e arames", "Ferragens"]
@@ -515,18 +517,18 @@ const PRODUTOS = [
   {nome:"Lesmicida Metaldeído 5%", marca:"Kelldrin", dep:"Defensivos", sub:"Uso profissional", un:"Pacote 250 g", preco:null, restrito:true, novo:true, foto:"img/lesmicida-metaldeido-250g.jpg", descricao:"Moluscicida à base de metaldeído 5% contra lesmas e caracóis. Produto de venda restrita a instituições ou empresas especializadas."},
 
   /* Ferramentas */
-  {nome:"Enxada larga com cabo 145 cm", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo de madeira", preco:79.9, top:true, foto:"img/enxada-tramontina.jpg"},
-  {nome:"Cavadeira articulada", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabos de madeira", preco:99.9, antigo:114.9, foto:"img/cavadeira-articulada.jpg"},
-  {nome:"Pá de bico com cabo", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo longo de madeira", preco:64.9, foto:"img/pa-de-bico.jpg"},
-  {nome:"Pá quadrada com cabo", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo longo de madeira", preco:null, foto:"img/pa-quadrada-tramontina.jpg"},
+  {nome:"Enxada larga com cabo 145 cm", marca:"Tramontina", dep:"Ferramentas", sub:"Enxadas e enxadões", un:"Cabo de madeira", preco:79.9, top:true, foto:"img/enxada-tramontina.jpg"},
+  {nome:"Cavadeira articulada", dep:"Ferramentas", sub:"Cavadeiras", un:"Cabos de madeira", preco:99.9, antigo:114.9, foto:"img/cavadeira-articulada.jpg"},
+  {nome:"Pá de bico com cabo", dep:"Ferramentas", sub:"Pás", un:"Cabo longo de madeira", preco:64.9, foto:"img/pa-de-bico.jpg"},
+  {nome:"Pá quadrada com cabo", marca:"Tramontina", dep:"Ferramentas", sub:"Pás", un:"Cabo longo de madeira", preco:null, foto:"img/pa-quadrada-tramontina.jpg"},
   {nome:"Furadeira de impacto FIV 1050", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas elétricas", un:"Com fio · empunhadura auxiliar", preco:null, foto:"img/furadeira-vonder-fiv1050.jpg"},
   {nome:"Parafusadeira e furadeira a bateria", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas elétricas", un:"Com maleta, carregador, brocas e bits", preco:null, foto:"img/parafusadeira-vonder.jpg"},
-  {nome:"Enxadão duas caras", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Pá de um lado, corte do outro", preco:null, foto:"img/enxadao-duas-caras.jpg"},
-  {nome:"Enxada", marca:"Tane", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Sem cabo", preco:null, opcoes:["1 lb","1,5 lb","2 lb","2,5 lb"], opNome:"Peso", foto:"img/enxada-tane.jpg"},
+  {nome:"Enxadão duas caras", dep:"Ferramentas", sub:"Enxadas e enxadões", un:"Pá de um lado, corte do outro", preco:null, foto:"img/enxadao-duas-caras.jpg"},
+  {nome:"Enxada", marca:"Tane", dep:"Ferramentas", sub:"Enxadas e enxadões", un:"Sem cabo", preco:null, opcoes:["1 lb","1,5 lb","2 lb","2,5 lb"], opNome:"Peso", foto:"img/enxada-tane.jpg"},
   {nome:"Colher de pedreiro", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo de madeira", preco:null, foto:"img/colher-pedreiro-tramontina.jpg"},
-  {nome:"Marreta", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Marreta de mão · cabo de madeira", preco:null, foto:"img/paceta.jpg"},
-  {nome:"Chave de fenda", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\"","5/16\" × 8\""], opNome:"Tamanho", foto:"img/chave-fenda-vonder.jpg"},
-  {nome:"Chave Phillips", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\""], opNome:"Tamanho", foto:"img/chave-phillips-vonder.jpg"},
+  {nome:"Marreta hexagonal", dep:"Ferramentas", sub:"Martelos e marretas", un:"Sem cabo · cabo vendido à parte", preco:null, opcoes:["500 g","1 kg","1,5 kg","2 kg","3 kg","4 kg","5 kg","10 kg"], opNome:"Peso", foto:"img/paceta.jpg"},
+  {nome:"Chave de fenda", marca:"Vonder", dep:"Ferramentas", sub:"Chaves", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\"","5/16\" × 8\""], opNome:"Tamanho", foto:"img/chave-fenda-vonder.jpg"},
+  {nome:"Chave Phillips", marca:"Vonder", dep:"Ferramentas", sub:"Chaves", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\""], opNome:"Tamanho", foto:"img/chave-phillips-vonder.jpg"},
   {nome:"Mangueira trançada", marca:"Mantac", dep:"Ferramentas", sub:"Jardinagem", un:"Vendida por metro", preco:7.0, porMetro:true, foto:"img/mangueira-mantac.jpg"},
   {nome:"Cultivador de mão 3 dentes", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Cabo curto de madeira", preco:null, novo:true, foto:"img/cultivador-tramontina.jpg"},
   {nome:"Ancinho de jardim", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Com cabo", preco:44.9, ilu:["ancinho"]},
@@ -615,12 +617,12 @@ const PRODUTOS = [
   {nome:"Cadeado de latão", marca:"Pado", dep:"Ferragens e EPIs", sub:"Ferragens", un:"Com 2 chaves", preco:null, opcoes:["20 mm","25 mm","30 mm","35 mm","40 mm","45 mm","50 mm","60 mm"], opNome:"Tamanho", foto:"img/cadeado-pado.jpg"},
   {nome:"Cadeado de latão", marca:"Papaiz", dep:"Ferragens e EPIs", sub:"Ferragens", un:"Com 2 chaves", preco:null, opcoes:["20 mm","25 mm","30 mm","35 mm","40 mm","45 mm","50 mm","60 mm"], opNome:"Tamanho", foto:"img/cadeado-papaiz.jpg"},
   {nome:"Alicate universal", marca:"Gedore", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo isolado 1000 V", preco:null, foto:"img/alicate-gedore.jpg"},
-  {nome:"Martelo de unha", marca:"Vonder", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo de madeira", preco:null, opcoes:["25 mm","27 mm","29 mm"], opNome:"Tamanho", foto:"img/martelo-vonder.jpg"},
-  {nome:"Serrote", marca:"Irwin", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Linha profissional · cabo de madeira", preco:null, opcoes:["18\"","20\"","22\"","24\""], opNome:"Tamanho", foto:"img/serrote-irwin.jpg"},
-  {nome:"Serrote", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Uso geral · cabo de madeira", preco:null, opcoes:["16\"","18\"","20\"","22\"","24\""], opNome:"Tamanho", foto:"img/serrote-tramontina.jpg"},
-  {nome:"Facão", marca:"Corneta", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Lâmina de aço", preco:null, opcoes:["10\"","12\"","14\"","16\"","18\"","20\""], opNome:"Tamanho", foto:"img/facao-16.jpg"},
-  {nome:"Facão", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Lâmina de aço carbono · cabo de madeira", preco:null, opcoes:["12\"","14\"","16\""], opNome:"Tamanho", foto:"img/facao-tramontina.jpg"},
-  {nome:"Chave combinada", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Boca e estria · unitária", preco:null, opcoes:["6 mm","7 mm","8 mm","9 mm","10 mm","11 mm","12 mm","13 mm","14 mm","15 mm","16 mm","17 mm","18 mm","19 mm","20 mm","21 mm","22 mm","23 mm","24 mm","25 mm","26 mm","27 mm","28 mm","30 mm","32 mm"], opNome:"Medida", foto:"img/chave-combinada.jpg"},
+  {nome:"Martelo de unha", marca:"Vonder", dep:"Ferramentas", sub:"Martelos e marretas", un:"Cabo de madeira", preco:null, opcoes:["25 mm","27 mm","29 mm"], opNome:"Tamanho", foto:"img/martelo-vonder.jpg"},
+  {nome:"Serrote", marca:"Irwin", dep:"Ferramentas", sub:"Serrotes e facões", un:"Linha profissional · cabo de madeira", preco:null, opcoes:["18\"","20\"","22\"","24\""], opNome:"Tamanho", foto:"img/serrote-irwin.jpg"},
+  {nome:"Serrote", marca:"Tramontina", dep:"Ferramentas", sub:"Serrotes e facões", un:"Uso geral · cabo de madeira", preco:null, opcoes:["16\"","18\"","20\"","22\"","24\""], opNome:"Tamanho", foto:"img/serrote-tramontina.jpg"},
+  {nome:"Facão", marca:"Corneta", dep:"Ferramentas", sub:"Serrotes e facões", un:"Lâmina de aço", preco:null, opcoes:["10\"","12\"","14\"","16\"","18\"","20\""], opNome:"Tamanho", foto:"img/facao-16.jpg"},
+  {nome:"Facão", marca:"Tramontina", dep:"Ferramentas", sub:"Serrotes e facões", un:"Lâmina de aço carbono · cabo de madeira", preco:null, opcoes:["12\"","14\"","16\""], opNome:"Tamanho", foto:"img/facao-tramontina.jpg"},
+  {nome:"Chave combinada", dep:"Ferramentas", sub:"Chaves", un:"Boca e estria · unitária", preco:null, opcoes:["6 mm","7 mm","8 mm","9 mm","10 mm","11 mm","12 mm","13 mm","14 mm","15 mm","16 mm","17 mm","18 mm","19 mm","20 mm","21 mm","22 mm","23 mm","24 mm","25 mm","26 mm","27 mm","28 mm","30 mm","32 mm"], opNome:"Medida", foto:"img/chave-combinada.jpg"},
 ];
 /* ===== Mudas de bandeja =====
    Na loja: bandeja aberta vendida em lotes (10 mudas na de 200, 4 na de 128).
@@ -837,7 +839,7 @@ const DESC = {
   "Mangueira azul siliconada":"Mangueira siliconada azul, flexível e resistente, vendida por metro. Pergunte pelos engates e esguichos.",
   "Enxadão duas caras":"Enxadão com dois lados: um largo para cavar e outro estreito para cortar raízes e terra dura.",
   "Colher de pedreiro":"Colher de pedreiro Tramontina com cabo de madeira, para assentar tijolo e aplicar massa.",
-  "Marreta":"Marreta oitavada de mão (também chamada de paceta) com cabo de madeira, para quebrar, bater estaca, talhadeira e serviços de obra.",
+  "Marreta hexagonal":"Marreta hexagonal sem cabo, para quebrar pedra, bater estaca e serviços pesados. Escolha o peso. O cabo é vendido à parte.",
   "Chave de fenda":"Chave de fenda Vonder unitária, com haste cromada e cabo emborrachado. Escolha o tamanho.",
   "Chave Phillips":"Chave Phillips Vonder unitária, com haste cromada e cabo emborrachado. Escolha o tamanho.",
   "Martelo de unha":"Martelo de unha Vonder com cabo de madeira. Prega e arranca pregos. Escolha o tamanho da cabeça.",
@@ -1036,11 +1038,13 @@ function renderDeps(){
 }
 
 function viewInicio(){
-  const promos = PRODUTOS.filter(p=>p.antigo).sort((a,b)=>!!b.foto-!!a.foto);
-  const top = PRODUTOS.filter(p=>p.top).sort((a,b)=>!!b.foto-!!a.foto);
+  /* até 10 em cada bloco = duas fileiras de 5 no computador */
+  const promosTodas = PRODUTOS.filter(p=>p.antigo).sort((a,b)=>!!b.foto-!!a.foto);
+  const promos = promosTodas.slice(0,10);
+  const top = PRODUTOS.filter(p=>p.top).sort((a,b)=>!!b.foto-!!a.foto).slice(0,10);
   return `
   <section class="block">
-    <div class="sec-head"><h2>Promoções da semana</h2><span class="crumb">${promos.length} itens com desconto</span></div>
+    <div class="sec-head"><h2>Promoções da semana</h2><span class="crumb">${promosTodas.length} itens com desconto</span></div>
     ${grid(promos)}
   </section>
   <section class="block">
@@ -1059,7 +1063,7 @@ const SINONIMOS = {
   carrapato:"carrapaticida", mosca:"mosquicida", mosquito:"mosquicida mosquitos", gado:"bovinos carrapaticida", boi:"bovinos carrapaticida", vaca:"bovinos carrapaticida",
   escorpiao:"escorpioes", dedetizacao:"uso profissional ficam", dedetizadora:"uso profissional ficam",
   esterco:"humus adubo", cal:"calcario", adubo:"adubo npk", terra:"terra substrato humus",
-  semente:"sementes", paceta:"marreta", marreta:"marreta", muda:"mudas", foice:"ferramentas"
+  semente:"sementes", marreta:"marreta", muda:"mudas", foice:"ferramentas"
 };
 const PARADAS = new Set(["de","da","do","das","dos","pra","para","pro","com","e","a","o","as","os","um","uma","no","na"]);
 const semAcento = t => t.toLowerCase().replace(/(\d)\s*[x×]\s*(\d)/g,"$1x$2").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 ]/g," ");
@@ -1137,8 +1141,7 @@ function viewProdutos(){
   let parecidos = false;
   if(q){ const r = buscar(q, list); list = r.list; parecidos = r.parecidos; }
   const title = q ? (parecidos ? `Resultados parecidos com “${esc(q)}”` : `Resultados para “${esc(q)}”`) : state.sub || state.dep || "Todos os produtos";
-  const aviso = state.dep==="Defensivos"
-    ? `<div class="notice"><b>Venda livre no balcão, exceto os de uso profissional</b>Os produtos marcados como <b style="display:inline">Venda restrita</b> são vendidos somente a empresas de controle de pragas (dedetizadoras) e órgãos públicos, com autorização de engenheiro agrônomo. Consulte preço e disponibilidade pelo WhatsApp e leia sempre o rótulo.</div>` : "";
+  const aviso = "";
   return `<div class="crumb">Início › Produtos${state.dep?" › "+state.dep:""}${state.sub?" › "+state.sub:""}</div>
     <div class="sec-head"><h2>${title}</h2><span class="crumb">${list.length} produto${list.length===1?"":"s"}</span></div>
     ${aviso}${grid(list)}`;
