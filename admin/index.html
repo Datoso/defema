@@ -623,7 +623,7 @@ const blobParaDataURL = b => new Promise((ok, falha) => { const r = new FileRead
 /* ---------- Implementação DEMO (localStorage) ---------- */
 function criarApiDemo() {
   const CHAVE = "defema-admin-demo-v1", CHAVE_SESSAO = "defema-admin-demo-sessao";
-  const IMG_BASE = "../../site/img/";
+  const IMG_BASE = "../img/";
   let estado = null, sessao = lerJSON(CHAVE_SESSAO);
 
   function inicial() {
@@ -883,7 +883,10 @@ function criarApiSupabase(url, chave) {
 }
 
 const usarSupabase = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient);
-if (SUPABASE_URL && SUPABASE_ANON_KEY && !usarSupabase) console.warn("supabase-js não carregou; usando modo demonstração.");
+// Supabase configurado mas a biblioteca não carregou (internet ruim, bloqueador): NÃO cai no modo
+// demonstração, senão a loja edita dados de exemplo achando que está mexendo no site.
+const semBiblioteca = !!(SUPABASE_URL && SUPABASE_ANON_KEY && !usarSupabase);
+if (semBiblioteca) console.error("supabase-js não carregou; o painel não pode entrar.");
 const api = usarSupabase ? criarApiSupabase(SUPABASE_URL, SUPABASE_ANON_KEY) : criarApiDemo();
 
 /* =====================================================================
@@ -1479,6 +1482,14 @@ function ligarEventos() {
 /* ---------- INÍCIO ---------- */
 (async function iniciar() {
   ligarEventos();
+  if (semBiblioteca) {
+    mostrarTela("login");
+    const err = $("#loginErro");
+    err.textContent = "Não foi possível carregar o sistema de login. Verifique a internet e recarregue a página.";
+    err.hidden = false;
+    $("#btnEntrar").disabled = true;
+    return;
+  }
   if (api.modo === "demo") {
     $("#faixaDemo").hidden = false;
     $("#loginDica").innerHTML = "Modo demonstração: <b>qualquer e-mail e senha</b> entram.";
