@@ -8,6 +8,7 @@
 
 <meta name="robots" content="noindex, nofollow">
 <title>Painel Defema</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@600;700&family=Figtree:wght@400;500;600;700&display=swap">
@@ -100,7 +101,9 @@ button,input,select,textarea{font:inherit;color:inherit}
 .topo{background:var(--leaf);color:#fff;position:sticky;top:0;z-index:20;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top))}
 .topo-in{max-width:1100px;margin:0 auto;display:flex;align-items:center;gap:12px}
 .marca{display:flex;align-items:center;gap:10px;min-width:0;margin-right:auto}
-.marca-logo{width:38px;height:38px;border-radius:10px;background:var(--seed);color:var(--leaf-ink);display:grid;place-items:center;font:700 22px var(--display);flex:none}
+.marca-logo{width:44px;height:44px;border-radius:11px;background:#fff8e6;display:grid;place-items:center;flex:none;padding:3px;box-shadow:0 0 0 1px rgba(255,255,255,.25)}
+.marca-logo svg{width:100%;height:100%;display:block}
+.papel{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.16);color:#fff;border-radius:6px;padding:1px 7px;margin-top:2px}
 .marca h1{font-size:21px;color:#fff}
 .marca small{display:block;font-size:12px;opacity:.75;font-family:var(--body);font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .topo .so-largo{display:none}
@@ -357,9 +360,7 @@ html:has(dialog[open]){overflow:hidden}
   .dlg-pe .btn-pri{flex:0 0 220px}
   .dlg-pe [data-fechar]{min-width:140px}
 }
-@media (min-width:1600px){
-  .lista{grid-template-columns:repeat(auto-fill,minmax(380px,1fr))}
-}
+
 
 /* ---------- vistas (compacto / detalhado) ---------- */
 .resumo{display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -517,6 +518,19 @@ html:has(dialog[open]){overflow:hidden}
   #mNF{max-height:170px;overflow:auto}
 }
 
+/* ---------- grupos por departamento e ordenação ---------- */
+.grupo-tit{grid-column:1 / -1;display:flex;align-items:baseline;gap:10px;margin:14px 2px 0;padding-bottom:6px;border-bottom:2px solid var(--line)}
+.grupo-tit:first-child{margin-top:0}
+.grupo-tit h3{font-size:20px;color:var(--leaf-ink)}
+.grupo-tit span{font-size:13px;color:var(--muted)}
+.resumo .ordem{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);margin-left:auto}
+.resumo .ordem select{border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--fg);padding:6px 10px;font-weight:600;font-size:14px;cursor:pointer}
+@media (max-width:1023px){.resumo{flex-wrap:wrap}.resumo .ordem{margin-left:0}}
+@media (min-width:1024px){
+  .lista:not(.det){grid-template-columns:repeat(3,minmax(0,1fr))}
+  .resumo .vistas{margin-left:8px}
+}
+
 /* toast */
 .toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:100;display:grid;gap:8px;width:min(92vw,420px);pointer-events:none}
 .toast{background:#1b2a1f;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-weight:600;display:flex;gap:10px;align-items:center;animation:sobe .2s ease-out}
@@ -540,10 +554,10 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
 <header class="topo">
   <div class="topo-in">
     <div class="marca">
-      <div class="marca-logo" aria-hidden="true">D</div>
+      <div class="marca-logo" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="lgT" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a6a3e"/><stop offset="1" stop-color="#163a22"/></linearGradient><linearGradient id="lgC" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffef8"/><stop offset=".7" stop-color="#fff3cc"/><stop offset="1" stop-color="#ffe08a"/></linearGradient></defs><rect x="1" y="4" width="50" height="35" rx="5" fill="#163a22"/><rect x="5" y="8" width="42" height="27" rx="2.5" fill="url(#lgT)"/><path d="M9 14h20M9 19h14M9 24h12" stroke="#7fbf8c" stroke-width="2.4" stroke-linecap="round" opacity=".55"/><path d="M18 39h12l2 8H16z" fill="#163a22"/><rect x="10" y="46" width="28" height="4" rx="2" fill="#163a22"/><g transform="translate(26.6 27)"><path d="M1 25 A17 17 0 0 1 35 25 L28 33 H8 Z" fill="url(#lgC)" stroke="#2b2b2b" stroke-width="1.6" stroke-linejoin="round"/><path d="M1 25 H35" stroke="#2b2b2b" stroke-width="1.4"/><rect x="8" y="25" width="20" height="8" fill="#141414"/><g stroke="#e2404e" stroke-width="1.7" stroke-linecap="round"><path d="M8.6 22.2 5.2 21.4"/><path d="M10 18.6 7 16.8"/><path d="M12.6 15.6 10.4 13"/><path d="M16 13.8 15 10.6"/><path d="M20 13.8 21 10.6"/><path d="M23.4 15.6 25.6 13"/><path d="M26 18.6 29 16.8"/><path d="M27.4 22.2 30.8 21.4"/></g><path d="M18 25 V18.5" stroke="#23944a" stroke-width="2" stroke-linecap="round"/><path d="M18 19 C17 16 14.5 15 12.5 15.5 C13 18 15.5 19.5 18 19Z M18 19 C19 16 21.5 15 23.5 15.5 C23 18 20.5 19.5 18 19Z" fill="#23944a"/></g></svg></div>
       <div style="min-width:0">
         <h1>Painel Defema</h1>
-        <small id="usuarioTxt">Catálogo da loja</small>
+        <small id="usuarioTxt">Sistema da loja</small>
       </div>
     </div>
     <button class="btn btn-claro btn-ico" id="btnTema" type="button" aria-label="Mudar para modo escuro"><svg class="ico-lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="ico-sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
@@ -598,6 +612,9 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
       </div>
     </div>
     <div class="resumo"><span id="resumo" aria-live="polite"></span>
+      <label class="ordem"><span>Ordenar</span><select id="ordem">
+        <option value="az">Nome (A–Z)</option><option value="preco">Menor preço</option><option value="preco-desc">Maior preço</option>
+      </select></label>
       <div class="vistas" role="group" aria-label="Modo de exibição">
         <button type="button" data-vista="compacta" aria-pressed="true" title="Compacto: 4 por linha"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Compacto</button>
         <button type="button" data-vista="detalhe" aria-pressed="false" title="Detalhado: 2 colunas, 6 por página"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="4" width="7" height="7" rx="1.5"/><path d="M13 5.5h8M13 9.5h6"/><rect x="3" y="13" width="7" height="7" rx="1.5"/><path d="M13 14.5h8M13 18.5h6"/></svg>Detalhado</button>
@@ -1161,7 +1178,7 @@ function criarApiSupabase(url, chave) {
   async function verificarAdmin(user) {
     const { data, error } = await sb.from("administradores").select("user_id").eq("user_id", user.id).maybeSingle();
     if (error || !data) { await sb.auth.signOut(); throw new Error("Este usuário não está cadastrado como administrador da loja."); }
-    return { email: user.email };
+    return { email: user.email, papel: "admin" }; // só administradores entram no painel
   }
 
   async function garantirSub(depNome, subNome) {
@@ -1335,6 +1352,14 @@ const ui = { deps: [], produtos: [], filtro: { q: "", dep: "", chip: "todos" }, 
 function lerVista() { try { return localStorage.getItem("defema-admin-vista") === "detalhe" ? "detalhe" : "compacta"; } catch { return "compacta"; } }
 const mqLargo = window.matchMedia("(min-width:1024px)");
 const POR_PAGINA = 6;
+ui.ordem = (() => { try { return localStorage.getItem("defema-admin-ordem") || "az"; } catch { return "az"; } })();
+function compararOrdem(a, b) {
+  const nome = a.nome.localeCompare(b.nome, "pt-BR") || (a.marca || "").localeCompare(b.marca || "", "pt-BR");
+  if (ui.ordem === "az") return nome;
+  // preço: sem preço ("consultar") vai para o fim
+  if (a.preco == null || b.preco == null) return (a.preco == null) - (b.preco == null) || nome;
+  return (ui.ordem === "preco" ? a.preco - b.preco : b.preco - a.preco) || nome;
+}
 const vistaDetalhe = () => ui.vista === "detalhe" && mqLargo.matches;
 
 /* ---------- toasts ----------
@@ -1463,8 +1488,8 @@ function renderLista() {
   $("#chips").innerHTML = CHIPS.map(([id, rot, f]) =>
     `<button type="button" class="chip" data-chip="${id}" aria-pressed="${chip === id}"><span class="chip-rot">${rot}</span> <span class="n">${ui.produtos.filter(f).length}</span></button>`).join("");
   const filtroChip = CHIPS.find(c => c[0] === chip)[2];
-  const vis = base.filter(filtroChip).sort((a, b) =>
-    ordemDep(a.dep) - ordemDep(b.dep) || ordemSub(a.dep, a.sub) - ordemSub(b.dep, b.sub) || (a.ordem - b.ordem) || a.nome.localeCompare(b.nome, "pt-BR"));
+  const vis = base.filter(filtroChip).sort((a, b) => ordemDep(a.dep) - ordemDep(b.dep) || compararOrdem(a, b));
+  $("#ordem").value = ui.ordem;
   const filtros = [dep && `em ${dep}`, q.trim() && `buscando “${q.trim()}”`].filter(Boolean).join(", ");
   $("#resumo").textContent = (vis.length === ui.produtos.length ? `${vis.length} produtos` : `Mostrando ${vis.length} de ${ui.produtos.length} produtos`) + (filtros ? ` · ${filtros}` : "")
     + (parecidos ? " · nenhum resultado exato, mostrando parecidos" : "");
@@ -1477,7 +1502,17 @@ function renderLista() {
     return;
   }
   if (det) { renderDetalhe(vis); return; }
+  const porDep = new Map();
+  vis.forEach(p => porDep.set(p.dep, (porDep.get(p.dep) || 0) + 1));
+  let depAtual = null;
   $("#lista").innerHTML = vis.map(p => {
+    let cab = "";
+    if (p.dep !== depAtual) { depAtual = p.dep; cab = `<li class="grupo-tit"><h3>${esc(p.dep || "Sem departamento")}</h3><span>${porDep.get(p.dep)} produto${porDep.get(p.dep) === 1 ? "" : "s"}</span></li>`; }
+    return cab + linhaCompacta(p);
+  }).join("");
+}
+function linhaCompacta(p) {
+  return [p].map(p => {
     const tags = [];
     if (!p.ativo) tags.push('<span class="tag off">Inativo</span>');
     if (p.preco_antigo != null) tags.push(`<span class="tag promo">Promoção${p.preco != null && p.preco_antigo > p.preco ? " −" + Math.round((1 - p.preco / p.preco_antigo) * 100) + "%" : ""}</span>`);
@@ -1492,7 +1527,7 @@ function renderLista() {
         <span class="item-sub">${esc([p.marca, p.sub].filter(Boolean).join(" · "))}</span>
         ${tags.length ? `<span class="tags">${tags.join("")}</span>` : ""}</span>
       </button>${htmlAcoes(p)}</li>`;
-  }).join("");
+  })[0];
 }
 
 /* ---------- vista detalhada: 2 colunas, 6 por página, foto grande e todos os dados ---------- */
@@ -2104,7 +2139,9 @@ async function entrar(ev) {
   finally { $("#btnEntrar").disabled = false; $("#btnEntrar").textContent = "Entrar"; }
 }
 async function posLogin(sessao) {
-  $("#usuarioTxt").textContent = sessao?.email || "Catálogo da loja";
+  const papel = sessao?.papel === "user" ? "User" : "Admin";
+  $("#usuarioTxt").innerHTML = `<span class="papel">${papel}</span>${api.modo === "demo" ? " · demonstração" : ""}`;
+  $("#usuarioTxt").title = sessao?.email || "";
   mostrarTela("lista");
   try { await recarregar(); } catch (e) { toast(e.message || "Erro ao carregar.", "erro"); }
 }
@@ -2113,7 +2150,7 @@ async function posLogin(sessao) {
 function ligarEventos() {
   $("#formLogin").addEventListener("submit", entrar);
   $("#btnSair").addEventListener("click", async () => {
-    await api.sair(); $("#usuarioTxt").textContent = "Catálogo da loja"; $("#lSenha").value = "";
+    await api.sair(); $("#usuarioTxt").textContent = "Sistema da loja"; $("#usuarioTxt").title = ""; $("#lSenha").value = "";
     mostrarTela("login"); toast("Você saiu.");
   });
   let tBusca;
@@ -2132,6 +2169,11 @@ function ligarEventos() {
     $(`#paginas [aria-current="page"]`)?.focus();
   });
   mqLargo.addEventListener?.("change", renderLista);
+  $("#ordem").addEventListener("change", e => {
+    ui.ordem = e.target.value; ui.pagina = 1;
+    try { localStorage.setItem("defema-admin-ordem", ui.ordem); } catch {}
+    renderLista();
+  });
   $("#chips").addEventListener("click", e => {
     const b = e.target.closest("[data-chip]"); if (!b) return;
     ui.filtro.chip = b.dataset.chip === ui.filtro.chip ? "todos" : b.dataset.chip; ui.pagina = 1; renderLista();
