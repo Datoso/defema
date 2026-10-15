@@ -390,11 +390,20 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .card .acoes{margin-top:4px}
 }
 footer .disclaimer{display:block;margin-top:6px;font-size:.72rem;opacity:.75;line-height:1.4}
-/* nome ao lado do logo, no verde do logo (clareado para ler bem sobre o fundo escuro) */
-.brand .brand-nome{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:1.9rem;letter-spacing:.06em;line-height:1;
-  background:linear-gradient(180deg,#5fd88a 0%,#2fae5a 55%,#1f8f45 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 1px 0 rgba(0,0,0,.25))}
+/* nome ao lado do logo: em arco como no símbolo, verde em degradê com contorno creme */
+.brand{gap:16px}
+.brand .brand-nome{display:block;width:176px;height:auto;filter:drop-shadow(0 2px 3px rgba(0,0,0,.35));margin-left:2px}
 @media (max-width:640px){.brand .brand-nome{display:none}}
+/* Sobre: sem a coluna de departamentos; texto largo e mapa mais estreito */
+body.pg-sobre .layout{grid-template-columns:minmax(0,1fr)}
+body.pg-sobre .layout>div:first-child{display:none}
+body.pg-sobre main{grid-column:1/-1}
+.about{grid-template-columns:minmax(0,2fr) minmax(0,1fr);align-items:start}
+@media (max-width:860px){.about{grid-template-columns:1fr}}
+.about .sobre-txt{font-size:1.08rem;line-height:1.6;max-width:70ch}
+/* rodapé centralizado */
+footer .wrap{text-align:center}
+footer .disclaimer{max-width:900px;margin-left:auto;margin-right:auto}
 </style>
 </head>
 <body>
@@ -416,12 +425,12 @@ footer .disclaimer{display:block;margin-top:6px;font-size:.72rem;opacity:.75;lin
   <path id="arcoDefema" d="M57 112 A63 63 0 0 1 183 112" fill="none"/>
   <text font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="47" fill="#1f8f45" stroke="#1f8f45" stroke-width=".6"><textPath href="#arcoDefema" startOffset="50%" text-anchor="middle" textLength="194" lengthAdjust="spacing">DEFEMA</textPath></text>
 </svg></span>
-      <b class="brand-nome">DEFEMA</b>
+      <svg class="brand-nome" viewBox="0 0 230 62" role="img" aria-label="DEFEMA"><defs><linearGradient id="nomeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6fe39a"/><stop offset=".55" stop-color="#2fae5a"/><stop offset="1" stop-color="#1f8f45"/></linearGradient><path id="nomeArco" d="M8 50 Q115 28 222 50" fill="none"/></defs><text font-family="Arial,Helvetica,sans-serif" font-weight="800" font-size="38" letter-spacing="3" fill="url(#nomeGrad)" stroke="#fff3c9" stroke-width="2.4" paint-order="stroke" stroke-linejoin="round"><textPath href="#nomeArco" startOffset="50%" text-anchor="middle">DEFEMA</textPath></text></svg>
     </a>
     <nav class="main" aria-label="Principal">
       <a href="#inicio" data-go="inicio">Início</a>
       <a href="#produtos" data-go="produtos">Produtos</a>
-      <a href="#sobre" data-go="sobre">Sobre e contato</a>
+      <a href="#sobre" data-go="sobre">Sobre</a>
     </nav>
     <button class="tema-btn" id="btnTema" type="button" aria-label="Mudar para modo escuro"><svg class="ico-lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="ico-sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <form class="search" role="search" id="searchForm">
@@ -1158,10 +1167,7 @@ function viewSobre(){
   return `<div class="about">
     <div class="panel">
       <h2>Sobre a Defema</h2>
-      <p>A Defema, no centro de Pirapozinho, atende produtores rurais, sitiantes e quem cuida da horta em casa. Trabalhamos com inseticidas e carrapaticidas de venda livre (como K-Othrine, Butox, Triatox, Diazitop e Colosso), ferramentas Tramontina, pulverizadores Jacto, Brudden e Vonder, roçadeiras e aparadores de grama, sementes de hortaliças Isla, calcário, adubos Heringer, substrato Carolina Soil e mudas.</p>
-      <p>Aqui você conversa com quem conhece o campo: ajudamos a escolher o produto certo para cada cultura e a regular o pulverizador para a sua aplicação.</p>
-      <h2 style="margin-top:20px">Horário</h2>
-      <dl><dt>Seg a sex</dt><dd>8h às 17h</dd><dt>Sábado</dt><dd>8h às 12h</dd><dt>Domingo</dt><dd>Fechado</dd></dl>
+      <p class="sobre-txt">A Defema é uma loja tradicional, localizada no centro de Pirapozinho, que atende produtores rurais, sitiantes e quem cuida da horta em casa. Trabalhamos com vários tipos de produtos.</p>
     </div>
     <div class="panel">
       <h2>Contato e localização</h2>
@@ -1170,6 +1176,7 @@ function viewSobre(){
         <dt>Telefone</dt><dd><a class="link" href="tel:+55${LOJA.telefone.replace(/\D/g,"")}">${LOJA.telefone}</a></dd>
         ${LOJA.email?`<dt>E-mail</dt><dd><a class="link" href="mailto:${LOJA.email}">${LOJA.email}</a></dd>`:""}
         <dt>Endereço</dt><dd>${LOJA.endereco}</dd>
+        <dt>Horário</dt><dd>Seg a sex 8h às 17h · Sáb 8h às 12h</dd>
       </dl>
       <div class="map">
         <svg viewBox="0 0 400 220" role="img" aria-label="Mapa da localização da loja">
