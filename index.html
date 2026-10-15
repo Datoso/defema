@@ -6,6 +6,8 @@
 <title>Defema</title>
 <meta name="description" content="Defensivos, fertilizantes, ferramentas, sementes e mudas em Pirapozinho/SP. Veja os produtos e faça seu pedido pelo WhatsApp.">
 <meta name="theme-color" content="#163a22">
+<script>(function(){var t=null;try{t=localStorage.getItem("defema-tema")}catch(e){}var m=window.matchMedia&&matchMedia("(prefers-color-scheme: dark)");document.documentElement.setAttribute("data-theme",t||(m&&m.matches?"dark":"light"))})();</script>
+
 <!-- Prévia do link (WhatsApp, Facebook etc.). Quando o site tiver domínio próprio, troque og:image e og:url pelo endereço completo, ex.: https://www.defema.com.br/og.png -->
 <meta property="og:type" content="website">
 <meta property="og:locale" content="pt_BR">
@@ -61,6 +63,11 @@ nav.main{display:flex;gap:4px;margin-left:auto}
 nav.main a{padding:8px 12px;border-radius:6px;text-decoration:none;font-weight:600}
 nav.main a:hover,nav.main a[aria-current="page"]{background:rgba(255,255,255,.12)}
 nav.main a[aria-current="page"]{box-shadow:inset 0 -3px 0 #f7dc94}
+.tema-btn{all:unset;box-sizing:border-box;cursor:pointer;width:38px;height:38px;border-radius:8px;display:grid;place-items:center;color:#f2f6ee;flex:0 0 auto;-webkit-tap-highlight-color:transparent}
+.tema-btn:hover{background:rgba(255,255,255,.12)}
+.tema-btn:focus-visible{outline:2px solid var(--seed);outline-offset:2px}
+.tema-btn svg{width:21px;height:21px}
+[data-theme="dark"] .ico-lua,:root:not([data-theme="dark"]) .ico-sol{display:none}
 .search{flex:1 1 220px;max-width:320px;display:flex}
 .search input{width:100%;border:0;border-radius:6px;padding:9px 12px;font:inherit;background:#fff;color:#1f2a1c}
 .search input:focus{outline:3px solid var(--seed)}
@@ -236,6 +243,7 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.88rem;padd
   .hero svg{display:none}
   .about{grid-template-columns:1fr}
   nav.main{margin-left:0;order:3;width:100%}
+  .tema-btn{order:5}
   .search{order:4;max-width:none}
 }
 @media (max-width:480px){
@@ -257,8 +265,9 @@ footer{border-top:1px solid var(--line);color:var(--muted);font-size:.88rem;padd
   .logo{padding:2px 5px;border-radius:8px}
   .logo-svg{width:64px}
   nav.main{order:2;width:auto;margin-left:auto;gap:0}
+  .tema-btn{order:4;width:38px;height:38px}
   nav.main a{padding:6px 7px;font-size:.84rem}
-  .search{order:3;flex-basis:100%}
+  .search{order:3;flex:1 1 calc(100% - 48px);min-width:0}
   .search input{padding:8px 10px}
   .layout{gap:12px;padding-block:12px 70px}
   .btn.dep-toggle{padding:8px 12px;font-size:.88rem}
@@ -381,6 +390,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
       <a href="#produtos" data-go="produtos">Produtos</a>
       <a href="#sobre" data-go="sobre">Sobre e contato</a>
     </nav>
+    <button class="tema-btn" id="btnTema" type="button" aria-label="Mudar para modo escuro"><svg class="ico-lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="ico-sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <form class="search" role="search" id="searchForm">
       <label for="q" hidden>Buscar produto</label>
       <svg class="lupa" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="m15.5 15.5 5 5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg>
@@ -1208,6 +1218,27 @@ if(TEM_SUPABASE){
     ultimaBusca = Date.now(); buscarCatalogo();
   });
 }
+
+/* ---------- Modo escuro: botão no topo, escolha salva neste aparelho ---------- */
+(function(){
+  const raiz = document.documentElement, btn = document.getElementById("btnTema");
+  const mq = window.matchMedia ? matchMedia("(prefers-color-scheme: dark)") : null;
+  const salvo = () => { try { return localStorage.getItem("defema-tema"); } catch(e) { return null; } };
+  function marcar(){
+    const escuro = raiz.getAttribute("data-theme") === "dark";
+    const txt = escuro ? "Mudar para modo claro" : "Mudar para modo escuro";
+    btn.setAttribute("aria-label", txt); btn.title = txt; btn.setAttribute("aria-pressed", escuro);
+    const cor = document.querySelector('meta[name="theme-color"]'); if (cor) cor.content = escuro ? "#0f2618" : "#163a22";
+  }
+  btn.addEventListener("click", () => {
+    const novo = raiz.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    raiz.setAttribute("data-theme", novo);
+    try { localStorage.setItem("defema-tema", novo); } catch(e) {}
+    marcar();
+  });
+  if (mq && mq.addEventListener) mq.addEventListener("change", e => { if (!salvo()) { raiz.setAttribute("data-theme", e.matches ? "dark" : "light"); marcar(); } });
+  marcar();
+})();
 </script>
 </body>
 </html>
