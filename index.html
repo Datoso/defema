@@ -366,6 +366,29 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .thumb .badge,.thumb [class^="b-"]{font-size:.55rem;padding:2px 4px}
   .thumb .b-consulta{display:none}
 }
+
+/* ===== Computador grande (1440px+): mais largo, 5 por linha, 2 linhas inteiras na tela ===== */
+.thumb,.thumb *{cursor:pointer}
+.thumb img{-webkit-user-drag:none;user-select:none}
+@media (min-width:1440px){
+  .wrap{max-width:1780px;padding-left:40px;padding-right:40px}
+  .layout{grid-template-columns:270px minmax(0,1fr);gap:32px;padding-block:16px 72px}
+  section.block{margin-top:26px}
+  section.block:first-child{margin-top:0}
+  .sec-head{margin-bottom:12px}
+  .grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:16px}
+  .card .thumb{aspect-ratio:auto;height:176px;overflow:hidden}
+  .card .thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:10px}
+  .card .thumb>svg{max-height:160px;max-width:80%}
+  .card .thumb .badge,.card .thumb .ilu-tag{z-index:1}
+  .card .cat{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .card-body{padding:10px 14px 12px;gap:4px}
+  .card h3{font-size:1rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card .unit{display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
+  .card .price{padding-top:4px}
+  .card .btn-add{padding:9px 10px;white-space:nowrap}
+  .card .acoes{margin-top:4px}
+}
 </style>
 </head>
 <body>
