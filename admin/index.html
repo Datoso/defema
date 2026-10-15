@@ -332,7 +332,7 @@ html:has(dialog[open]){overflow:hidden}
   dialog .toasts{bottom:90px}
 
   /* diálogos largos */
-  dialog{width:min(1180px,92vw);max-height:90vh}
+  dialog{width:min(1180px,92vw);max-height:90vh;height:fit-content}
   #dlgReajuste,#dlgDeps{width:min(820px,92vw)}
   #dlgMudas{width:min(1100px,92vw)}
   .ed-grade{display:grid;grid-template-columns:340px minmax(0,1fr);gap:18px;align-items:start;padding:20px 22px}
@@ -400,6 +400,64 @@ html:has(dialog[open]){overflow:hidden}
   .paginas button[disabled]{opacity:.4;cursor:default}
   .pag-gap{color:var(--muted);padding:0 4px}
   .pag-info{margin-left:auto;color:var(--muted);font-size:14px}
+}
+
+/* ---------- preço: ajuste ±5% e desconto ---------- */
+.preco-linha{display:flex;gap:6px;align-items:stretch}
+.preco-linha .preco-box{flex:1;min-width:0}
+.ajuste{display:flex;gap:4px;flex:none}
+.ajuste button{min-width:52px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);font-weight:700;font-size:13px;cursor:pointer;color:var(--fg);font-variant-numeric:tabular-nums}
+.ajuste button:hover{border-color:var(--leaf-ink);color:var(--leaf-ink)}
+.ajuste button[data-pct="-5"]{color:var(--promo)}
+.promo-prev{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+@media (max-width:1023px){
+  .preco-linha{flex-wrap:wrap}
+  .ajuste{width:100%}
+  .ajuste button{flex:1;min-height:36px}
+}
+.promo-prev .pct{font-size:20px;color:var(--promo);font-variant-numeric:tabular-nums}
+.promo-prev.ruim{background:var(--soil-soft);border-color:var(--line);color:var(--soil)}
+.promo-prev.ruim .pct{font-size:15px;color:var(--soil)}
+
+/* editor compacto no computador: tudo numa tela só */
+@media (min-width:1024px){
+  #dlgEditor{max-height:96vh}
+  .ed-grade{padding:10px 18px;gap:14px;grid-template-columns:380px minmax(0,1fr)}
+  .ed-grade .secao{padding:12px 14px 2px;margin-bottom:10px}
+  .ed-grade .secao>h3{font-size:16px;margin-bottom:8px}
+  .ed-grade .campo{margin-bottom:10px;gap:4px}
+  .ed-grade .campo>label{font-size:14px}
+  .ed-grade .inp{min-height:42px;padding:8px 12px;font-size:15px}
+  .ed-grade .preco-box .inp{padding-left:40px}
+  .ed-grade textarea.inp{min-height:58px}
+  .ed-grade .foto-area{grid-template-columns:150px minmax(0,1fr);gap:12px}
+  .ed-grade .foto-prev{max-width:none;margin:0}
+  .ed-grade .foto-btns{grid-template-columns:1fr}
+  .ed-grade .foto-btns .btn{min-height:38px}
+  .ed-grade .foto-btns .check-mini{min-height:28px;font-size:13px}
+  .ed-grade #fotoDica{display:none}
+  .ed-grade .chaves{grid-template-columns:1fr 1fr;gap:6px}
+  .ed-grade .chave{min-height:44px;padding:6px 10px;gap:8px}
+  .ed-grade .chave .sw{width:40px;height:24px}
+  .ed-grade .chave .sw::after{width:18px;height:18px}
+  .ed-grade .chave input:checked + .sw::after{transform:translateX(16px)}
+  .ed-grade .chave small{display:none}
+  .ed-grade .chave b{font-size:14px}
+  .ed-grade #chaveAtivo{grid-column:1 / -1}
+  .ed-grade #chaveAtivo small{display:block}
+  .ed-grade .link-btn{padding-bottom:10px}
+  .ed-grade .bloco-opcoes{padding:10px 10px 0;margin-bottom:10px}
+  .ed-grade .bloco-opcoes .campo{flex-direction:row;align-items:center;gap:10px}
+  .ed-grade .bloco-opcoes .campo>label{white-space:nowrap}
+  .ed-grade .bloco-opcoes .opcoes{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:6px;margin-bottom:8px}
+  .ed-grade .bloco-opcoes .opcao [data-mover]{display:none}
+  .ed-grade .bloco-opcoes .opcao .inp{min-height:36px;padding:4px 8px;font-size:14px}
+  .ed-grade .bloco-opcoes .opcao .btn-ico{width:32px;min-height:32px}
+  .ed-grade #btnAddOpcao{min-height:36px;padding:4px 12px;margin-bottom:10px !important}
+  .ed-grade #ePrecoDica{display:none}
+  .ed-grade .promo-prev{margin:0 0 10px;padding:8px 12px}
+  .dlg-topo{padding:8px 12px 8px 18px}
+  .dlg-pe{padding:10px 18px}
 }
 
 /* toast */
@@ -603,11 +661,11 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <div class="grade2">
           <div class="campo">
             <label for="ePreco" id="ePrecoRot">Preço</label>
-            <div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="ePreco" inputmode="decimal" placeholder="Consultar" autocomplete="off" aria-describedby="ePrecoDica ePrecoErro"></div>
+            <div class="preco-linha"><div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="ePreco" inputmode="decimal" placeholder="Consultar" autocomplete="off" aria-describedby="ePrecoDica ePrecoErro"></div><div class="ajuste" role="group" aria-label="Ajustar 5%"><button type="button" data-ajuste="ePreco" data-pct="-5" aria-label="Diminuir 5%">−5%</button><button type="button" data-ajuste="ePreco" data-pct="5" aria-label="Aumentar 5%">+5%</button></div></div>
           </div>
           <div class="campo">
             <label for="eAntigo">Preço antigo (“de”)</label>
-            <div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="eAntigo" inputmode="decimal" placeholder="—" autocomplete="off" aria-describedby="ePrecoDica ePrecoErro"></div>
+            <div class="preco-linha"><div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="eAntigo" inputmode="decimal" placeholder="—" autocomplete="off" aria-describedby="ePrecoDica ePrecoErro"></div><div class="ajuste" role="group" aria-label="Ajustar 5%"><button type="button" data-ajuste="eAntigo" data-pct="-5" aria-label="Diminuir 5%">−5%</button><button type="button" data-ajuste="eAntigo" data-pct="5" aria-label="Aumentar 5%">+5%</button></div></div>
           </div>
         </div>
         <p class="dica" id="ePrecoDica" style="margin:-6px 0 12px">Preço vazio = “Consultar preço”. Preencha o preço antigo para mostrar como <b>promoção</b>.</p>
@@ -615,7 +673,7 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <div class="promo-prev" id="promoPrev" hidden></div>
         <div class="campo" id="campoBandeja" hidden>
           <label for="eBandeja" id="eBandejaRot">Preço da bandeja fechada (encomenda)</label>
-          <div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="eBandeja" inputmode="decimal" placeholder="Consultar" autocomplete="off" aria-describedby="eBandejaDica ePrecoErro"></div>
+          <div class="preco-linha"><div class="preco-box"><span aria-hidden="true">R$</span><input class="inp" id="eBandeja" inputmode="decimal" placeholder="Consultar" autocomplete="off" aria-describedby="eBandejaDica ePrecoErro"></div><div class="ajuste" role="group" aria-label="Ajustar 5%"><button type="button" data-ajuste="eBandeja" data-pct="-5" aria-label="Diminuir 5%">−5%</button><button type="button" data-ajuste="eBandeja" data-pct="5" aria-label="Aumentar 5%">+5%</button></div></div>
           <p class="dica" id="eBandejaDica" style="margin:6px 0 0">No site aparece como opção “Bandeja fechada”, por encomenda (chega na semana seguinte). Vazio = consultar.</p>
         </div>
       </div>
@@ -1583,9 +1641,15 @@ async function refazerFoto() {
 function atualizarPromo() {
   const p = lerPreco($("#ePreco").value), a = lerPreco($("#eAntigo").value);
   const box = $("#promoPrev");
-  if (p != null && a != null && !isNaN(p) && !isNaN(a) && a > p) {
-    const pct = Math.round((1 - p / a) * 100);
-    box.innerHTML = `Promoção no site: de <s>${moeda(a)}</s> por <b>${moeda(p)}</b> (−${pct}%)`;
+  const ok = v => v != null && !Number.isNaN(v);
+  box.classList.remove("ruim");
+  if (ok(p) && ok(a) && a > p) {
+    const pct = (1 - p / a) * 100;
+    box.innerHTML = `<b class="pct">−${pct.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%</b><span>de desconto · no site: de <s>${moeda(a)}</s> por <b>${moeda(p)}</b> (economia de ${moeda(r2(a - p))})</span>`;
+    box.hidden = false;
+  } else if (ok(p) && ok(a)) {
+    box.classList.add("ruim");
+    box.innerHTML = `<b class="pct">Sem promoção</b><span>o preço antigo (${moeda(a)}) precisa ser maior que o atual (${moeda(p)}).</span>`;
     box.hidden = false;
   } else box.hidden = true;
 }
@@ -1925,6 +1989,14 @@ function ligarEventos() {
   });
   $("#eNome").addEventListener("input", () => { $("#eNome").removeAttribute("aria-invalid"); $("#eNomeErro").hidden = true; });
   $("#eAtivo").addEventListener("change", atualizarAtivo);
+  $("#formEditor").addEventListener("click", e => {
+    const b = e.target.closest("[data-ajuste]"); if (!b) return;
+    const inp = document.getElementById(b.dataset.ajuste), v = lerPreco(inp.value);
+    if (v == null || Number.isNaN(v)) { toast("Digite o preço primeiro.", "erro"); inp.focus(); return; }
+    inp.value = num2(r2(v * (1 + Number(b.dataset.pct) / 100)));
+    inp.removeAttribute("aria-invalid"); $("#ePrecoErro").hidden = true;
+    atualizarPromo();
+  });
   $("#btnMostrarOpcoes").addEventListener("click", () => {
     mostrarOpcoes(true);
     if (!ed.opcoes.length) { ed.opcoes.push(""); renderOpcoes(); }
