@@ -623,7 +623,7 @@ const blobParaDataURL = b => new Promise((ok, falha) => { const r = new FileRead
 /* ---------- Implementação DEMO (localStorage) ---------- */
 function criarApiDemo() {
   const CHAVE = "defema-admin-demo-v1", CHAVE_SESSAO = "defema-admin-demo-sessao";
-  const IMG_BASE = "../../site/img/";
+  const IMG_BASE = "../img/";
   let estado = null, sessao = lerJSON(CHAVE_SESSAO);
 
   function inicial() {
@@ -752,6 +752,7 @@ function criarApiSupabase(url, chave) {
   const BUCKET = "produtos";
   const urlFoto = path => !path ? null : /^https?:/.test(path) ? path : sb.storage.from(BUCKET).getPublicUrl(path.replace(/^produtos\//, "")).data.publicUrl;
   let deps = [];
+  const NAO_GRAVOU = "A alteração não foi gravada no site. Saia e entre novamente com um usuário administrador.";
   const falhou = (error, msg) => {
     if (!error) return;
     console.error(error);
@@ -853,8 +854,10 @@ function criarApiSupabase(url, chave) {
       if (fotoPath && !/^https?:/.test(fotoPath)) sb.storage.from(BUCKET).remove([fotoPath.replace(/^produtos\//, "")]).catch(() => {});
     },
     async atualizarCampos(id, campos) {
-      const { error } = await sb.from("produtos").update(campos).eq("id", id);
+      // .select() devolve as linhas alteradas: se a RLS barrar, vem vazio SEM erro
+      const { data, error } = await sb.from("produtos").update(campos).eq("id", id).select("id");
       falhou(error, "Não foi possível salvar.");
+      if (!data || !data.length) throw new Error(NAO_GRAVOU);
     },
     async salvarDepartamento({ id, nome, info }) {
       const r = id ? await sb.from("departamentos").update({ nome, info: info || null }).eq("id", id)
@@ -873,8 +876,9 @@ function criarApiSupabase(url, chave) {
       let n = 0;
       for (let i = 0; i < alteracoes.length; i += 8) {
         const lote = alteracoes.slice(i, i + 8);
-        const rs = await Promise.all(lote.map(a => sb.from("produtos").update({ preco: a.preco, preco_antigo: a.preco_antigo }).eq("id", a.id)));
+        const rs = await Promise.all(lote.map(a => sb.from("produtos").update({ preco: a.preco, preco_antigo: a.preco_antigo }).eq("id", a.id).select("id")));
         rs.forEach(r => falhou(r.error, `Reajuste interrompido após ${n} produto(s).`));
+        if (rs.some(r => !r.data || !r.data.length)) throw new Error(`Reajuste interrompido após ${n} produto(s). ` + NAO_GRAVOU);
         n += lote.length;
       }
       return n;
@@ -883,7 +887,10 @@ function criarApiSupabase(url, chave) {
 }
 
 const usarSupabase = !!(SUPABASE_URL && SUPABASE_ANON_KEY && window.supabase && window.supabase.createClient);
-if (SUPABASE_URL && SUPABASE_ANON_KEY && !usarSupabase) console.warn("supabase-js não carregou; usando modo demonstração.");
+// Supabase configurado mas a biblioteca não carregou (internet ruim, bloqueador): NÃO cai no modo
+// demonstração, senão a loja edita dados de exemplo achando que está mexendo no site.
+const semBiblioteca = !!(SUPABASE_URL && SUPABASE_ANON_KEY && !usarSupabase);
+if (semBiblioteca) console.error("supabase-js não carregou; o painel não pode entrar.");
 const api = usarSupabase ? criarApiSupabase(SUPABASE_URL, SUPABASE_ANON_KEY) : criarApiDemo();
 
 /* =====================================================================
@@ -1479,6 +1486,14 @@ function ligarEventos() {
 /* ---------- INÍCIO ---------- */
 (async function iniciar() {
   ligarEventos();
+  if (semBiblioteca) {
+    mostrarTela("login");
+    const err = $("#loginErro");
+    err.textContent = "Não foi possível carregar o sistema de login. Verifique a internet e recarregue a página.";
+    err.hidden = false;
+    $("#btnEntrar").disabled = true;
+    return;
+  }
   if (api.modo === "demo") {
     $("#faixaDemo").hidden = false;
     $("#loginDica").innerHTML = "Modo demonstração: <b>qualquer e-mail e senha</b> entram.";
