@@ -63,6 +63,9 @@ nav.main{display:flex;gap:4px;margin-left:auto}
 nav.main a{padding:8px 12px;border-radius:6px;text-decoration:none;font-weight:600}
 nav.main a:hover,nav.main a[aria-current="page"]{background:rgba(255,255,255,.12)}
 nav.main a[aria-current="page"]{box-shadow:inset 0 -3px 0 #f7dc94}
+.enc-preco{display:block;font-size:.78rem;color:var(--muted);margin-top:2px}
+.enc-aviso{margin:0 0 8px;font-size:.78rem;line-height:1.3;background:var(--warn-bg);border:1px solid var(--warn-line);color:var(--fg);border-radius:8px;padding:6px 8px}
+.enc-tag{font-style:normal;color:var(--soil);font-weight:600}
 .tema-btn{all:unset;box-sizing:border-box;cursor:pointer;width:38px;height:38px;border-radius:8px;display:grid;place-items:center;color:#f2f6ee;flex:0 0 auto;-webkit-tap-highlight-color:transparent}
 .tema-btn:hover{background:rgba(255,255,255,.12)}
 .tema-btn:focus-visible{outline:2px solid var(--seed);outline-offset:2px}
@@ -122,7 +125,7 @@ section.block{margin-top:36px}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden;display:flex;flex-direction:column}
-.thumb{aspect-ratio:1/1;display:grid;place-items:center;position:relative;border:0;padding:0;width:100%;cursor:zoom-in;font:inherit}
+.thumb{aspect-ratio:1/1;display:grid;place-items:center;position:relative;border:0;padding:0;width:100%;cursor:pointer;font:inherit}
 .thumb:focus-visible,.ver-tit:focus-visible{outline:3px solid var(--leaf-2);outline-offset:-3px}
 .ver-tit{all:unset;cursor:pointer;color:inherit}
 .ver-tit:hover{color:var(--leaf-2);text-decoration:underline;text-underline-offset:3px}
@@ -558,18 +561,18 @@ const PRODUTOS = [
   {nome:"Húmus de minhoca", dep:"Insumos", sub:"Terras e substratos", un:"Saco 25 kg", preco:34.9, antigo:39.9, ilu:["saco","HÚMUS DE|MINHOCA","#6b4a2f","#3a281b"]},
 
   /* Mudas */
-{nome:"Muda de alface crespa Vanda", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","alface",200]},
-  {nome:"Muda de alface americana", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","americana",200]},
-  {nome:"Muda de rúcula", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","rucula",200]},
-  {nome:"Muda de coentro", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","coentro",200]},
-  {nome:"Muda de salsa", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","salsa",200]},
-  {nome:"Muda de cebolinha", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","cebolinha",200]},
-  {nome:"Muda de almeirão Pão de Açúcar", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:40.0, ilu:["bandeja","almeirao",200]},
-  {nome:"Muda de pimentão híbrido Magali", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","pimentao",128]},
-  {nome:"Muda de berinjela Napoli", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
-  {nome:"Muda de berinjela japonesa", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","berinjela",128]},
-  {nome:"Muda de couve manteiga", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","couve",128]},
-  {nome:"Muda de jiló", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:60.0, ilu:["bandeja","jilo",128]},
+{nome:"Muda de alface crespa Vanda", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:2.0, precoBandeja:40.0, ilu:["bandeja","alface",200]},
+  {nome:"Muda de alface americana", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:2.0, precoBandeja:40.0, ilu:["bandeja","americana",200]},
+  {nome:"Muda de rúcula", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:2.0, precoBandeja:40.0, ilu:["bandeja","rucula",200]},
+  {nome:"Muda de coentro", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:2.0, precoBandeja:40.0, ilu:["bandeja","coentro",200]},
+  {nome:"Muda de salsa", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:2.0, precoBandeja:40.0, ilu:["bandeja","salsa",200]},
+  {nome:"Muda de cebolinha", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:2.0, precoBandeja:40.0, ilu:["bandeja","cebolinha",200]},
+  {nome:"Muda de almeirão Pão de Açúcar", dep:"Sementes e mudas", sub:"Bandeja 200 mudas", un:"Bandeja com 200 mudas", preco:2.0, precoBandeja:40.0, ilu:["bandeja","almeirao",200]},
+  {nome:"Muda de pimentão híbrido Magali", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:1.9, precoBandeja:60.0, ilu:["bandeja","pimentao",128]},
+  {nome:"Muda de berinjela Napoli", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:1.9, precoBandeja:60.0, ilu:["bandeja","berinjela",128]},
+  {nome:"Muda de berinjela japonesa", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:1.9, precoBandeja:60.0, ilu:["bandeja","berinjela",128]},
+  {nome:"Muda de couve manteiga", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:1.9, precoBandeja:60.0, ilu:["bandeja","couve",128]},
+  {nome:"Muda de jiló", dep:"Sementes e mudas", sub:"Bandeja 128 mudas", un:"Bandeja com 128 mudas", preco:1.9, precoBandeja:60.0, ilu:["bandeja","jilo",128]},
   {nome:"Muda de pimenta malagueta", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","malagueta"]},
   {nome:"Muda de pimenta dedo-de-moça", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Muda pequena, tamanho de bandeja", preco:1.0, ilu:["vaso","dedo"]},
   {nome:"Muda de café", dep:"Sementes e mudas", sub:"Mudas unitárias", un:"Tubete plástico de ~15 cm", preco:7.0, ilu:["vaso","cafe"]},
@@ -596,6 +599,23 @@ const PRODUTOS = [
   {nome:"Facão", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Lâmina de aço carbono · cabo de madeira", preco:null, opcoes:["12\"","14\"","16\""], opNome:"Tamanho", foto:"img/facao-tramontina.jpg"},
   {nome:"Chave combinada", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Boca e estria · unitária", preco:null, opcoes:["6 mm","7 mm","8 mm","9 mm","10 mm","11 mm","12 mm","13 mm","14 mm","15 mm","16 mm","17 mm","18 mm","19 mm","20 mm","21 mm","22 mm","23 mm","24 mm","25 mm","26 mm","27 mm","28 mm","30 mm","32 mm"], opNome:"Medida", foto:"img/chave-combinada.jpg"},
 ];
+/* ===== Mudas de bandeja =====
+   Na loja: bandeja aberta vendida em lotes (10 mudas na de 200, 4 na de 128).
+   Bandeja fechada só por encomenda (chega na semana seguinte). preco = lote; precoBandeja = bandeja. */
+const TAM_BANDEJA = p => { const m = /^Bandeja (\d+) mudas$/.exec(p.sub||""); return m ? +m[1] : 0; };
+const OP_BANDEJA = "Bandeja fechada";
+function prepararMuda(p){
+  const t = TAM_BANDEJA(p); if(!t || p.bandeja) return p;
+  p.bandeja = t; p.lote = t===128 ? 4 : 10;
+  if(p.precoBandeja===undefined) p.precoBandeja = null;
+  p.opcoes = [`${p.lote} mudas`, `${OP_BANDEJA} (${t})`];
+  p.opNome = "Quantidade";
+  p.un = `Vendemos de ${p.lote} em ${p.lote} · bandeja com ${t}`;
+  return p;
+}
+const ehEncomenda = (p, op) => !!(p.bandeja && op && op.startsWith(OP_BANDEJA));
+const precoDe = (p, op) => ehEncomenda(p, op) ? (p.precoBandeja ?? null) : p.preco;
+PRODUTOS.forEach(prepararMuda);
 PRODUTOS.forEach((p,i)=>p.id=i);
 
 /* ===== CATÁLOGO ONLINE (Supabase) =====
@@ -609,6 +629,7 @@ const EMBUTIDO = { PRODUTOS: PRODUTOS.slice(), DEPS: {...DEPS}, DEP_INFO: {...DE
    Devolve true se algo mudou. */
 function trocarCatalogo(d){
   if(!d || !d.PRODUTOS || !d.PRODUTOS.length) return false;
+  d.PRODUTOS.forEach(prepararMuda);
   if(assinaturaCatalogo(d) === assinaturaCatalogo({PRODUTOS, DEPS, DEP_INFO})) return false;
   PRODUTOS.splice(0, PRODUTOS.length, ...d.PRODUTOS);
   PRODUTOS.forEach((p,i)=>p.id=i);
@@ -817,7 +838,7 @@ function descricao(p){
   if(DESC[p.nome]) return DESC[p.nome];
   if(NPK[p.nome]) return `Adubo mineral NPK. Os números são as porcentagens de nitrogênio (N), fósforo (P) e potássio (K). ${NPK[p.nome]}`;
   if(/^Sementes de/.test(p.sub) || p.dep==="Sementes") return "Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.";
-  if(p.sub==="Bandeja 200 mudas"||p.sub==="Bandeja 128 mudas") return `Bandeja com ${p.sub.match(/\d+/)[0]} mudas prontas para transplante para o canteiro ou para o vaso. Retire na loja.`;
+  if(p.bandeja) return `Mudas prontas para transplante para o canteiro ou para o vaso. Na loja vendemos de ${p.lote} em ${p.lote} mudas. A bandeja fechada com ${p.bandeja} mudas é por encomenda: chega na semana seguinte, junto com o nosso pedido semanal.`;
   if(p.nome.includes("pimenta")) return "Muda pequena, do tamanho das de bandeja, pronta para plantar em vaso ou canteiro.";
   if(p.nome==="Muda de café") return "Muda de café em tubete plástico de cerca de 15 cm, pronta para plantio.";
   if(p.nome==="Muda de maracujá azedo") return "Muda de maracujá azedo (para suco) em saquinho de 30 × 25 cm. Precisa de espaldeira ou cerca para subir.";
@@ -841,8 +862,9 @@ const comOpcao = p => nomeCompleto(p) + (p.opcoes ? ` – ${p.opNome||"opção"}
 function msgUnica(p){
   return p.restrito
     ? `Olá! Represento uma empresa de controle de pragas / órgão público e gostaria de consultar: ${nomeCompleto(p)} – ${p.un}.`
-    : p.preco==null ? `Olá! Gostaria de consultar o preço de: ${comOpcao(p)} – ${p.un}.`
-    : `Olá! Tenho interesse em: ${comOpcao(p)} – ${p.un} – ${brl(p.preco)}. Ainda tem disponível?`;
+    : ehEncomenda(p, opAtual(p)) ? `Olá! Gostaria de ENCOMENDAR: ${comOpcao(p)} mudas${precoDe(p,opAtual(p))!=null?` – ${brl(precoDe(p,opAtual(p)))}`:""}. Retiro na semana seguinte.`
+    : precoDe(p,opAtual(p))==null ? `Olá! Gostaria de consultar o preço de: ${comOpcao(p)} – ${p.un}.`
+    : `Olá! Tenho interesse em: ${comOpcao(p)} – ${p.un} – ${brl(precoDe(p,opAtual(p)))}. Ainda tem disponível?`;
 }
 /* opções de tamanho/peso: a escolhida fica em SEL[id] */
 const SEL = {};
@@ -866,7 +888,8 @@ function acoes(p){
   const corpo = !q ? `<button class="btn btn-add" data-add="${p.id}">+ Adicionar${p.opcoes?extra:" ao pedido"}</button>`
     : `<div class="qtd" role="group" aria-label="Quantidade de ${esc(p.nome)}${extra}">
     <button data-menos="${p.id}" aria-label="Diminuir">−</button><span aria-live="polite">${q}${p.porMetro?" m":""}${p.opcoes?`<small>${esc(opAtual(p))}</small>`:""}</span><button data-mais="${p.id}" aria-label="Aumentar">+</button></div>`;
-  return chips(p) + corpo;
+  const aviso = ehEncomenda(p, opAtual(p)) ? `<p class="enc-aviso"><b>Por encomenda:</b> chega na semana seguinte, junto com o nosso pedido semanal.</p>` : "";
+  return chips(p) + aviso + corpo;
 }
 function selo(p){
   return p.restrito ? '<span class="badge b-restrito">Venda restrita</span>'
@@ -874,8 +897,12 @@ function selo(p){
     : p.antigo ? `<span class="badge b-promo">-${Math.round((1-p.preco/p.antigo)*100)}%</span>`
     : p.novo ? '<span class="badge b-novo">Novidade</span>' : '';
 }
-const precoHTML = p => p.preco==null ? '<span class="ask">Consultar preço</span>'
+const precoHTML = p => p.bandeja ? precoMudaHTML(p) : p.preco==null ? '<span class="ask">Consultar preço</span>'
     : `${p.antigo?`<s>${brl(p.antigo)}</s>`:''}<strong>${brl(p.preco)}</strong>${p.porMetro?' <span class="unit">/ metro</span>':""}`;
+function precoMudaHTML(p){
+  const lote = p.preco==null ? '<span class="ask">Consultar preço</span>' : `${p.antigo?`<s>${brl(p.antigo)}</s>`:''}<strong>${brl(p.preco)}</strong> <span class="unit">/ ${p.lote} mudas</span>`;
+  return `${lote}<span class="enc-preco">Bandeja fechada (${p.bandeja}): ${p.precoBandeja!=null?brl(p.precoBandeja):"consultar"} · encomenda</span>`;
+}
 const fundo = p => p.foto||p.ilu ? " has-photo" : "";
 function card(p){
   return `<article class="card">
@@ -883,7 +910,7 @@ function card(p){
     <div class="card-body">
       <span class="cat">${p.marca ? `<b>${esc(p.marca)}</b> · ` : ""}${esc(p.sub)}</span>
       <h3><button class="ver-tit" data-ver="${p.id}">${esc(p.nome)}</button></h3>
-      <span class="unit">${esc(p.un)}${p.opcoes?` · ${p.opcoes.length} opções`:""}</span>${p.restrito?`<span class="restr">Venda restrita a empresas de controle de pragas e órgãos públicos, com autorização de engenheiro agrônomo.</span>`:""}
+      <span class="unit">${esc(p.un)}${p.opcoes&&!p.bandeja?` · ${p.opcoes.length} opções`:""}</span>${p.restrito?`<span class="restr">Venda restrita a empresas de controle de pragas e órgãos públicos, com autorização de engenheiro agrônomo.</span>`:""}
       <div class="price">${precoHTML(p)}</div>
       <div class="acoes" data-acoes="${p.id}">${acoes(p)}</div>
     </div></article>`;
@@ -904,8 +931,8 @@ function mudarQtd(p, delta, k=chave(p)){
 function totais(){
   const it = itensPedido();
   const qtd = it.reduce((a,x)=>a+(x.p.porMetro?1:x.q),0);
-  const total = it.filter(x=>x.p.preco!=null).reduce((a,x)=>a+x.p.preco*x.q,0);
-  const consultar = it.some(x=>x.p.preco==null);
+  const total = it.filter(x=>precoDe(x.p,x.op)!=null).reduce((a,x)=>a+precoDe(x.p,x.op)*x.q,0);
+  const consultar = it.some(x=>precoDe(x.p,x.op)==null);
   return {it,qtd,total,consultar};
 }
 function atualizarPedido(p){
@@ -923,8 +950,8 @@ function desenharPedido(){
   if(!it.length){ box.innerHTML = `<p class="vazio">Seu pedido está vazio. Toque em <b>+ Adicionar ao pedido</b> nos produtos.</p>`; return; }
   box.innerHTML = `<ul class="itens">${it.map(({p,op,k,q})=>`<li>
       <div class="mini${fundo(p)}" style="background:${TINT[p.dep]};color:${INK[p.dep]}">${midia(p)}</div>
-      <div class="info"><b>${esc(p.nome)}${op?` · ${esc(op)}`:""}</b><span>${esc(p.un)}</span>
-        <span class="vl">${p.preco==null?"Consultar preço":brl(p.preco*q)}</span></div>
+      <div class="info"><b>${esc(p.nome)}${op?` · ${esc(op)}`:""}</b><span>${ehEncomenda(p,op)?'<em class="enc-tag">Encomenda · chega na semana seguinte</em>':esc(p.un)}</span>
+        <span class="vl">${precoDe(p,op)==null?"Consultar preço":brl(precoDe(p,op)*q)}</span></div>
       <div class="qtd mini-q"><button data-menos="${p.id}" data-k="${esc(k)}" aria-label="Diminuir">−</button><span>${q}${p.porMetro?" m":""}</span><button data-mais="${p.id}" data-k="${esc(k)}" aria-label="Aumentar">+</button></div>
     </li>`).join("")}</ul>
     ${total?`<div class="total"><span>Total${consultar?" dos itens com preço":""}</span><strong>${brl(total)}</strong></div>`:`<div class="total"><span>Total</span><strong class="ask">A consultar</strong></div>`}
@@ -934,8 +961,14 @@ function desenharPedido(){
     <button class="link limpar" data-limpar>Limpar pedido</button>`;
   const enviar = ()=>{
     const nome = (document.getElementById("pedNome")||{}).value||"";
-    const linhas = it.map(({p,op,q})=>`• ${q}${p.porMetro?" m de":"x"} ${nomeCompleto(p)}${op?` – ${p.opNome||"opção"}: ${op}`:""} – ${p.un} – ${p.preco==null?"consultar preço":brl(p.preco*q)}`);
-    const msg = `Olá! Gostaria de fazer este pedido pelo site:\n\n${linhas.join("\n")}\n\n*${total?`Total${consultar?" (itens com preço)":""}: ${brl(total)}`:"Valores: aguardo a confirmação da loja"}*${nome.trim()?`\nNome: ${nome.trim()}`:""}\nVou retirar na loja. Pode separar?`;
+    const linhas = it.map(({p,op,q})=>{
+      const v = precoDe(p,op);
+      if(ehEncomenda(p,op)) return `• ${q}x ENCOMENDA: ${op} de ${nomeCompleto(p)} – ${v==null?"consultar preço":brl(v*q)}`;
+      if(p.bandeja) return `• ${q}x lote de ${op} – ${nomeCompleto(p)} – ${v==null?"consultar preço":brl(v*q)}`;
+      return `• ${q}${p.porMetro?" m de":"x"} ${nomeCompleto(p)}${op?` – ${p.opNome||"opção"}: ${op}`:""} – ${p.un} – ${v==null?"consultar preço":brl(v*q)}`;
+    });
+    const temEnc = it.some(x=>ehEncomenda(x.p,x.op));
+    const msg = `Olá! Gostaria de fazer este pedido pelo site:\n\n${linhas.join("\n")}\n\n*${total?`Total${consultar?" (itens com preço)":""}: ${brl(total)}`:"Valores: aguardo a confirmação da loja"}*${nome.trim()?`\nNome: ${nome.trim()}`:""}${temEnc?"\nAs bandejas fechadas são encomenda: retiro na semana seguinte.":""}\nVou retirar na loja. Pode separar?`;
     document.getElementById("pedEnviar").href = waLink(msg);
   };
   enviar();

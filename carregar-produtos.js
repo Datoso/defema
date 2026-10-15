@@ -70,6 +70,8 @@
     p.preco = numero(linha.preco);
     var antigo = numero(linha.preco_antigo);
     if (antigo !== null) p.antigo = antigo;
+    // mudas de bandeja: preço da bandeja fechada (encomenda); preco = preço do lote
+    if ("preco_bandeja" in linha) p.precoBandeja = numero(linha.preco_bandeja);
     if (linha.destaque) p.top = true;
     if (linha.novidade) p.novo = true;
     // "foto_url" é a coluna do contrato; "foto_path" é o nome antigo (bancos de versão anterior)
