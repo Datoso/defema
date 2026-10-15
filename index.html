@@ -390,6 +390,11 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
   .card .acoes{margin-top:4px}
 }
 footer .disclaimer{display:block;margin-top:6px;font-size:.72rem;opacity:.75;line-height:1.4}
+/* nome ao lado do logo, no verde do logo (clareado para ler bem sobre o fundo escuro) */
+.brand .brand-nome{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:1.9rem;letter-spacing:.06em;line-height:1;
+  background:linear-gradient(180deg,#5fd88a 0%,#2fae5a 55%,#1f8f45 100%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.25))}
+@media (max-width:640px){.brand .brand-nome{display:none}}
 </style>
 </head>
 <body>
@@ -411,6 +416,7 @@ footer .disclaimer{display:block;margin-top:6px;font-size:.72rem;opacity:.75;lin
   <path id="arcoDefema" d="M57 112 A63 63 0 0 1 183 112" fill="none"/>
   <text font-family="Arial,Helvetica,sans-serif" font-weight="700" font-size="47" fill="#1f8f45" stroke="#1f8f45" stroke-width=".6"><textPath href="#arcoDefema" startOffset="50%" text-anchor="middle" textLength="194" lengthAdjust="spacing">DEFEMA</textPath></text>
 </svg></span>
+      <b class="brand-nome">DEFEMA</b>
     </a>
     <nav class="main" aria-label="Principal">
       <a href="#inicio" data-go="inicio">Início</a>
@@ -526,7 +532,7 @@ const PRODUTOS = [
   {nome:"Enxadão duas caras", dep:"Ferramentas", sub:"Enxadas e enxadões", un:"Pá de um lado, corte do outro", preco:null, foto:"img/enxadao-duas-caras.jpg"},
   {nome:"Enxada", marca:"Tane", dep:"Ferramentas", sub:"Enxadas e enxadões", un:"Sem cabo", preco:null, opcoes:["1 lb","1,5 lb","2 lb","2,5 lb"], opNome:"Peso", foto:"img/enxada-tane.jpg"},
   {nome:"Colher de pedreiro", marca:"Tramontina", dep:"Ferramentas", sub:"Ferramentas manuais", un:"Cabo de madeira", preco:null, foto:"img/colher-pedreiro-tramontina.jpg"},
-  {nome:"Marreta hexagonal", dep:"Ferramentas", sub:"Martelos e marretas", un:"Sem cabo · cabo vendido à parte", preco:null, opcoes:["500 g","1 kg","1,5 kg","2 kg","3 kg","4 kg","5 kg","10 kg"], opNome:"Peso", foto:"img/paceta.jpg"},
+  {nome:"Marreta", dep:"Ferramentas", sub:"Martelos e marretas", un:"Com cabo", preco:null, opcoes:["500 g","1 kg","1,5 kg","2 kg","3 kg","4 kg","5 kg","10 kg"], opNome:"Peso", foto:"img/paceta.jpg"},
   {nome:"Chave de fenda", marca:"Vonder", dep:"Ferramentas", sub:"Chaves", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\"","5/16\" × 8\""], opNome:"Tamanho", foto:"img/chave-fenda-vonder.jpg"},
   {nome:"Chave Phillips", marca:"Vonder", dep:"Ferramentas", sub:"Chaves", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\""], opNome:"Tamanho", foto:"img/chave-phillips-vonder.jpg"},
   {nome:"Mangueira trançada", marca:"Mantac", dep:"Ferramentas", sub:"Jardinagem", un:"Vendida por metro", preco:7.0, porMetro:true, foto:"img/mangueira-mantac.jpg"},
@@ -839,7 +845,7 @@ const DESC = {
   "Mangueira azul siliconada":"Mangueira siliconada azul, flexível e resistente, vendida por metro. Pergunte pelos engates e esguichos.",
   "Enxadão duas caras":"Enxadão com dois lados: um largo para cavar e outro estreito para cortar raízes e terra dura.",
   "Colher de pedreiro":"Colher de pedreiro Tramontina com cabo de madeira, para assentar tijolo e aplicar massa.",
-  "Marreta hexagonal":"Marreta hexagonal sem cabo, para quebrar pedra, bater estaca e serviços pesados. Escolha o peso. O cabo é vendido à parte.",
+  "Marreta":"Marreta com cabo, para quebrar pedra, bater estaca e serviços pesados. Escolha o peso.",
   "Chave de fenda":"Chave de fenda Vonder unitária, com haste cromada e cabo emborrachado. Escolha o tamanho.",
   "Chave Phillips":"Chave Phillips Vonder unitária, com haste cromada e cabo emborrachado. Escolha o tamanho.",
   "Martelo de unha":"Martelo de unha Vonder com cabo de madeira. Prega e arranca pregos. Escolha o tamanho da cabeça.",
