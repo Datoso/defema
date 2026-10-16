@@ -631,7 +631,7 @@ nav.main .menu-prod.sem-hover .menu-caixa{opacity:0;visibility:hidden}
   <div id="pedidoConteudo"></div>
 </dialog>
 
-<script src="carregar-produtos.js?v=20261015b"></script>
+<script src="carregar-produtos.js?v=20261015c"></script>
 <script>
 /* ===== CONFIGURAÇÃO DA LOJA (troque pelos dados reais) ===== */
 const LOJA = {
@@ -818,10 +818,12 @@ const TEM_SUPABASE = !!(SUPABASE.url && SUPABASE.anonKey && window.carregarCatal
 const EMBUTIDO = { PRODUTOS: PRODUTOS.slice(), DEPS: {...DEPS}, DEP_INFO: {...DEP_INFO} };
 /* troca o conteúdo de PRODUTOS/DEPS/DEP_INFO NO LUGAR (eles continuam const).
    Devolve true se algo mudou. */
+let CONFIG = {};   // configurações do site vindas do painel (ex.: CONFIG.carrossel)
 function trocarCatalogo(d){
   if(!d || !d.PRODUTOS || !d.PRODUTOS.length) return false;
   d.PRODUTOS.forEach(prepararMuda);
-  if(assinaturaCatalogo(d) === assinaturaCatalogo({PRODUTOS, DEPS, DEP_INFO})) return false;
+  if(assinaturaCatalogo(d) === assinaturaCatalogo({PRODUTOS, DEPS, DEP_INFO, CONFIG})) return false;
+  CONFIG = d.CONFIG || {};
   PRODUTOS.splice(0, PRODUTOS.length, ...d.PRODUTOS);
   PRODUTOS.forEach((p,i)=>p.id=i);
   for(const k in DEPS) delete DEPS[k];
@@ -1242,6 +1244,7 @@ function renderDeps(){
       <summary>${d}</summary>
       <div class="subs">
         <button data-dep="${d}" class="${state.dep===d&&!state.sub?"on":""}">Ver tudo</button>
+        ${d==="Sementes e mudas"?`<button data-dep="${d}" data-sub="Mudas" class="${state.dep===d&&state.sub==="Mudas"?"on":""}">Mudas (bandejas e unitárias)</button>`:""}
         ${subs.map(s=>`<button data-dep="${d}" data-sub="${s}" class="${state.sub===s&&state.dep===d?"on":""}">${s}</button>`).join("")}
       </div>
     </details>`).join("");
@@ -1262,38 +1265,43 @@ const maisProcurados = () => PRODUTOS.filter(p=>p.top).sort((a,b)=>!!b.foto-!!a.
 const todasMudas = () => PRODUTOS.filter(p=>/muda/i.test(p.sub||""));
 const descontoPct = p => Math.round((1 - p.preco/p.antigo)*100);
 function ofertaDestaque(){
+  const esc0 = ((CONFIG.carrossel||{}).oferta||{}).nome;      // escolhida no painel
+  const escolhida = esc0 && PRODUTOS.find(p=>p.nome===esc0 && p.preco!=null);
+  if(escolhida) return escolhida;
   const c = promocoes().filter(p=>p.foto && p.antigo>p.preco);
   return c.sort((a,b)=>descontoPct(b)-descontoPct(a))[0] || null;
 }
 function slidesHero(){
   const ws = waLink(`Olá! Vim pelo site da ${LOJA.nome}.`);
   const fundo = url => url ? `<img class="bg" src="${url}" alt="" onerror="this.remove()">` : "";
+  const ocultar = new Set((CONFIG.carrossel||{}).ocultar||[]);
   const s = [];
-  s.push(`<div class="slide centro">${fundo(FOTOS_HERO.boasVindas)}<div class="slide-txt">
+  if(!ocultar.has("boasVindas")) s.push(`<div class="slide centro">${fundo(FOTOS_HERO.boasVindas)}<div class="slide-txt">
       <span class="tag">Rua Tiradentes, 535 · Centro de Pirapozinho</span>
       <h2>Bem-vindo à Defema</h2>
       <p>Tudo para o campo, a horta e a criação, com atendimento de quem conhece a vida no campo.<br>Escolha seus produtos aqui e finalize o pedido pelo WhatsApp.</p>
       <div class="hero-btns"><button class="hbtn" data-go="produtos">Ver produtos</button><a class="hbtn sec" href="${ws}" target="_blank" rel="noopener">Chamar no WhatsApp</a></div>
     </div></div>`);
   const o = ofertaDestaque();
-  if(o) s.push(`<div class="slide oferta"><div class="slide-txt">
+  const temDesc = o && o.antigo > o.preco;
+  if(o && !ocultar.has("oferta")) s.push(`<div class="slide oferta"><div class="slide-txt">
       <span class="tag">Oferta destaque da semana</span>
       <h2>${esc(o.nome)}</h2>
       <div class="oferta-meta">${[o.marca, o.sub, o.un].filter(Boolean).map(esc).join(" · ")}</div>
       <p class="oferta-desc">${esc(descricao(o))}</p>
-      <div class="oferta-preco"><s>${brl(o.antigo)}</s><b>${brl(o.preco)}</b><span class="oferta-eco">Você economiza ${brl(o.antigo-o.preco)}</span></div>
+      <div class="oferta-preco">${temDesc?`<s>${brl(o.antigo)}</s>`:""}<b>${brl(o.preco)}</b>${temDesc?`<span class="oferta-eco">Você economiza ${brl(o.antigo-o.preco)}</span>`:""}</div>
       <div class="hero-btns"><button class="hbtn" data-ver="${o.id}">Ver oferta</button><button class="hbtn sec" data-go="produtos" data-sec="promo">Todas as promoções</button></div>
-    </div><div class="oferta-prod"><img src="${o.foto}" alt="${esc(o.nome)}"><span class="oferta-pct">-${descontoPct(o)}%</span></div></div>`);
-  s.push(`<div class="slide">${fundo(FOTOS_HERO.mudas)}<div class="slide-txt">
+    </div><div class="oferta-prod">${o.foto?`<img src="${o.foto}" alt="${esc(o.nome)}">`:`<span style="color:${INK[o.dep]}">${icon(o.dep)}</span>`}${temDesc?`<span class="oferta-pct">-${descontoPct(o)}%</span>`:""}</div></div>`);
+  if(!ocultar.has("mudas")) s.push(`<div class="slide">${fundo(FOTOS_HERO.mudas)}<div class="slide-txt">
       <span class="tag">Sementes e mudas</span>
       <h2>Mudas novas toda semana</h2>
-      <div class="hero-btns"><button class="hbtn" data-go="produtos" data-sec="mudas">Ver mudas</button><a class="hbtn wa" href="${waLink(`Olá! Quero encomendar mudas.`)}" target="_blank" rel="noopener">Encomende já</a></div>
+      <div class="hero-btns"><button class="hbtn" data-dep="Sementes e mudas" data-sub="Mudas">Ver mudas</button><a class="hbtn wa" href="${waLink(`Olá! Quero encomendar mudas.`)}" target="_blank" rel="noopener">Encomende já</a></div>
     </div></div>`);
-  s.push(`<div class="slide">${fundo(FOTOS_HERO.criacao)}<div class="slide-txt">
+  if(!ocultar.has("criacao")) s.push(`<div class="slide">${fundo(FOTOS_HERO.criacao)}<div class="slide-txt">
       <span class="tag">Criação e campo</span>
       <h2>Tudo para a sua criação</h2>
       <p>Carrapaticidas, mosquicidas, arame, grampos, botas e EPIs.</p>
-      <div class="hero-btns"><button class="hbtn" data-dep="Defensivos" data-sub="Carrapaticidas e mosquicidas">Carrapaticidas</button><button class="hbtn sec" data-dep="Ferragens e EPIs" data-sub="Cercas e arames">Cercas e arames</button></div>
+      <div class="hero-btns"><button class="hbtn" data-dep="Defensivos" data-sub="Carrapaticidas e mosquicidas">Produtos veterinários</button><button class="hbtn sec" data-dep="Ferragens e EPIs" data-sub="Cercas e arames">Cercas e arames</button></div>
     </div></div>`);
   return s;
 }
@@ -1448,8 +1456,6 @@ function viewProdutos(){
   if(!state.dep && !state.sub && !q0){
     if(state.sec==="promo"){ const l=promocoes();
       return `<div class="crumb">Início › Produtos › Promoções</div><div class="sec-head"><h2>Promoções da semana</h2><span class="crumb">${l.length} itens com desconto</span></div>${grid(l)}`; }
-    if(state.sec==="mudas"){ const l=todasMudas();
-      return `<div class="crumb">Início › Produtos › Mudas</div><div class="sec-head"><h2>Mudas</h2><span class="crumb">${l.length} produtos · bandejas e mudas unitárias</span></div>${grid(l)}`; }
     if(state.sec==="top"){ const l=maisProcurados();
       return `<div class="crumb">Início › Produtos › Mais procurados</div><div class="sec-head"><h2>Mais procurados</h2><span class="crumb">${l.length} produtos</span></div>${grid(l)}`; }
     if(!state.sec){
@@ -1461,7 +1467,7 @@ function viewProdutos(){
   }
   let list = PRODUTOS;
   if(state.dep) list = list.filter(p=>p.dep===state.dep);
-  if(state.sub) list = list.filter(p=>p.sub===state.sub);
+  if(state.sub) list = state.sub==="Mudas" ? list.filter(p=>/muda/i.test(p.sub||"")) : list.filter(p=>p.sub===state.sub);
   const q = state.q.trim();
   let parecidos = false;
   if(q){ const r = buscar(q, list); list = r.list; parecidos = r.parecidos; }
@@ -1544,8 +1550,8 @@ document.addEventListener("click", e=>{
   }
   const g = e.target.closest("[data-go]");
   if(g){ e.preventDefault(); state.q=""; document.getElementById("q").value=""; go(g.dataset.go,{dep:null,sub:null,sec:g.dataset.sec||null}); return; }
-  const d = e.target.closest("button[data-dep]");
-  if(d){ document.getElementById("q").value=""; go("produtos",{dep:d.dataset.dep, sub:d.dataset.sub||null, q:"", sec:null});
+  const d = e.target.closest("button[data-dep],a[data-dep]");
+  if(d){ e.preventDefault(); document.getElementById("q").value=""; go("produtos",{dep:d.dataset.dep, sub:d.dataset.sub||null, q:"", sec:null});
     if(innerWidth<=860){document.getElementById("deps").classList.remove("open");document.getElementById("depToggle").setAttribute("aria-expanded","false");} }
 });
 document.addEventListener("change", e=>{
@@ -1607,7 +1613,7 @@ function renderMenuProd(){
     <a href="#produtos" data-go="produtos" data-sec="promo">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>',"#fde3dc","#a5402d")}Promoções da semana<small>${promo}</small></a>
     <a href="#produtos" data-go="produtos" data-sec="top">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>',"#fff1c9","#7b5434")}Mais procurados<small>${top}</small></a>
     <a href="#produtos" data-go="produtos" data-sec="todos">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>',"#e3f1e5","#1f4d2d")}Todos os produtos<small>${PRODUTOS.length}</small></a>
-    <a href="#produtos" data-go="produtos" data-sec="mudas">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4-3-6-7-6 0 4 3 6 7 6zM12 10c0-3.5 2.5-6 7-6 0 4-3 6-7 6z"/></svg>',"#e3f1e5","#1f4d2d")}Mudas<small>${todasMudas().length}</small></a>
+    <a href="#produtos" data-dep="Sementes e mudas" data-sub="Mudas">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4-3-6-7-6 0 4 3 6 7 6zM12 10c0-3.5 2.5-6 7-6 0 4-3 6-7 6z"/></svg>',"#e3f1e5","#1f4d2d")}Mudas<small>${todasMudas().length}</small></a>
     <hr><span class="menu-rot">Departamentos</span>
     ${Object.keys(DEPS).map(d=>`<button data-dep="${d}">${mi(icon(d),TINT[d],INK[d])}${d}<small>${PRODUTOS.filter(p=>p.dep===d).length}</small></button>`).join("")}`;
 }
@@ -1698,7 +1704,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610152151";
+  const VERSAO = "202610152200";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();

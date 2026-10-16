@@ -136,7 +136,7 @@
       (d.PRODUTOS || []).map(function (p) {
         var c = {}; for (var k in p) if (k !== "id") c[k] = p[k]; return c;
       }),
-      d.DEPS || {}, d.DEP_INFO || {}
+      d.DEPS || {}, d.DEP_INFO || {}, d.CONFIG || {}
     ]);
   }
 
@@ -149,13 +149,13 @@
     try {
       var c = JSON.parse(raiz.localStorage.getItem(chaveCache(op && op.url)) || "null");
       if (!c || c.v !== VERSAO_CACHE || !Array.isArray(c.PRODUTOS) || !c.PRODUTOS.length || !c.DEPS) return null;
-      return { PRODUTOS: c.PRODUTOS, DEPS: c.DEPS, DEP_INFO: c.DEP_INFO || {}, salvoEm: c.salvoEm };
+      return { PRODUTOS: c.PRODUTOS, DEPS: c.DEPS, DEP_INFO: c.DEP_INFO || {}, CONFIG: c.CONFIG || {}, salvoEm: c.salvoEm };
     } catch (_) { return null; }
   }
   function salvarCache(url, d) {
     try {
       raiz.localStorage.setItem(chaveCache(url), JSON.stringify({
-        v: VERSAO_CACHE, salvoEm: Date.now(), PRODUTOS: d.PRODUTOS, DEPS: d.DEPS, DEP_INFO: d.DEP_INFO
+        v: VERSAO_CACHE, salvoEm: Date.now(), PRODUTOS: d.PRODUTOS, DEPS: d.DEPS, DEP_INFO: d.DEP_INFO, CONFIG: d.CONFIG || {}
       }));
     } catch (_) { /* cheio ou bloqueado: segue sem cache */ }
   }
@@ -190,10 +190,15 @@
     var pDeps = getJson(rest + "departamentos?select=" + encodeURIComponent(SELECT_DEPS) +
       "&order=ordem.asc", anonKey, sinal).catch(function () { return null; });
 
-    return Promise.race([Promise.all([pProdutos, pDeps]), tempo])
+    // configurações do site (carrossel etc.): também "bônus" — sem a tabela, o site usa o automático
+    var pCfg = getJson(rest + "site_config?select=chave,valor", anonKey, sinal).catch(function () { return null; });
+
+    return Promise.race([Promise.all([pProdutos, pDeps, pCfg]), tempo])
       .then(function (r) {
         if (!Array.isArray(r[0])) throw new Error("resposta inesperada do Supabase");
         var dados = montarCatalogo(r[0], Array.isArray(r[1]) ? r[1] : null, url);
+        dados.CONFIG = {};
+        (Array.isArray(r[2]) ? r[2] : []).forEach(function (c) { if (c && c.chave) dados.CONFIG[c.chave] = c.valor || {}; });
         // catálogo vazio quase sempre é configuração errada (RLS, chave): não apaga o site
         if (!dados.PRODUTOS.length) throw new Error("catálogo vazio no Supabase");
         return dados;
@@ -203,7 +208,7 @@
 
   /* ---------------- função principal ---------------- */
   function comOrigem(d, origem, erro) {
-    var r = { PRODUTOS: d.PRODUTOS, DEPS: d.DEPS, DEP_INFO: d.DEP_INFO, origem: origem };
+    var r = { PRODUTOS: d.PRODUTOS, DEPS: d.DEPS, DEP_INFO: d.DEP_INFO, CONFIG: d.CONFIG || {}, origem: origem };
     if (erro) r.erro = erro;
     return r;
   }

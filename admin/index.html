@@ -550,6 +550,33 @@ html:has(dialog[open]){overflow:hidden}
 .ed-grade .mais-fotos-ed{margin-top:-4px}
 /* ---------- histórico ---------- */
 #dlgHist .dlg{max-height:inherit}
+@media (min-width:1024px){ #dlgCarrossel{width:min(1040px,94vw);height:min(86vh,760px)} #dlgCarrossel .dlg{height:100%} }
+#dlgCarrossel .dlg{max-height:inherit}
+.car-corpo{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:760px){ .car-corpo{grid-template-columns:1fr} }
+.car-corpo h3{font-family:var(--display);font-size:1.15rem;margin:0 0 4px;color:var(--leaf-ink)}
+.car-dica{margin:0 0 10px;color:var(--muted);font-size:.9rem}
+.car-oferta{display:flex;flex-direction:column;min-height:0}
+.car-atual{display:flex;align-items:center;gap:12px;padding:10px 12px;border:2px solid var(--leaf-2);border-radius:12px;background:var(--leaf-soft);margin-bottom:10px}
+.car-atual img,.car-item img{width:52px;height:52px;object-fit:contain;background:#fff;border-radius:8px;flex:0 0 auto}
+.car-atual .ph,.car-item .ph{width:52px;height:52px;border-radius:8px;background:var(--soil-soft);flex:0 0 auto;display:grid;place-items:center;font-size:1.3rem}
+.car-atual b{display:block}.car-atual small{color:var(--muted)}
+.car-atual .btn{margin-left:auto;white-space:nowrap}
+.car-busca{margin-bottom:8px}
+.car-lista{display:flex;flex-direction:column;gap:4px;max-height:44vh;overflow:auto;padding-right:4px}
+.car-item{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:12px;padding:6px 10px;border-radius:10px;border:1px solid transparent}
+.car-item:hover,.car-item:focus-visible{background:var(--soil-soft)}
+.car-item[aria-selected="true"]{border-color:var(--leaf-2);background:var(--leaf-soft)}
+.car-item span.nm{flex:1;min-width:0}
+.car-item b{display:block;font-weight:600;font-size:.95rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.car-item small{color:var(--muted);font-size:.8rem}
+.car-item .pct{background:var(--promo);color:#fff;font-weight:700;font-size:.78rem;border-radius:99px;padding:2px 8px;flex:0 0 auto}
+.car-grupo{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:8px 4px 2px}
+.car-slide{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--surface);cursor:pointer}
+.car-slide input{width:20px;height:20px;accent-color:var(--leaf-2)}
+.car-slide b{display:block}.car-slide small{color:var(--muted)}
+.car-slide .num{width:26px;height:26px;border-radius:50%;background:var(--seed);color:var(--seed-ink);display:grid;place-items:center;font-weight:800;font-size:.85rem;flex:0 0 auto}
+.car-aviso{background:var(--erro-soft);color:var(--erro);border-radius:10px;padding:8px 10px;font-size:.88rem}
 .hist-ferr{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 18px;background:var(--surface);border-bottom:1px solid var(--line)}
 .hist-ferr .vistas{display:inline-flex}
 .hist-ferr .inp{flex:1;min-width:180px;min-height:40px;padding:6px 12px}
@@ -638,6 +665,7 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <button class="lat-btn" id="btnMudasTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15h14l-1.5 6h-11zM12 15V9M12 11c0-3 2-5 5.5-5 0 3-2 5-5.5 5zM12 12.5c0-2.4-1.7-4-4.3-4 0 2.4 1.7 4 4.3 4z"/></svg>Mudas – balcão</button>
         <button class="lat-btn" id="btnReajusteTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19L19 5"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>Reajuste em lote</button>
         <button class="lat-btn" id="btnHistTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>Histórico de preços</button>
+        <button class="lat-btn" id="btnCarrosselTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="5" width="14" height="11" rx="2"/><path d="M2 8v5M22 8v5"/><circle cx="9" cy="20" r="1" fill="currentColor"/><circle cx="12" cy="20" r="1" fill="currentColor"/><circle cx="15" cy="20" r="1" fill="currentColor"/></svg>Carrossel do site</button>
         <button class="lat-btn" id="btnDepsTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Departamentos</button>
       </div>
     </aside>
@@ -927,6 +955,37 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
       <span class="hist-resumo" id="histResumo" aria-live="polite"></span>
     </div>
     <div class="dlg-corpo"><div id="histLista"></div></div>
+  </div>
+</dialog>
+
+<!-- CARROSSEL DA PÁGINA INICIAL -->
+<dialog id="dlgCarrossel" aria-labelledby="tCar">
+  <div class="dlg">
+    <div class="dlg-topo">
+      <h2 id="tCar">Carrossel da página inicial</h2>
+      <button class="btn btn-sec btn-ico" type="button" data-fechar aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="dlg-corpo car-corpo">
+      <section class="car-oferta">
+        <h3>Oferta destaque da semana</h3>
+        <p class="car-dica">Escolha o produto que aparece no slide de oferta. No automático, o site mostra sozinho o produto com o maior desconto.</p>
+        <div class="car-atual" id="carAtual"></div>
+        <div class="car-busca"><input class="inp" id="carBusca" type="search" placeholder="Buscar produto para a oferta…" autocomplete="off"></div>
+        <div class="car-lista" id="carLista" role="listbox" aria-label="Produtos"></div>
+      </section>
+      <section class="car-slides">
+        <h3>Slides que aparecem</h3>
+        <div id="carSlides"></div>
+        <p class="car-dica">Os slides trocam sozinhos a cada 6 segundos, nesta ordem.</p>
+        <p class="car-aviso" id="carAviso" hidden></p>
+      </section>
+    </div>
+    <div class="dlg-pe">
+      <button class="btn btn-sec" type="button" data-fechar>Cancelar</button>
+      <button class="btn btn-pri" type="button" id="btnSalvarCar">Salvar no site</button>
+    </div>
   </div>
 </dialog>
 
@@ -1240,6 +1299,8 @@ function criarApiDemo() {
       if (i < 0) throw new Error("Registro não encontrado.");
       estado.mudas.splice(i, 1); persistir();
     },
+    async lerConfig(chave) { if (!estado) carregar(); return (estado.config || {})[chave] || {}; },
+    async salvarConfig(chave, valor) { await espera(200); if (!estado) carregar(); estado.config = { ...(estado.config || {}), [chave]: valor }; persistir(); },
     async listarHistorico(desde) {
       if (!estado) carregar();
       return (estado.historico || []).filter(h => h.alterado_em >= desde).sort((a, b) => b.alterado_em.localeCompare(a.alterado_em));
@@ -1415,6 +1476,18 @@ function criarApiSupabase(url, chave) {
       falhou(error, "Não foi possível desfazer.");
       if (!data || !data.length) throw new Error(NAO_GRAVOU);
     },
+    async lerConfig(chave) {
+      const { data, error } = await sb.from("site_config").select("valor").eq("chave", chave).maybeSingle();
+      if (error && (error.code === "42P01" || error.code === "PGRST205" || /site_config/.test(error.message || "")))
+        throw new Error("O carrossel ainda não foi ativado no banco (falta rodar o 11_carrossel.sql no Supabase).");
+      falhou(error, "Não foi possível carregar as configurações.");
+      return (data && data.valor) || {};
+    },
+    async salvarConfig(chave, valor) {
+      const { data, error } = await sb.from("site_config").upsert({ chave, valor, atualizado_em: new Date().toISOString() }).select("chave");
+      falhou(error, "Não foi possível salvar o carrossel.");
+      if (!data || !data.length) throw new Error(NAO_GRAVOU);
+    },
     async listarHistorico(desde) {
       const { data, error } = await sb.from("produtos_historico").select("*").gte("alterado_em", desde).order("alterado_em", { ascending: false }).limit(3000);
       if (error && (error.code === "42P01" || error.code === "PGRST205" || /produtos_historico/.test(error.message || "")))
@@ -1498,7 +1571,7 @@ function mostrarTela(nome) {
   $("#telaLogin").hidden = nome !== "login";
   $("#telaLista").hidden = nome !== "lista";
   const logado = nome === "lista";
-  ["#btnSair", "#btnNovoTopo", "#btnReajusteTopo", "#btnDepsTopo", "#btnMudasTopo", "#btnHistTopo", "#barraBaixo"].forEach(s => $(s).hidden = !logado);
+  ["#btnSair", "#btnNovoTopo", "#btnReajusteTopo", "#btnDepsTopo", "#btnMudasTopo", "#btnHistTopo", "#btnCarrosselTopo", "#barraBaixo"].forEach(s => $(s).hidden = !logado);
 }
 
 async function recarregar() {
@@ -2282,6 +2355,64 @@ async function abrirHistorico() {
   try { await carregarHistorico(); } catch (e) { $("#histLista").innerHTML = `<p class="vazio">${esc(e.message)}</p>`; }
 }
 
+/* ---------- CARROSSEL DA PÁGINA INICIAL ---------- */
+const SLIDES_CAR = [
+  ["boasVindas", "Boas-vindas", "Bem-vindo à Defema, com foto"],
+  ["oferta", "Oferta destaque", "O produto escolhido aqui ao lado"],
+  ["mudas", "Mudas novas toda semana", "Ver mudas e Encomende já"],
+  ["criacao", "Criação e campo", "Produtos veterinários e cercas"],
+];
+const car = { oferta: null, ocultar: [], q: "" };
+const pctDesc = p => p.preco != null && p.preco_antigo > p.preco ? Math.round((1 - p.preco / p.preco_antigo) * 100) : 0;
+function fotoMini(p) { return p.foto_publica ? `<img src="${esc(p.foto_publica)}" alt="" loading="lazy">` : `<span class="ph">📦</span>`; }
+function ofertaAutomatica() {
+  return ui.produtos.filter(p => p.ativo && p.foto_publica && pctDesc(p) > 0).sort((a, b) => pctDesc(b) - pctDesc(a))[0] || null;
+}
+function renderCarrossel() {
+  const escolhido = car.oferta && ui.produtos.find(p => p.id === car.oferta.id || p.nome === car.oferta.nome);
+  const auto = ofertaAutomatica();
+  const mostra = escolhido || auto;
+  const info = p => p ? `${p.preco != null ? moeda(p.preco) : "sem preço"}${pctDesc(p) ? ` · de ${moeda(p.preco_antigo)} (−${pctDesc(p)}%)` : ""}` : "";
+  $("#carAtual").innerHTML = mostra
+    ? `${fotoMini(mostra)}<span><small>${escolhido ? "Escolhido por você" : "Automático · maior desconto"}</small><b>${esc(mostra.nome)}</b><small>${info(mostra)}</small></span>
+       ${escolhido ? `<button class="btn btn-sec" type="button" id="carAuto">Voltar ao automático</button>` : ""}`
+    : `<span><b>Nenhum produto em promoção</b><small>Escolha um produto abaixo.</small></span>`;
+  const q = semAcento(car.q.trim());
+  const base = ui.produtos.filter(p => p.ativo && p.preco != null && (!q || semAcento(p.nome + " " + (p.marca || "")).includes(q)));
+  const promo = base.filter(p => pctDesc(p) > 0).sort((a, b) => pctDesc(b) - pctDesc(a));
+  const resto = q ? base.filter(p => !pctDesc(p)).sort((a, b) => a.nome.localeCompare(b.nome, "pt-BR")) : [];
+  const item = p => `<button type="button" class="car-item" role="option" data-car-prod="${esc(p.id)}" aria-selected="${escolhido && escolhido.id === p.id}">
+      ${fotoMini(p)}<span class="nm"><b>${esc(p.nome)}</b><small>${esc(p.marca || "")}${p.marca ? " · " : ""}${moeda(p.preco)}${p.foto_publica ? "" : " · sem foto"}</small></span>
+      ${pctDesc(p) ? `<span class="pct">−${pctDesc(p)}%</span>` : ""}</button>`;
+  $("#carLista").innerHTML =
+    (promo.length ? `<p class="car-grupo">Em promoção</p>${promo.map(item).join("")}` : "") +
+    (resto.length ? `<p class="car-grupo">Outros produtos</p>${resto.map(item).join("")}` : "") +
+    (!promo.length && !resto.length ? `<p class="car-dica">Nenhum produto com preço encontrado.</p>` : "") +
+    (!q ? `<p class="car-dica" style="margin-top:8px">Quer um produto que não está em promoção? Busque pelo nome acima.</p>` : "");
+  $("#carSlides").innerHTML = SLIDES_CAR.map(([k, t, d], i) => `<label class="car-slide"><span class="num">${i + 1}</span>
+      <span style="flex:1"><b>${t}</b><small>${d}</small></span><input type="checkbox" data-car-slide="${k}" ${car.ocultar.includes(k) ? "" : "checked"}></label>`).join("");
+  const aviso = $("#carAviso");
+  aviso.hidden = car.ocultar.length < SLIDES_CAR.length;
+  aviso.textContent = "Com todos os slides desligados, o carrossel some da página inicial.";
+}
+async function abrirCarrossel() {
+  car.q = ""; $("#carBusca").value = "";
+  $("#carLista").innerHTML = '<p class="carregando">Carregando…</p>'; $("#carAtual").innerHTML = ""; $("#carSlides").innerHTML = "";
+  $("#dlgCarrossel").showModal();
+  try {
+    const v = await api.lerConfig("carrossel");
+    car.oferta = v.oferta || null; car.ocultar = Array.isArray(v.ocultar) ? v.ocultar : [];
+    renderCarrossel();
+  } catch (e) { $("#carLista").innerHTML = `<p class="vazio">${esc(e.message)}</p>`; }
+}
+async function salvarCarrossel() {
+  const valor = { oferta: car.oferta, ocultar: car.ocultar };
+  try {
+    await comFeedback("Salvando…", "Carrossel salvo ✓", () => api.salvarConfig("carrossel", valor));
+    $("#dlgCarrossel").close();
+  } catch {}
+}
+
 /* ---------- LOGIN ---------- */
 async function entrar(ev) {
   ev.preventDefault();
@@ -2347,6 +2478,20 @@ function ligarEventos() {
   $("#lista").addEventListener("keydown", e => { const f = e.target.closest("[data-form-preco]"); if (f && e.key === "Escape") { e.preventDefault(); fecharPrecoRapido(f.dataset.formPreco); } });
   ["#btnDeps", "#btnDepsTopo"].forEach(s => $(s).addEventListener("click", abrirDeps));
   ["#btnHist", "#btnHistTopo"].forEach(s => $(s).addEventListener("click", abrirHistorico));
+  $("#btnCarrosselTopo").addEventListener("click", abrirCarrossel);
+  $("#btnSalvarCar").addEventListener("click", salvarCarrossel);
+  $("#carBusca").addEventListener("input", e => { car.q = e.target.value; renderCarrossel(); });
+  $("#dlgCarrossel").addEventListener("click", e => {
+    const b = e.target.closest("[data-car-prod]");
+    if (b) { const p = ui.produtos.find(x => String(x.id) === b.dataset.carProd); if (p) { car.oferta = { id: p.id, nome: p.nome }; renderCarrossel(); } return; }
+    if (e.target.closest("#carAuto")) { car.oferta = null; renderCarrossel(); }
+  });
+  $("#dlgCarrossel").addEventListener("change", e => {
+    const c = e.target.closest("[data-car-slide]"); if (!c) return;
+    const k = c.dataset.carSlide;
+    car.ocultar = c.checked ? car.ocultar.filter(x => x !== k) : [...new Set([...car.ocultar, k])];
+    renderCarrossel();
+  });
   document.querySelector(".hist-periodo").addEventListener("click", async e => {
     const b = e.target.closest("[data-periodo]"); if (!b) return;
     hist.dias = +b.dataset.periodo;
@@ -2495,7 +2640,7 @@ function ligarEventos() {
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610152151";
+  const VERSAO = "202610152200";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
