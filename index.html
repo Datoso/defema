@@ -427,6 +427,107 @@ footer .disclaimer{max-width:900px;margin-left:auto;margin-right:auto}
 .copiar-link{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:.88rem;color:var(--muted)}
 .copiar-link svg{width:16px;height:16px}
 .copiar-link:hover{color:var(--leaf-2)}
+
+/* ===== INÍCIO: carrossel + faixa de departamentos (página larga, sem coluna lateral) ===== */
+body.pg-inicio .layout{grid-template-columns:minmax(0,1fr)}
+body.pg-inicio .layout>div:first-child{display:none}
+body.pg-inicio main{grid-column:1/-1}
+.hero{position:relative;border-radius:18px;overflow:hidden;height:clamp(330px,33vw,470px);background:#163a22;color:#fff;isolation:isolate;box-shadow:0 10px 30px rgba(20,40,20,.18)}
+.slide{position:absolute;inset:0;display:flex;align-items:center;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility .8s}
+.slide.on{opacity:1;visibility:visible;z-index:1}
+.slide>.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transform:scale(1.06);transition:transform 7s linear}
+.slide.on>.bg{transform:scale(1)}
+.slide::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(9,28,15,.88) 0%,rgba(9,28,15,.62) 42%,rgba(9,28,15,.12) 78%,rgba(9,28,15,0) 100%)}
+/* fundo de reserva enquanto a foto não carrega (ou se falhar) */
+.slide{background:radial-gradient(circle at 78% 40%,#3f8a52 0%,#1f4d2d 45%,#123020 100%)}
+.slide-txt{position:relative;padding:0 clamp(24px,5.5vw,84px);max-width:660px}
+.slide .tag{display:inline-flex;align-items:center;gap:6px;background:#fff1c9;color:#5a3e1b;font-weight:800;font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;padding:6px 11px;border-radius:99px}
+.slide h2{font-family:var(--display);font-size:clamp(1.75rem,3.3vw,3.1rem);line-height:1.04;margin:14px 0 10px;text-shadow:0 2px 14px rgba(0,0,0,.35)}
+.slide p{font-size:clamp(.95rem,1.25vw,1.15rem);line-height:1.45;color:#eef4ea;margin:0 0 20px;max-width:46ch}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap}
+.hbtn{all:unset;box-sizing:border-box;cursor:pointer;display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:10px;font-weight:700;font-size:.95rem;background:#fff1c9;color:#3b2a12;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.hbtn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(0,0,0,.25)}
+.hbtn.sec{background:rgba(255,255,255,.12);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.55)}
+.hbtn.wa{background:#25d366;color:#08311a}
+.hbtn:focus-visible,.hero-seta:focus-visible,.hero-pontos button:focus-visible{outline:3px solid #fff1c9;outline-offset:2px}
+.hero-seta{all:unset;cursor:pointer;position:absolute;top:50%;z-index:3;width:44px;height:44px;margin-top:-22px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.28);color:#fff;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);opacity:.75;transition:opacity .2s,background .2s}
+.hero-seta:hover{opacity:1;background:rgba(0,0,0,.45)}
+.hero-seta svg{width:22px;height:22px}
+.hero-seta.ant{left:14px}.hero-seta.prox{right:14px}
+.hero-pontos{position:absolute;left:0;right:0;bottom:16px;z-index:3;display:flex;justify-content:center;gap:8px}
+.hero-pontos button{all:unset;cursor:pointer;width:9px;height:9px;border-radius:99px;background:rgba(255,255,255,.5);overflow:hidden;position:relative;transition:width .3s}
+.hero-pontos button.on{width:38px;background:rgba(255,255,255,.35)}
+.hero-pontos button.on::after{content:"";position:absolute;inset:0;background:#fff1c9;transform-origin:left;animation:heroBarra 6s linear forwards}
+.hero.pausado .hero-pontos button.on::after{animation-play-state:paused}
+@keyframes heroBarra{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+/* slide da oferta: produto num cartão branco à direita */
+.slide.oferta{background:radial-gradient(circle at 75% 45%,#4f9a5f 0%,#245a33 42%,#0f2a18 100%)}
+.slide.oferta::before{background:none}
+.oferta-prod{position:absolute;right:clamp(24px,6vw,110px);top:50%;transform:translateY(-50%) rotate(2deg);width:clamp(190px,24vw,330px);aspect-ratio:1;background:#fff;border-radius:22px;box-shadow:0 24px 50px rgba(0,0,0,.35);display:grid;place-items:center;padding:18px}
+.oferta-prod img{width:100%;height:100%;object-fit:contain}
+.oferta-pct{position:absolute;top:-16px;left:-16px;background:#c8412a;color:#fff;font-family:var(--display);font-weight:800;font-size:clamp(1.2rem,2vw,1.7rem);width:clamp(68px,7vw,88px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;box-shadow:0 8px 20px rgba(0,0,0,.3);transform:rotate(-10deg)}
+.oferta-preco{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 20px}
+.oferta-preco s{opacity:.75;font-size:1.05rem}
+.oferta-preco b{font-family:var(--display);font-size:clamp(2rem,3.4vw,3rem);color:#fff1c9;line-height:1}
+.oferta .slide-txt{max-width:min(620px,52%)}
+/* faixa de departamentos com foto */
+.cats{margin-top:26px}
+.cats-faixa{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.cat-tile{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s}
+.cat-tile:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(30,50,30,.14);border-color:var(--leaf-2)}
+.cat-tile:focus-visible{outline:3px solid var(--leaf-2);outline-offset:2px}
+.cat-foto{background:#fff;aspect-ratio:4/3;display:grid;place-items:center;padding:12px;position:relative}
+.cat-foto img{width:100%;height:100%;object-fit:contain;transition:transform .3s}
+.cat-tile:hover .cat-foto img{transform:scale(1.06)}
+.cat-info{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px}
+.cat-info b{font-size:.98rem;line-height:1.2}
+.cat-info span{font-size:.8rem;color:var(--muted)}
+.cat-tile.promo .cat-foto{background:linear-gradient(135deg,#c8412a,#e8743a)}
+.cat-tile.promo .cat-foto::after{content:"%";position:absolute;font-family:var(--display);font-weight:800;font-size:4.2rem;color:rgba(255,255,255,.95)}
+.vantagens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:22px}
+.vantagens div{display:flex;gap:12px;align-items:center;background:var(--soil-soft);border-radius:12px;padding:12px 14px}
+.vantagens svg{width:30px;height:30px;flex:0 0 auto;color:var(--leaf-2)}
+.vantagens b{display:block;font-size:.95rem}
+.vantagens span{font-size:.82rem;color:var(--muted)}
+/* menu Produtos com hover */
+.menu-prod{position:relative}
+.menu-gatilho{display:inline-flex;align-items:center;gap:4px}
+.menu-gatilho svg{width:15px;height:15px;transition:transform .2s}
+.menu-caixa{position:absolute;top:100%;left:50%;transform:translate(-50%,6px);padding-top:8px;min-width:270px;z-index:40;opacity:0;visibility:hidden;transition:opacity .16s,transform .16s,visibility .16s}
+.menu-caixa>div{background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.22);padding:8px;display:flex;flex-direction:column}
+@media (hover:hover){
+  .menu-prod:hover .menu-caixa{opacity:1;visibility:visible;transform:translate(-50%,0)}
+  .menu-prod:hover .menu-gatilho svg{transform:rotate(180deg)}
+}
+.menu-prod.aberto .menu-caixa,.menu-prod:focus-within .menu-caixa{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.menu-prod.aberto .menu-gatilho svg{transform:rotate(180deg)}
+nav.main .menu-caixa a,.menu-caixa button{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-weight:600;font-size:.93rem;color:var(--fg);box-shadow:none}
+nav.main .menu-caixa a:hover,.menu-caixa button:hover,nav.main .menu-caixa a:focus-visible,.menu-caixa button:focus-visible{background:var(--soil-soft)}
+.menu-caixa small{margin-left:auto;font-size:.75rem;color:var(--muted);font-weight:500}
+.menu-caixa .mi{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto}
+.menu-caixa .mi svg{width:17px;height:17px}
+.menu-caixa hr{border:0;border-top:1px solid var(--line);margin:6px 4px}
+.menu-rot{font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:4px 10px 2px}
+.menu-caixa button{font-weight:500;padding:7px 10px}
+nav.main .menu-prod.sem-hover .menu-caixa{opacity:0;visibility:hidden}
+@media (max-width:1100px){ .cats-faixa{grid-template-columns:repeat(3,minmax(0,1fr))} }
+@media (max-width:860px){
+  .menu-caixa{position:fixed;top:var(--hdr,60px);left:12px;right:12px;transform:none;min-width:0;padding-top:4px}
+  .menu-prod.aberto .menu-caixa,.menu-prod:focus-within .menu-caixa{transform:none}
+  .hero{height:auto;min-height:440px;border-radius:14px}
+  .slide{align-items:flex-end}
+  .slide::before{background:linear-gradient(0deg,rgba(9,28,15,.92) 0%,rgba(9,28,15,.7) 45%,rgba(9,28,15,.15) 100%)}
+  .slide-txt{padding:0 20px 52px}
+  .hero-seta{display:none}
+  .oferta .slide-txt{max-width:none}
+  .oferta-prod{top:22px;right:50%;transform:translateX(50%) rotate(2deg);width:170px;padding:12px}
+  .oferta-pct{width:60px;font-size:1.1rem;top:-10px;left:-14px}
+  .cats{margin-top:18px}
+  .cats-faixa{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;padding-bottom:6px;margin-inline:-4px;padding-inline:4px}
+  .cat-tile{flex:0 0 42%;scroll-snap-align:start}
+  .vantagens{grid-template-columns:1fr;gap:8px}
+}
+@media (prefers-reduced-motion:reduce){ .slide,.slide>.bg,.cat-tile,.cat-foto img{transition:none} .slide>.bg{transform:none} }
 </style>
 </head>
 <body>
@@ -451,7 +552,10 @@ footer .disclaimer{max-width:900px;margin-left:auto;margin-right:auto}
     </a>
     <nav class="main" aria-label="Principal">
       <a href="#inicio" data-go="inicio">Início</a>
-      <a href="#produtos" data-go="produtos">Produtos</a>
+      <div class="menu-prod" id="menuProd">
+        <a href="#produtos" data-go="produtos" class="menu-gatilho" aria-haspopup="true" aria-expanded="false">Produtos<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 10 5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <div class="menu-caixa" id="menuCaixa"><div></div></div>
+      </div>
       <a href="#sobre" data-go="sobre">Sobre</a>
     </nav>
     <button class="ped-topo" id="pedTopo" type="button" data-abrir-pedido aria-label="Ver pedido (vazio)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-2 11H5z"/><path d="M8 9l4-6 4 6"/></svg><span class="ped-n" id="pedN" hidden>0</span></button>
@@ -1106,7 +1210,7 @@ const grid = list => list.length ? `<div class="grid">${list.map(card).join("")}
   : `<div class="empty">Nenhum produto encontrado. Chame a gente no WhatsApp que verificamos no estoque.</div>`;
 
 /* ===== Estado e telas ===== */
-let state = {page:"inicio", dep:null, sub:null, q:""};
+let state = {page:"inicio", dep:null, sub:null, q:"", sec:null};
 
 function renderDeps(){
   document.getElementById("depList").innerHTML = Object.entries(DEPS).map(([d,subs])=>`
@@ -1119,9 +1223,87 @@ function renderDeps(){
     </details>`).join("");
 }
 
+/* ===== FOTOS DO CARROSSEL =====
+   Provisórias (Unsplash, licença livre). Quando chegarem as fotos da loja, é só
+   colocar o arquivo em img/loja/ e trocar o endereço aqui (ex.: "img/loja/boas-vindas.jpg"). */
+const unsplash = id => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=1800&q=70`;
+const FOTOS_HERO = {
+  boasVindas: unsplash("1780752628123-18ba49715d1f"),   // provisória: pulverizador costal na lavoura (trocar pela foto da loja)
+  mudas:      unsplash("1622383563227-04401ab4e5ea"),   // mãos com luva plantando muda
+  criacao:    unsplash("1788157980088-f37fe2f4714f")    // gado branco no pasto
+};
+const ICO_SETA = d => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const promocoes = () => PRODUTOS.filter(p=>p.antigo && p.preco!=null).sort((a,b)=>!!b.foto-!!a.foto);
+const maisProcurados = () => PRODUTOS.filter(p=>p.top).sort((a,b)=>!!b.foto-!!a.foto);
+const descontoPct = p => Math.round((1 - p.preco/p.antigo)*100);
+function ofertaDestaque(){
+  const c = promocoes().filter(p=>p.foto && p.antigo>p.preco);
+  return c.sort((a,b)=>descontoPct(b)-descontoPct(a))[0] || null;
+}
+function slidesHero(){
+  const ws = waLink(`Olá! Vim pelo site da ${LOJA.nome}.`);
+  const fundo = url => url ? `<img class="bg" src="${url}" alt="" onerror="this.remove()">` : "";
+  const s = [];
+  s.push(`<div class="slide">${fundo(FOTOS_HERO.boasVindas)}<div class="slide-txt">
+      <span class="tag">Rua Tiradentes, 535 · Centro de Pirapozinho</span>
+      <h2>Bem-vindo à Defema</h2>
+      <p>Tudo para o campo, a horta e a criação, com atendimento de quem conhece a lida. Escolha os produtos aqui e finalize pelo WhatsApp.</p>
+      <div class="hero-btns"><button class="hbtn" data-go="produtos">Ver produtos</button><a class="hbtn sec" href="${ws}" target="_blank" rel="noopener">Falar no WhatsApp</a></div>
+    </div></div>`);
+  const o = ofertaDestaque();
+  if(o) s.push(`<div class="slide oferta"><div class="slide-txt">
+      <span class="tag">Oferta destaque da semana</span>
+      <h2>${esc(o.nome)}</h2>
+      <div class="oferta-preco"><s>${brl(o.antigo)}</s><b>${brl(o.preco)}</b></div>
+      <div class="hero-btns"><button class="hbtn" data-ver="${o.id}">Ver oferta</button><button class="hbtn sec" data-go="produtos" data-sec="promo">Todas as promoções</button></div>
+    </div><div class="oferta-prod"><img src="${o.foto}" alt="${esc(o.nome)}"><span class="oferta-pct">-${descontoPct(o)}%</span></div></div>`);
+  s.push(`<div class="slide">${fundo(FOTOS_HERO.mudas)}<div class="slide-txt">
+      <span class="tag">Chegam toda semana</span>
+      <h2>Mudas novas e fresquinhas</h2>
+      <p>Hortaliças vendidas de 10 em 10 (ou de 4 em 4). Bandeja fechada de 200 ou 128 mudas sai por encomenda.</p>
+      <div class="hero-btns"><button class="hbtn" data-dep="Sementes e mudas">Ver mudas e sementes</button><a class="hbtn wa" href="${waLink(`Olá! Quero encomendar uma bandeja fechada de mudas.`)}" target="_blank" rel="noopener">Encomendar bandeja</a></div>
+    </div></div>`);
+  s.push(`<div class="slide">${fundo(FOTOS_HERO.criacao)}<div class="slide-txt">
+      <span class="tag">Criação e campo</span>
+      <h2>Do pasto ao curral, a gente cuida junto</h2>
+      <p>Carrapaticidas, mosquicidas, arame, grampos, botas e EPIs para o dia a dia da fazenda.</p>
+      <div class="hero-btns"><button class="hbtn" data-dep="Defensivos" data-sub="Carrapaticidas e mosquicidas">Carrapaticidas</button><button class="hbtn sec" data-dep="Ferragens e EPIs" data-sub="Cercas e arames">Cercas e arames</button></div>
+    </div></div>`);
+  return s;
+}
+function fotoDoDep(d){
+  const l = PRODUTOS.filter(p=>p.dep===d && p.foto);
+  return (l.find(p=>p.top) || l[0] || {}).foto;
+}
 function viewInicio(){
+  const slides = slidesHero();
+  const promo = promocoes(), pf = (promo.find(p=>p.foto)||{}).foto;
+  return `
+  <section class="hero" id="hero" aria-roledescription="carrossel" aria-label="Destaques">
+    ${slides.join("")}
+    <button class="hero-seta ant" data-hero="-1" aria-label="Anterior">${ICO_SETA("m15 18-6-6 6-6")}</button>
+    <button class="hero-seta prox" data-hero="1" aria-label="Próximo">${ICO_SETA("m9 18 6-6-6-6")}</button>
+    <div class="hero-pontos">${slides.map((_,i)=>`<button data-hero-ir="${i}" aria-label="Destaque ${i+1}"></button>`).join("")}</div>
+  </section>
+  <section class="cats">
+    <div class="sec-head"><h2>Compre por departamento</h2><button class="link" data-go="produtos" data-sec="todos">Ver todos os produtos →</button></div>
+    <div class="cats-faixa">
+      ${Object.keys(DEPS).map(d=>{ const n=PRODUTOS.filter(p=>p.dep===d).length, f=fotoDoDep(d);
+        return `<button class="cat-tile" data-dep="${d}"><span class="cat-foto">${f?`<img src="${f}" alt="" loading="lazy">`:`<span style="color:${INK[d]}">${icon(d)}</span>`}</span>
+          <span class="cat-info"><b>${d}</b><span>${n} produto${n===1?"":"s"}</span></span></button>`; }).join("")}
+      <button class="cat-tile promo" data-go="produtos" data-sec="promo"><span class="cat-foto"></span>
+        <span class="cat-info"><b>Promoções da semana</b><span>${promo.length} ite${promo.length===1?"m":"ns"} com desconto</span></span></button>
+    </div>
+  </section>
+  <section class="vantagens">
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 0 1-11.7 7.1L4 20l1-4.1A8 8 0 1 1 20 12z"/></svg><p style="margin:0"><b>Pedido pelo WhatsApp</b><span>Monte a lista aqui e mande de uma vez</span></p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10 12 4l9 6v10H3z"/><path d="M9 20v-6h6v6"/></svg><p style="margin:0"><b>Retire na loja</b><span>Rua Tiradentes, 535 · Centro</span></p></div>
+    <div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><p style="margin:0"><b>Seg a sex 8h–17h</b><span>Sábado 8h–12h</span></p></div>
+  </section>`;
+}
+function viewInicioAntiga(){
   /* até 10 em cada bloco = duas fileiras de 5 no computador */
-  const promosTodas = PRODUTOS.filter(p=>p.antigo).sort((a,b)=>!!b.foto-!!a.foto);
+  const promosTodas = promocoes();
   const promos = promosTodas.slice(0,10);
   const top = PRODUTOS.filter(p=>p.top).sort((a,b)=>!!b.foto-!!a.foto).slice(0,10);
   return `
@@ -1236,6 +1418,19 @@ function buscar(texto, lista){
 }
 
 function viewProdutos(){
+  const q0 = state.q.trim();
+  if(!state.dep && !state.sub && !q0){
+    if(state.sec==="promo"){ const l=promocoes();
+      return `<div class="crumb">Início › Produtos › Promoções</div><div class="sec-head"><h2>Promoções da semana</h2><span class="crumb">${l.length} itens com desconto</span></div>${grid(l)}`; }
+    if(state.sec==="top"){ const l=maisProcurados();
+      return `<div class="crumb">Início › Produtos › Mais procurados</div><div class="sec-head"><h2>Mais procurados</h2><span class="crumb">${l.length} produtos</span></div>${grid(l)}`; }
+    if(!state.sec){
+      const promos = promocoes();
+      return `<section class="block" id="sec-promo"><div class="sec-head"><h2>Promoções da semana</h2>${promos.length>10?`<button class="link" data-go="produtos" data-sec="promo">Ver todas (${promos.length}) →</button>`:`<span class="crumb">${promos.length} itens com desconto</span>`}</div>${grid(promos.slice(0,10))}</section>
+        <section class="block" id="sec-top"><div class="sec-head"><h2>Mais procurados</h2></div>${grid(maisProcurados().slice(0,10))}</section>
+        <section class="block" id="sec-todos"><div class="sec-head"><h2>Todos os produtos</h2><span class="crumb">${PRODUTOS.length} produtos</span></div>${grid(PRODUTOS)}</section>`;
+    }
+  }
   let list = PRODUTOS;
   if(state.dep) list = list.filter(p=>p.dep===state.dep);
   if(state.sub) list = list.filter(p=>p.sub===state.sub);
@@ -1294,12 +1489,14 @@ function render(){
   document.body.classList.toggle("pg-sobre", state.page==="sobre");
   document.querySelectorAll(".shortcut").forEach(b=>b.classList.toggle("on", state.page==="produtos" && b.dataset.dep===state.dep));
   document.getElementById("view").innerHTML = {inicio:viewInicio, produtos:viewProdutos, sobre:viewSobre}[state.page]();
-  document.querySelectorAll("nav.main a").forEach(a=>{ a.dataset.go===state.page ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"); });
+  fecharMenuProd(); iniciarHero();
+  document.querySelectorAll("nav.main > a, .menu-gatilho").forEach(a=>{ a.dataset.go===state.page ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"); });
   renderDeps();
 }
 function go(page, opts={}){
   state = {...state, page, ...opts};
-  if(page!=="produtos"){state.dep=null;state.sub=null;}
+  if(page!=="produtos"){state.dep=null;state.sub=null;state.sec=null;}
+  if(opts.dep || opts.q) state.sec=null;
   render();
   window.scrollTo({top:0});
 }
@@ -1318,9 +1515,9 @@ document.addEventListener("click", e=>{
     if(ds.fechar!=null) return t.closest("dialog").close();
   }
   const g = e.target.closest("[data-go]");
-  if(g){ e.preventDefault(); state.q=""; document.getElementById("q").value=""; go(g.dataset.go,{dep:null,sub:null}); return; }
+  if(g){ e.preventDefault(); state.q=""; document.getElementById("q").value=""; go(g.dataset.go,{dep:null,sub:null,sec:g.dataset.sec||null}); return; }
   const d = e.target.closest("button[data-dep]");
-  if(d){ document.getElementById("q").value=""; go("produtos",{dep:d.dataset.dep, sub:d.dataset.sub||null, q:""});
+  if(d){ document.getElementById("q").value=""; go("produtos",{dep:d.dataset.dep, sub:d.dataset.sub||null, q:"", sec:null});
     if(innerWidth<=860){document.getElementById("deps").classList.remove("open");document.getElementById("depToggle").setAttribute("aria-expanded","false");} }
 });
 document.addEventListener("change", e=>{
@@ -1340,7 +1537,74 @@ document.getElementById("depToggle").addEventListener("click", e=>{
 });
 document.getElementById("waFloat").href = waLink(`Olá! Vim pelo site da ${LOJA.nome}.`);
 document.getElementById("footAddr").innerHTML = LOJA.endereco;
+/* ===== CARROSSEL DA INÍCIO (troca a cada 6 s; pausa com o mouse em cima ou aba escondida) ===== */
+let heroI = 0, heroTimer = null;
+function heroMostrar(i){
+  const h = document.getElementById("hero"); if(!h) return;
+  const sl = h.querySelectorAll(".slide"), pt = h.querySelectorAll(".hero-pontos button");
+  heroI = (i + sl.length) % sl.length;
+  sl.forEach((s,k)=>{ s.classList.toggle("on", k===heroI); s.setAttribute("aria-hidden", k!==heroI); s.inert = k!==heroI; });
+  pt.forEach((b,k)=>{ b.classList.remove("on"); if(k===heroI){ void b.offsetWidth; b.classList.add("on"); b.setAttribute("aria-current","true"); } else b.removeAttribute("aria-current"); });
+}
+function heroAgendar(){
+  clearInterval(heroTimer);
+  const h = document.getElementById("hero");
+  if(!h || h.classList.contains("pausado") || document.hidden) return;
+  heroTimer = setInterval(()=>heroMostrar(heroI+1), 6000);
+}
+function iniciarHero(){
+  clearInterval(heroTimer);
+  const h = document.getElementById("hero"); if(!h) return;
+  const n = h.querySelectorAll(".slide").length;
+  heroMostrar(heroI < n ? heroI : 0); heroAgendar();
+  const pausar = v => { h.classList.toggle("pausado", v); if(v) clearInterval(heroTimer); else { heroMostrar(heroI); heroAgendar(); } };
+  h.addEventListener("mouseenter", ()=>pausar(true));
+  h.addEventListener("mouseleave", ()=>pausar(false));
+  h.addEventListener("click", e=>{
+    const b = e.target.closest("[data-hero],[data-hero-ir]"); if(!b) return;
+    heroMostrar(b.dataset.hero!=null ? heroI + +b.dataset.hero : +b.dataset.heroIr); heroAgendar();
+  });
+  let x0 = null;
+  h.addEventListener("touchstart", e=>{ x0 = e.touches[0].clientX; }, {passive:true});
+  h.addEventListener("touchend", e=>{ if(x0==null) return; const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if(Math.abs(dx) > 45){ heroMostrar(heroI + (dx<0?1:-1)); heroAgendar(); } });
+}
+document.addEventListener("visibilitychange", ()=>{ if(document.hidden) clearInterval(heroTimer); else if(document.getElementById("hero")){ heroMostrar(heroI); heroAgendar(); } });
+
+/* ===== MENU "PRODUTOS" (hover no computador, toque no celular) ===== */
+function renderMenuProd(){
+  const mi = (svg,bg,cor) => `<span class="mi" style="background:${bg};color:${cor}">${svg}</span>`;
+  const promo = promocoes().length, top = maisProcurados().length;
+  document.querySelector("#menuCaixa>div").innerHTML = `
+    <a href="#produtos" data-go="produtos" data-sec="promo">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>',"#fde3dc","#a5402d")}Promoções da semana<small>${promo}</small></a>
+    <a href="#produtos" data-go="produtos" data-sec="top">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>',"#fff1c9","#7b5434")}Mais procurados<small>${top}</small></a>
+    <a href="#produtos" data-go="produtos" data-sec="todos">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>',"#e3f1e5","#1f4d2d")}Todos os produtos<small>${PRODUTOS.length}</small></a>
+    <hr><span class="menu-rot">Departamentos</span>
+    ${Object.keys(DEPS).map(d=>`<button data-dep="${d}">${mi(icon(d),TINT[d],INK[d])}${d}<small>${PRODUTOS.filter(p=>p.dep===d).length}</small></button>`).join("")}`;
+}
+function fecharMenuProd(){
+  const m = document.getElementById("menuProd"); if(!m) return;
+  m.classList.remove("aberto"); if(m.matches(":hover")) m.classList.add("sem-hover"); m.querySelector(".menu-gatilho").setAttribute("aria-expanded","false");
+  if(m.contains(document.activeElement)) document.activeElement.blur();
+}
+(function(){
+  const m = document.getElementById("menuProd"), g = m.querySelector(".menu-gatilho");
+  const toque = matchMedia("(hover: none)");
+  g.addEventListener("click", e=>{
+    if(!toque.matches) return;            // computador: clique leva para Produtos
+    e.preventDefault(); e.stopPropagation();
+    const ab = !m.classList.contains("aberto");
+    m.classList.toggle("aberto", ab); g.setAttribute("aria-expanded", ab);
+    if(!ab) g.blur();
+  }, true);
+  m.addEventListener("mouseenter", ()=>g.setAttribute("aria-expanded","true"));
+  m.addEventListener("mouseleave", ()=>{ g.setAttribute("aria-expanded","false"); m.classList.remove("sem-hover"); });
+  document.addEventListener("click", e=>{ if(!e.target.closest("#menuProd")) fecharMenuProd(); });
+  document.addEventListener("keydown", e=>{ if(e.key==="Escape") fecharMenuProd(); });
+})();
+
 renderAtalhos();
+renderMenuProd();
 atualizarPedido();
 document.querySelectorAll("dialog").forEach(d=>d.addEventListener("click",e=>{ if(e.target===d) d.close(); }));
 /* esconde o botão do WhatsApp quando o rodapé aparece, para não tapar o texto */
@@ -1362,7 +1626,7 @@ function atualizarCatalogo(d){
   const dlg = document.getElementById("dlgProduto"); if(dlg.open) dlg.close();
   if(/^#produto\//.test(hashAntes)) history.replaceState(null, "", hashAntes); // catálogo novo não perde o produto aberto
   if(state.dep && !DEPS[state.dep]) { state.dep = null; state.sub = null; }
-  renderAtalhos(); atualizarPedido(); render();
+  renderAtalhos(); renderMenuProd(); atualizarPedido(); render();
   abrirDoHash();
 }
 coresPadrao();
@@ -1405,7 +1669,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610152113";
+  const VERSAO = "202610152136";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
