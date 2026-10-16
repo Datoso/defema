@@ -494,7 +494,7 @@ body.pg-inicio main{grid-column:1/-1}
 .slide.centro::before{background:radial-gradient(ellipse at center,rgba(9,28,15,.78) 0%,rgba(9,28,15,.58) 55%,rgba(9,28,15,.4) 100%)}
 /* faixa de departamentos com foto */
 .cats{margin-top:26px}
-.cats-faixa{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.cats-faixa{display:grid;grid-template-columns:repeat(var(--n,6),minmax(0,1fr));gap:14px}
 .cat-tile{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s}
 .cat-tile:hover{transform:translateY(-3px);box-shadow:0 12px 26px rgba(30,50,30,.14);border-color:var(--leaf-2)}
 .cat-tile:focus-visible{outline:3px solid var(--leaf-2);outline-offset:2px}
@@ -650,14 +650,16 @@ const DEPS = {
   "Ferramentas": ["Enxadas e enxadões", "Pás", "Cavadeiras", "Martelos e marretas", "Chaves", "Serrotes e facões", "Ferramentas manuais", "Ferramentas elétricas", "Jardinagem", "Pulverizadores", "Roçadeiras e aparadores"],
   "Sementes e mudas": ["Sementes de hortaliças", "Sementes de vegetais", "Bandeja 200 mudas", "Bandeja 128 mudas", "Mudas unitárias"],
   "Insumos":     ["Adubos", "Calcário", "Terras e substratos"],
-  "Ferragens e EPIs": ["EPIs", "Cercas e arames", "Ferragens"]
+  "Ferragens e EPIs": ["EPIs", "Cercas e arames", "Ferragens"],
+  "Veterinária":  ["Antibióticos", "Bicheiras e berne"]
 };
 const DEP_INFO = {
   "Defensivos":"Inseticidas, carrapaticidas e uso profissional",
   "Ferramentas":"Enxadas, pulverizadores, roçadeiras e mais",
   "Sementes e mudas":"Sementes Isla, bandejas de mudas, café e maracujá",
   "Insumos":"Adubo, calcário, substrato",
-  "Ferragens e EPIs":"Botas, arames, pregos e grampos"
+  "Ferragens e EPIs":"Botas, arames, pregos e grampos",
+  "Veterinária":"Antibióticos, bicheiras e berne"
 };
 
 /* ===== PRODUTOS =====
@@ -671,6 +673,10 @@ const PRODUTOS = [
   {nome:"K-Othrine SC 25", marca:"Bayer", dep:"Defensivos", sub:"Inseticidas", un:"Frasco 30 mL · ambientes externos", preco:null, foto:"img/k-othrine-sc25.jpg"},
   {nome:"Diazitop PM", marca:"Clarion", dep:"Defensivos", sub:"Inseticidas", un:"Sachê 25 g · uso rural", preco:null, foto:"img/diazitop-pm.jpg"},
   {nome:"Butox P CE 25", marca:"MSD Saúde Animal", dep:"Defensivos", sub:"Carrapaticidas e mosquicidas", un:"Frasco 20 mL · carrapatos, moscas e sarna", preco:null, foto:"img/butox-p-ce25.jpg"},
+  {nome:"Matabicheiras Forte SV", marca:"Zoetis", dep:"Veterinária", sub:"Bicheiras e berne", un:"Aerossol 500 mL", preco:null, novo:true, foto:"img/matabicheiras-forte-sv.jpg", descricao:"Larvicida e bernicida em aerossol, de uso veterinário, para tratar bicheiras e berne no gado. Respeite o período de carência indicado no rótulo."},
+  {nome:"Agrovet Plus", marca:"Elanco", dep:"Veterinária", sub:"Antibióticos", un:"Frasco 50 mL · injetável", preco:null, novo:true, foto:"img/agrovet-plus.jpg", descricao:"Antimicrobiano injetável de uso veterinário para bovinos, à base de benzilpenicilina procaína e diidroestreptomicina, com anti-inflamatório (piroxicam). Respeite o período de carência indicado na bula."},
+  {nome:"Terramicina Pó Solúvel com Antigerm 77", marca:"Zoetis", dep:"Veterinária", sub:"Antibióticos", un:"Sachê 25 g", preco:null, novo:true, foto:"img/terramicina-po-soluvel.jpg", descricao:"Antibiótico em pó solúvel, de uso veterinário, para o tratamento de infecções bacterianas de frangos, poedeiras, perus, bovinos, suínos, coelhos, ovinos e caprinos."},
+  {nome:"Terramicina/LA", marca:"Zoetis", dep:"Veterinária", sub:"Antibióticos", un:"Frasco-ampola · solução injetável", opcoes:["50 mL","100 mL"], opNome:"Tamanho", preco:null, novo:true, foto:"img/terramicina-la.jpg", fotosExtras:["img/terramicina-la-frasco.jpg"], descricao:"Antibiótico injetável de ação prolongada e amplo espectro, de uso veterinário, para prevenção e tratamento de doenças bacterianas de bovinos, suínos, ovinos, caprinos, aves e coelhos. Respeite o período de carência indicado na bula."},
   {nome:"Triatox", marca:"MSD Saúde Animal", dep:"Defensivos", sub:"Carrapaticidas e mosquicidas", un:"Frasco 200 mL · carrapaticida para bovinos", preco:null, foto:"img/triatox.jpg"},
   {nome:"Colosso Pulverização", marca:"Ourofino", dep:"Defensivos", sub:"Carrapaticidas e mosquicidas", un:"Frasco 25 mL · carrapatos e moscas no gado", preco:null, foto:"img/colosso-pulverizacao.jpg"},
   {nome:"Baygon Universal Spray", marca:"SC Johnson", dep:"Defensivos", sub:"Inseticidas", un:"Aerossol", preco:null, novo:true, foto:"img/baygon-universal.jpg", descricao:"Inseticida em aerossol de ação rápida contra mosquitos, baratas e moscas, para uso doméstico."},
@@ -697,6 +703,7 @@ const PRODUTOS = [
   {nome:"Chave Phillips", marca:"Vonder", dep:"Ferramentas", sub:"Chaves", un:"Unitária", preco:null, opcoes:["1/8\" × 3\"","3/16\" × 4\"","1/4\" × 6\""], opNome:"Tamanho", foto:"img/chave-phillips-vonder.jpg"},
   {nome:"Mangueira trançada", marca:"Mantac", dep:"Ferramentas", sub:"Jardinagem", un:"Vendida por metro", preco:7.0, porMetro:true, foto:"img/mangueira-mantac.jpg"},
   {nome:"Cultivador de mão 3 dentes", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Cabo curto de madeira", preco:null, novo:true, foto:"img/cultivador-tramontina.jpg"},
+  {nome:"Rastelo 14 dentes", dep:"Ferramentas", sub:"Jardinagem", un:"Sem cabo · aço", preco:null, novo:true, foto:"img/rastelo-14-dentes.jpg", descricao:"Rastelo (ancinho) de aço com 14 dentes curvos, para juntar folhas, palha e torrões e nivelar canteiros. Vendido sem cabo."},
   {nome:"Ancinho de jardim", marca:"Tramontina", dep:"Ferramentas", sub:"Jardinagem", un:"Com cabo", preco:44.9, ilu:["ancinho"]},
   {nome:"Tesoura de poda", dep:"Ferramentas", sub:"Jardinagem", un:"Cabo com mola · uso leve", preco:49.9, foto:"img/tesoura-de-poda.jpg"},
   {nome:"Tesoura de poda para galhos", dep:"Ferramentas", sub:"Jardinagem", un:"Reforçada · galhos mais grossos", preco:null, foto:"img/tesoura-poda-galhos.jpg"},
@@ -836,6 +843,7 @@ if(TEM_SUPABASE) trocarCatalogo(lerCatalogoCache({url: SUPABASE.url}));
 
 /* ===== Ícones e cores por departamento (usados quando não há foto) ===== */
 const ICON = {
+  "Veterinária":'<path d="M9 8h6v12a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 20z" fill="currentColor" fill-opacity=".2"/><path d="M9 8h6v12a1.5 1.5 0 0 1-1.5 1.5h-3A1.5 1.5 0 0 1 9 20zM10 8V5.5h4V8M9.5 3.5h5M12 12v5M9.5 14.5h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
   "Defensivos":'<path d="M8 10h7v9.5a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z" fill="currentColor" fill-opacity=".2"/><path d="M8 10h7v9.5a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2zM9.5 10V7.5h4V10M9.5 7.5 9 4.5h6.5l1.2 3H13.5M10.5 14.5h2" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="19.3" cy="4" r=".9" fill="currentColor"/><circle cx="20.6" cy="6.6" r=".9" fill="currentColor"/><circle cx="19.3" cy="9.2" r=".9" fill="currentColor"/>',
   "Ferramentas":'<path d="M3 21v-4.5l4.5-4.5 4.5 4.5L7.5 21z" fill="currentColor" fill-opacity=".2"/><path d="M3 21v-4.5l4.5-4.5 4.5 4.5L7.5 21zM9.75 14.25 16.5 7.5M16 3l5 5-.6.6a3.4 3.4 0 0 1-4.8 0 3.4 3.4 0 0 1 0-4.8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
   "Sementes e mudas":'<path d="M6.5 15h11l-1.4 6.5H7.9z" fill="currentColor" fill-opacity=".2"/><path d="M12 11.5c0-3.3 2.2-5.6 6-5.6 0 3.3-2.3 5.6-6 5.6zM12 13c0-2.6-1.9-4.4-4.8-4.4 0 2.6 1.9 4.4 4.8 4.4z" fill="currentColor" fill-opacity=".2"/><path d="M6.5 15h11l-1.4 6.5H7.9zM5.5 15h13M12 15V9.5M12 11.5c0-3.3 2.2-5.6 6-5.6 0 3.3-2.3 5.6-6 5.6zM12 13c0-2.6-1.9-4.4-4.8-4.4 0 2.6 1.9 4.4 4.8 4.4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
@@ -858,8 +866,8 @@ const ITEM_ICON = {
   serrote:'<path d="M3 15L15 5l3 3-2 2v6H3z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M15 9l5-3v8l-4 2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M5 16l1 2 1-2 1 2 1-2 1 2 1-2 1 2 1-2" fill="none" stroke="currentColor" stroke-width="1.1"/>',
   facao:'<path d="M3 17C9 15 15 9 20 4c0 6-6 13-14 14z" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M3 17l-1 3 4-2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>'
 };
-const TINT = {"Defensivos":"#f4ece3","Ferramentas":"#eef0ec","Máquinas":"#eef0ec","Sementes":"#fbf3dc","Insumos":"#f4ece3","Mudas":"#e9f1e6","Sementes e mudas":"#e9f1e6","Ferragens e EPIs":"#f6efe2"};
-const INK  = {"Defensivos":"#7b5434","Ferramentas":"#1f4d2d","Máquinas":"#1f4d2d","Sementes":"#7b5434","Insumos":"#7b5434","Mudas":"#1f4d2d","Sementes e mudas":"#1f4d2d","Ferragens e EPIs":"#7b5434"};
+const TINT = {"Defensivos":"#f4ece3","Ferramentas":"#eef0ec","Máquinas":"#eef0ec","Sementes":"#fbf3dc","Insumos":"#f4ece3","Mudas":"#e9f1e6","Sementes e mudas":"#e9f1e6","Ferragens e EPIs":"#f6efe2","Veterinária":"#e6f0f5"};
+const INK  = {"Defensivos":"#7b5434","Ferramentas":"#1f4d2d","Máquinas":"#1f4d2d","Sementes":"#7b5434","Insumos":"#7b5434","Mudas":"#1f4d2d","Sementes e mudas":"#1f4d2d","Ferragens e EPIs":"#7b5434","Veterinária":"#1d5577"};
 
 /* ===== ILUSTRAÇÕES PROVISÓRIAS (até ter a foto real) =====
    Use no produto: ilu:["saco","TERRA VEGETAL","#5a3d26"] · ["bandeja","alface"] · ["vaso","cafe"] · ["ancinho"] */
@@ -1301,7 +1309,7 @@ function slidesHero(){
       <span class="tag">Criação e campo</span>
       <h2>Tudo para a sua criação</h2>
       <p>Carrapaticidas, mosquicidas, arame, grampos, botas e EPIs.</p>
-      <div class="hero-btns"><button class="hbtn" data-dep="Defensivos" data-sub="Carrapaticidas e mosquicidas">Produtos veterinários</button><button class="hbtn sec" data-dep="Ferragens e EPIs" data-sub="Cercas e arames">Cercas e arames</button></div>
+      <div class="hero-btns"><button class="hbtn" data-dep="Veterinária">Produtos veterinários</button><button class="hbtn sec" data-dep="Ferragens e EPIs" data-sub="Cercas e arames">Cercas e arames</button></div>
     </div></div>`);
   return s;
 }
@@ -1321,7 +1329,7 @@ function viewInicio(){
   </section>
   <section class="cats">
     <div class="sec-head"><h2>Compre por departamento</h2><button class="link" data-go="produtos" data-sec="todos">Ver todos os produtos →</button></div>
-    <div class="cats-faixa">
+    <div class="cats-faixa" style="--n:${Object.keys(DEPS).length+1}">
       ${Object.keys(DEPS).map(d=>{ const n=PRODUTOS.filter(p=>p.dep===d).length, f=fotoDoDep(d);
         return `<button class="cat-tile" data-dep="${d}"><span class="cat-foto">${f?`<img src="${f}" alt="" loading="lazy">`:`<span style="color:${INK[d]}">${icon(d)}</span>`}</span>
           <span class="cat-info"><b>${d}</b><span>${n} produto${n===1?"":"s"}</span></span></button>`; }).join("")}
@@ -1355,7 +1363,7 @@ function viewInicioAntiga(){
    Ignora acentos, maiúsculas e erros comuns de português (ç/ss/s/z, ch/x, g/j, qu/k, h mudo, l/u no fim...)
    e aceita pequenos erros de digitação (letra trocada, faltando ou sobrando). */
 const SINONIMOS = {
-  veneno:"defensivos inseticida carrapaticida", remedio:"inseticida carrapaticida", bicho:"inseticida",
+  veneno:"defensivos inseticida carrapaticida", remedio:"inseticida carrapaticida veterinaria", bicho:"inseticida",
   bomba:"pulverizador", pulverisador:"pulverizador", maquina:"maquinas", mato:"rocadeira aparador",
   grama:"aparador rocadeira", capim:"rocadeira aparador", rocadeira:"rocadeira aparador",
   carrapato:"carrapaticida", mosca:"mosquicida", mosquito:"mosquicida mosquitos", gado:"bovinos carrapaticida", boi:"bovinos carrapaticida", vaca:"bovinos carrapaticida",
@@ -1365,7 +1373,7 @@ const SINONIMOS = {
   formiga:"formicida", formigueiro:"formicida", sauva:"formicida", sauvas:"formicida", sauveiro:"formicida", cortadeira:"formicida",
   lesma:"lesmicida", lesmas:"lesmicida", caramujo:"lesmicida", caracol:"lesmicida",
   barata:"inseticida baratas", baratas:"inseticida baratas", pulga:"inseticida pulgas", pernilongo:"mosquicida mosquitos", muriçoca:"mosquicida mosquitos", murisoca:"mosquicida mosquitos",
-  berne:"carrapaticida mosquicida", bicheira:"mosquicida", sarna:"carrapaticida sarna",
+  berne:"berne carrapaticida mosquicida", bicheira:"bicheiras mosquicida", bicheiras:"bicheiras", antibiotico:"antibioticos", antibiotic:"antibioticos", veterinario:"veterinaria", vet:"veterinaria", injecao:"injetavel", injetavel:"injetavel", sarna:"carrapaticida sarna",
   rastelo:"ancinho", rastel:"ancinho", ciscador:"ancinho", gadanho:"ancinho", picareta:"enxadao", chibanca:"enxadao", alvião:"enxadao", alviao:"enxadao",
   trado:"cavadeira", boca:"cavadeira chave", buraqueira:"cavadeira", cavadeira:"cavadeira", pa:"pa",
   tesourao:"tesoura poda", podao:"tesoura poda facao", serra:"serrote", faca:"facao", machete:"facao",
@@ -1704,7 +1712,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610152200";
+  const VERSAO = "202610152219";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
