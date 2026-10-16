@@ -558,7 +558,9 @@ nav.main .menu-prod.sem-hover .menu-caixa{opacity:0;visibility:hidden}
 .cat-foto{overflow:hidden}
 .cat-foto img{position:absolute;inset:12px;width:calc(100% - 24px);height:calc(100% - 24px)}
 /* foco de teclado visível em todos os botões e links */
-nav.main a:focus-visible{outline:2px solid #f7dc94;outline-offset:2px}
+nav.main a:focus-visible,.brand:focus-visible{outline:2px solid #f7dc94;outline-offset:2px}
+.brand:focus-visible{outline-offset:4px;border-radius:12px}
+nav.main .menu-caixa a:focus-visible,.menu-caixa button:focus-visible{outline:2px solid var(--leaf-2);outline-offset:-2px}
 .link:focus-visible,.car-btn:focus-visible,.fechar:focus-visible,.car-pontos button:focus-visible{outline:2px solid var(--leaf-2);outline-offset:2px;border-radius:4px}
 .fechar:focus-visible,.car-btn:focus-visible{border-radius:50%}
 .wa-float:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
@@ -600,7 +602,15 @@ nav.main a:focus-visible{outline:2px solid #f7dc94;outline-offset:2px}
   .slide.oferta{flex-direction:column;align-items:stretch;justify-content:flex-end}
   .slide.oferta .oferta-prod{order:-1;position:relative;top:auto;right:auto;transform:rotate(2deg);align-self:center;flex:0 0 auto;width:150px;margin:28px 0 18px}
 }
-@media (max-width:600px){ .search{flex-basis:calc(100% - 104px)!important} }
+@media (max-width:600px){ .search{flex-basis:calc(100% - 104px)!important} .qtd{grid-template-columns:40px 1fr 40px} }
+/* links de contato do Sobre com área de toque maior (sem mudar o visual) */
+@media (max-width:860px){ .panel dd .link,.map-foot .link{display:inline-block;padding-block:11px;margin-block:-11px} }
+/* pontos dos carrosséis: área de clique maior com borda transparente; visual igual */
+.hero-pontos{gap:0;bottom:2px}
+.hero-pontos button,.hero-pontos button.on{border-style:solid;border-color:transparent;border-width:15px 4px;border-radius:8.5px/19.5px}
+.hero-pontos button,.hero-pontos button.on,.car-pontos button,.car-pontos button[aria-current="true"]{background-clip:padding-box}
+.car-pontos{gap:0;bottom:0}
+.car-pontos button,.car-pontos button[aria-current="true"]{box-sizing:content-box;border-style:solid;border-color:transparent;border-width:13px 3px;border-radius:7.5px/17.5px}
 @media (min-width:601px) and (max-width:860px){ .slide.oferta .oferta-prod{align-self:flex-start;margin-left:34px} }
 @media (max-width:480px){
   .slide .tag{letter-spacing:.05em;font-size:.68rem;border-radius:12px;text-align:center;justify-content:center}
@@ -1767,7 +1777,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610160045";
+  const VERSAO = "202610160057";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
