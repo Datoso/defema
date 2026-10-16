@@ -1402,6 +1402,21 @@ if(TEM_SUPABASE){
   if (mq && mq.addEventListener) mq.addEventListener("change", e => { if (!salvo()) { raiz.setAttribute("data-theme", e.matches ? "dark" : "light"); marcar(); } });
   marcar();
 })();
+
+/* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
+(function(){
+  const VERSAO = "202610152113";
+  let ultima = 0;
+  async function conferir(){
+    if(Date.now() - ultima < 60000) return; ultima = Date.now();
+    try{
+      const v = (await fetch("versao.txt?t=" + Date.now(), {cache:"no-store"}).then(r => r.ok ? r.text() : "")).trim();
+      if(v && v !== VERSAO && !document.querySelector("dialog[open]")) location.reload();
+    }catch(_){}
+  }
+  document.addEventListener("visibilitychange", () => { if(document.visibilityState === "visible") conferir(); });
+  setInterval(conferir, 30 * 60000);
+})();
 </script>
 </body>
 </html>
