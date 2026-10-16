@@ -336,7 +336,7 @@ on conflict (nome, coalesce(marca, '')) do update set subcategoria_id = excluded
   ilustracao = excluded.ilustracao, icone = excluded.icone, destaque = excluded.destaque, novidade = excluded.novidade,
   restrito = excluded.restrito, por_metro = excluded.por_metro, op_nome = excluded.op_nome, ordem = excluded.ordem;
 insert into public.produtos (nome, marca, subcategoria_id, unidade, preco, preco_antigo, descricao, foto_url, ilustracao, icone, destaque, novidade, restrito, por_metro, op_nome, ordem)
-select 'Alface Lisa Babá de Verão', 'Isla', s.id, 'Envelope', 6.9, 8.9, 'Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.', 'alface-lisa-baba-de-verao.jpeg', null, null, false, false, false, false, null, 320
+select 'Alface Lisa Baba de Verão', 'Isla', s.id, 'Envelope', 6.9, 8.9, 'Semente de hortaliça Isla em envelope. No verso do envelope você encontra a época de plantio da sua região, o espaçamento e o tempo até a colheita.', 'alface-lisa-baba-de-verao.jpeg', null, null, false, false, false, false, null, 320
   from public.subcategorias s join public.departamentos d on d.id = s.departamento_id
  where d.nome = 'Sementes' and s.nome = 'Folhosas e temperos'
 on conflict (nome, coalesce(marca, '')) do update set subcategoria_id = excluded.subcategoria_id, unidade = excluded.unidade,
@@ -915,7 +915,7 @@ delete from public.produto_opcoes where produto_id = (select id from public.prod
 delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Aparador de grama elétrico' and coalesce(marca, '') = '');
 delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Alface Crespa Grand Rapids TBR' and coalesce(marca, '') = 'Isla');
 delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Alface Grandes Lagos Americana' and coalesce(marca, '') = 'Isla');
-delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Alface Lisa Babá de Verão' and coalesce(marca, '') = 'Isla');
+delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Alface Lisa Baba de Verão' and coalesce(marca, '') = 'Isla');
 delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Almeirão de Cabeça Pão de Açúcar' and coalesce(marca, '') = 'Isla');
 delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Almeirão Amarelo (Radiche)' and coalesce(marca, '') = 'Isla');
 delete from public.produto_opcoes where produto_id = (select id from public.produtos where nome = 'Couve Manteiga da Geórgia' and coalesce(marca, '') = 'Isla');

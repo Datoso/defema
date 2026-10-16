@@ -474,6 +474,16 @@ body.pg-inicio main{grid-column:1/-1}
 .oferta-meta{font-size:.9rem;font-weight:600;color:#cfe8d3;margin-bottom:10px}
 .slide p.oferta-desc{font-size:clamp(.9rem,1.1vw,1.02rem);margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .oferta-eco{background:rgba(255,241,201,.16);color:#fff1c9;border:1px solid rgba(255,241,201,.4);border-radius:99px;padding:4px 10px;font-size:.82rem;font-weight:700;align-self:center}
+/* títulos e subtítulos em uma linha só no computador */
+@media (min-width:861px){
+  .slide-txt{max-width:900px}
+  .slide h2{white-space:nowrap;font-size:clamp(1.8rem,2.9vw,3rem)}
+  .slide p{max-width:none}
+  .slide.oferta{justify-content:center;gap:clamp(40px,4vw,72px);padding-inline:90px}
+  .slide.oferta .slide-txt{padding:0;max-width:640px;flex:0 1 auto;min-width:0}
+  .slide.oferta h2{overflow:hidden;text-overflow:ellipsis}
+  .oferta-prod{position:relative;right:auto;top:auto;transform:rotate(2deg);flex:0 0 auto;width:clamp(220px,20vw,320px)}
+}
 /* distância maior entre o texto e as setas */
 @media (min-width:861px){ .slide-txt{padding-left:calc(14px + 44px + clamp(36px,4.5vw,90px));padding-right:calc(14px + 44px + 24px)} }
 /* boas-vindas centralizado */
@@ -701,7 +711,7 @@ const PRODUTOS = [
   /* Sementes Isla — Folhosas e temperos */
   S("Alface Crespa Grand Rapids TBR", "Folhosas e temperos", "alface-crespa-grand-rapids.jpeg", 6.9, {top:true}),
   S("Alface Grandes Lagos Americana", "Folhosas e temperos", "alface-grandes-lagos-americana.jpeg", 6.9),
-  S("Alface Lisa Babá de Verão", "Folhosas e temperos", "alface-lisa-baba-de-verao.jpeg", 6.9, {antigo:8.9}),
+  S("Alface Lisa Baba de Verão", "Folhosas e temperos", "alface-lisa-baba-de-verao.jpeg", 6.9, {antigo:8.9}),
   S("Almeirão de Cabeça Pão de Açúcar", "Folhosas e temperos", "almeirao-de-cabeca-pao-de-acucar.jpg", 6.9),
   S("Almeirão Amarelo (Radiche)", "Folhosas e temperos", "almeirao-folha-larga-amarelo-radiche.jpg", 6.5),
   S("Couve Manteiga da Geórgia", "Folhosas e temperos", "couve-manteiga-da-georgia.jpg", 6.9, {top:true}),
@@ -1249,6 +1259,7 @@ const FOTOS_HERO = {
 const ICO_SETA = d => `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${d}" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const promocoes = () => PRODUTOS.filter(p=>p.antigo && p.preco!=null).sort((a,b)=>!!b.foto-!!a.foto);
 const maisProcurados = () => PRODUTOS.filter(p=>p.top).sort((a,b)=>!!b.foto-!!a.foto);
+const todasMudas = () => PRODUTOS.filter(p=>/muda/i.test(p.sub||""));
 const descontoPct = p => Math.round((1 - p.preco/p.antigo)*100);
 function ofertaDestaque(){
   const c = promocoes().filter(p=>p.foto && p.antigo>p.preco);
@@ -1276,7 +1287,7 @@ function slidesHero(){
   s.push(`<div class="slide">${fundo(FOTOS_HERO.mudas)}<div class="slide-txt">
       <span class="tag">Sementes e mudas</span>
       <h2>Mudas novas toda semana</h2>
-      <div class="hero-btns"><button class="hbtn" data-dep="Sementes e mudas">Ver mudas</button><a class="hbtn wa" href="${waLink(`Olá! Quero encomendar mudas.`)}" target="_blank" rel="noopener">Encomende já</a></div>
+      <div class="hero-btns"><button class="hbtn" data-go="produtos" data-sec="mudas">Ver mudas</button><a class="hbtn wa" href="${waLink(`Olá! Quero encomendar mudas.`)}" target="_blank" rel="noopener">Encomende já</a></div>
     </div></div>`);
   s.push(`<div class="slide">${fundo(FOTOS_HERO.criacao)}<div class="slide-txt">
       <span class="tag">Criação e campo</span>
@@ -1437,6 +1448,8 @@ function viewProdutos(){
   if(!state.dep && !state.sub && !q0){
     if(state.sec==="promo"){ const l=promocoes();
       return `<div class="crumb">Início › Produtos › Promoções</div><div class="sec-head"><h2>Promoções da semana</h2><span class="crumb">${l.length} itens com desconto</span></div>${grid(l)}`; }
+    if(state.sec==="mudas"){ const l=todasMudas();
+      return `<div class="crumb">Início › Produtos › Mudas</div><div class="sec-head"><h2>Mudas</h2><span class="crumb">${l.length} produtos · bandejas e mudas unitárias</span></div>${grid(l)}`; }
     if(state.sec==="top"){ const l=maisProcurados();
       return `<div class="crumb">Início › Produtos › Mais procurados</div><div class="sec-head"><h2>Mais procurados</h2><span class="crumb">${l.length} produtos</span></div>${grid(l)}`; }
     if(!state.sec){
@@ -1594,6 +1607,7 @@ function renderMenuProd(){
     <a href="#produtos" data-go="produtos" data-sec="promo">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 12V4h8l10 10-8 8z"/><circle cx="7.5" cy="8.5" r="1.5"/></svg>',"#fde3dc","#a5402d")}Promoções da semana<small>${promo}</small></a>
     <a href="#produtos" data-go="produtos" data-sec="top">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></svg>',"#fff1c9","#7b5434")}Mais procurados<small>${top}</small></a>
     <a href="#produtos" data-go="produtos" data-sec="todos">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>',"#e3f1e5","#1f4d2d")}Todos os produtos<small>${PRODUTOS.length}</small></a>
+    <a href="#produtos" data-go="produtos" data-sec="mudas">${mi('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21v-9"/><path d="M12 12c0-4-3-6-7-6 0 4 3 6 7 6zM12 10c0-3.5 2.5-6 7-6 0 4-3 6-7 6z"/></svg>',"#e3f1e5","#1f4d2d")}Mudas<small>${todasMudas().length}</small></a>
     <hr><span class="menu-rot">Departamentos</span>
     ${Object.keys(DEPS).map(d=>`<button data-dep="${d}">${mi(icon(d),TINT[d],INK[d])}${d}<small>${PRODUTOS.filter(p=>p.dep===d).length}</small></button>`).join("")}`;
 }
@@ -1684,7 +1698,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610152144";
+  const VERSAO = "202610152151";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
