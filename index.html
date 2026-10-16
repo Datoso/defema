@@ -469,7 +469,19 @@ body.pg-inicio main{grid-column:1/-1}
 .oferta-preco{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:0 0 20px}
 .oferta-preco s{opacity:.75;font-size:1.05rem}
 .oferta-preco b{font-family:var(--display);font-size:clamp(2rem,3.4vw,3rem);color:#fff1c9;line-height:1}
-.oferta .slide-txt{max-width:min(620px,52%)}
+.oferta .slide-txt{max-width:min(660px,54%)}
+.oferta .slide-txt h2{margin-bottom:6px}
+.oferta-meta{font-size:.9rem;font-weight:600;color:#cfe8d3;margin-bottom:10px}
+.slide p.oferta-desc{font-size:clamp(.9rem,1.1vw,1.02rem);margin-bottom:16px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.oferta-eco{background:rgba(255,241,201,.16);color:#fff1c9;border:1px solid rgba(255,241,201,.4);border-radius:99px;padding:4px 10px;font-size:.82rem;font-weight:700;align-self:center}
+/* distância maior entre o texto e as setas */
+@media (min-width:861px){ .slide-txt{padding-left:calc(14px + 44px + clamp(36px,4.5vw,90px));padding-right:calc(14px + 44px + 24px)} }
+/* boas-vindas centralizado */
+.slide.centro{justify-content:center;text-align:center}
+.slide.centro .slide-txt{max-width:960px;padding-left:24px;padding-right:24px}
+.slide.centro p{margin-inline:auto;max-width:72ch}
+.slide.centro .hero-btns{justify-content:center}
+.slide.centro::before{background:radial-gradient(ellipse at center,rgba(9,28,15,.78) 0%,rgba(9,28,15,.58) 55%,rgba(9,28,15,.4) 100%)}
 /* faixa de departamentos com foto */
 .cats{margin-top:26px}
 .cats-faixa{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
@@ -512,6 +524,8 @@ nav.main .menu-caixa a:hover,.menu-caixa button:hover,nav.main .menu-caixa a:foc
 nav.main .menu-prod.sem-hover .menu-caixa{opacity:0;visibility:hidden}
 @media (max-width:1100px){ .cats-faixa{grid-template-columns:repeat(3,minmax(0,1fr))} }
 @media (max-width:860px){
+  .slide p.oferta-desc{display:none}
+  .slide.centro{align-items:center}
   .menu-caixa{position:fixed;top:var(--hdr,60px);left:12px;right:12px;transform:none;min-width:0;padding-top:4px}
   .menu-prod.aberto .menu-caixa,.menu-prod:focus-within .menu-caixa{transform:none}
   .hero{height:auto;min-height:440px;border-radius:14px}
@@ -1244,29 +1258,30 @@ function slidesHero(){
   const ws = waLink(`Olá! Vim pelo site da ${LOJA.nome}.`);
   const fundo = url => url ? `<img class="bg" src="${url}" alt="" onerror="this.remove()">` : "";
   const s = [];
-  s.push(`<div class="slide">${fundo(FOTOS_HERO.boasVindas)}<div class="slide-txt">
+  s.push(`<div class="slide centro">${fundo(FOTOS_HERO.boasVindas)}<div class="slide-txt">
       <span class="tag">Rua Tiradentes, 535 · Centro de Pirapozinho</span>
       <h2>Bem-vindo à Defema</h2>
-      <p>Tudo para o campo, a horta e a criação, com atendimento de quem conhece a lida. Escolha os produtos aqui e finalize pelo WhatsApp.</p>
-      <div class="hero-btns"><button class="hbtn" data-go="produtos">Ver produtos</button><a class="hbtn sec" href="${ws}" target="_blank" rel="noopener">Falar no WhatsApp</a></div>
+      <p>Tudo para o campo, a horta e a criação, com atendimento de quem conhece a vida no campo.<br>Escolha seus produtos aqui e finalize o pedido pelo WhatsApp.</p>
+      <div class="hero-btns"><button class="hbtn" data-go="produtos">Ver produtos</button><a class="hbtn sec" href="${ws}" target="_blank" rel="noopener">Chamar no WhatsApp</a></div>
     </div></div>`);
   const o = ofertaDestaque();
   if(o) s.push(`<div class="slide oferta"><div class="slide-txt">
       <span class="tag">Oferta destaque da semana</span>
       <h2>${esc(o.nome)}</h2>
-      <div class="oferta-preco"><s>${brl(o.antigo)}</s><b>${brl(o.preco)}</b></div>
+      <div class="oferta-meta">${[o.marca, o.sub, o.un].filter(Boolean).map(esc).join(" · ")}</div>
+      <p class="oferta-desc">${esc(descricao(o))}</p>
+      <div class="oferta-preco"><s>${brl(o.antigo)}</s><b>${brl(o.preco)}</b><span class="oferta-eco">Você economiza ${brl(o.antigo-o.preco)}</span></div>
       <div class="hero-btns"><button class="hbtn" data-ver="${o.id}">Ver oferta</button><button class="hbtn sec" data-go="produtos" data-sec="promo">Todas as promoções</button></div>
     </div><div class="oferta-prod"><img src="${o.foto}" alt="${esc(o.nome)}"><span class="oferta-pct">-${descontoPct(o)}%</span></div></div>`);
   s.push(`<div class="slide">${fundo(FOTOS_HERO.mudas)}<div class="slide-txt">
-      <span class="tag">Chegam toda semana</span>
-      <h2>Mudas novas e fresquinhas</h2>
-      <p>Hortaliças vendidas de 10 em 10 (ou de 4 em 4). Bandeja fechada de 200 ou 128 mudas sai por encomenda.</p>
-      <div class="hero-btns"><button class="hbtn" data-dep="Sementes e mudas">Ver mudas e sementes</button><a class="hbtn wa" href="${waLink(`Olá! Quero encomendar uma bandeja fechada de mudas.`)}" target="_blank" rel="noopener">Encomendar bandeja</a></div>
+      <span class="tag">Sementes e mudas</span>
+      <h2>Mudas novas toda semana</h2>
+      <div class="hero-btns"><button class="hbtn" data-dep="Sementes e mudas">Ver mudas</button><a class="hbtn wa" href="${waLink(`Olá! Quero encomendar mudas.`)}" target="_blank" rel="noopener">Encomende já</a></div>
     </div></div>`);
   s.push(`<div class="slide">${fundo(FOTOS_HERO.criacao)}<div class="slide-txt">
       <span class="tag">Criação e campo</span>
-      <h2>Do pasto ao curral, a gente cuida junto</h2>
-      <p>Carrapaticidas, mosquicidas, arame, grampos, botas e EPIs para o dia a dia da fazenda.</p>
+      <h2>Tudo para a sua criação</h2>
+      <p>Carrapaticidas, mosquicidas, arame, grampos, botas e EPIs.</p>
       <div class="hero-btns"><button class="hbtn" data-dep="Defensivos" data-sub="Carrapaticidas e mosquicidas">Carrapaticidas</button><button class="hbtn sec" data-dep="Ferragens e EPIs" data-sub="Cercas e arames">Cercas e arames</button></div>
     </div></div>`);
   return s;
@@ -1669,7 +1684,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610152136";
+  const VERSAO = "202610152144";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
