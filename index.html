@@ -404,11 +404,33 @@ body.pg-sobre main{grid-column:1/-1}
 /* rodapé centralizado */
 footer .wrap{text-align:center}
 footer .disclaimer{max-width:900px;margin-left:auto;margin-right:auto}
+
+/* ===== botão do pedido no topo (contador sempre à vista) ===== */
+.ped-topo{all:unset;box-sizing:border-box;cursor:pointer;position:relative;width:40px;height:40px;border-radius:8px;display:grid;place-items:center;color:#f2f6ee;flex:0 0 auto}
+.ped-topo:hover{background:rgba(255,255,255,.12)}
+.ped-topo:focus-visible{outline:2px solid var(--seed);outline-offset:2px}
+.ped-topo svg{width:23px;height:23px}
+.ped-n{position:absolute;top:1px;right:0;min-width:18px;height:18px;padding:0 5px;border-radius:999px;background:#f7c45a;color:#1b2a1f;font:800 11px/18px var(--body);text-align:center;box-shadow:0 0 0 2px var(--leaf)}
+@media (max-width:860px){ .ped-topo{order:5} }
+@media (max-width:600px){ .ped-topo{order:5;width:38px;height:38px} .search{flex-basis:calc(100% - 96px)!important} }
+/* ===== carrossel de fotos no detalhe ===== */
+.carrossel{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;scroll-behavior:smooth}
+.carrossel::-webkit-scrollbar{display:none}
+.carrossel img{flex:0 0 100%;width:100%;height:100%;object-fit:contain;padding:24px;scroll-snap-align:center}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:1px solid var(--line);background:color-mix(in srgb,var(--surface) 85%,transparent);color:var(--fg);font-size:1.6rem;line-height:1;cursor:pointer;z-index:2;display:grid;place-items:center}
+.car-btn:hover{background:var(--surface)}
+.car-btn.ant{left:10px}.car-btn.prox{right:10px}
+.car-pontos{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;z-index:2}
+.car-pontos button{width:9px;height:9px;border-radius:50%;border:0;padding:0;background:#c9c2b4;cursor:pointer}
+.car-pontos button[aria-current="true"]{background:var(--leaf-2);width:22px;border-radius:999px}
+.mais-fotos{position:absolute;right:8px;bottom:8px;z-index:1;font-size:.68rem;font-weight:700;background:rgba(27,42,31,.75);color:#fff;border-radius:6px;padding:2px 7px}
+.copiar-link{display:inline-flex;align-items:center;gap:6px;margin-top:4px;font-size:.88rem;color:var(--muted)}
+.copiar-link svg{width:16px;height:16px}
+.copiar-link:hover{color:var(--leaf-2)}
 </style>
 </head>
 <body>
 
-<div class="proto"><div class="wrap">Protótipo: alguns preços ainda são de exemplo.</div></div>
 
 <header>
   <div class="wrap top">
@@ -432,6 +454,7 @@ footer .disclaimer{max-width:900px;margin-left:auto;margin-right:auto}
       <a href="#produtos" data-go="produtos">Produtos</a>
       <a href="#sobre" data-go="sobre">Sobre</a>
     </nav>
+    <button class="ped-topo" id="pedTopo" type="button" data-abrir-pedido aria-label="Ver pedido (vazio)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h18l-2 11H5z"/><path d="M8 9l4-6 4 6"/></svg><span class="ped-n" id="pedN" hidden>0</span></button>
     <button class="tema-btn" id="btnTema" type="button" aria-label="Mudar para modo escuro"><svg class="ico-lua" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg><svg class="ico-sol" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
     <form class="search" role="search" id="searchForm">
       <label for="q" hidden>Buscar produto</label>
@@ -946,7 +969,7 @@ function precoMudaHTML(p){
 const fundo = p => p.foto||p.ilu ? " has-photo" : "";
 function card(p){
   return `<article class="card">
-    <button class="thumb${fundo(p)}" data-ver="${p.id}" style="background:${TINT[p.dep]};color:${INK[p.dep]}" aria-label="Ver detalhes de ${esc(p.nome)}">${selo(p)}${midia(p)}</button>
+    <button class="thumb${fundo(p)}" data-ver="${p.id}" style="background:${TINT[p.dep]};color:${INK[p.dep]}" aria-label="Ver detalhes de ${esc(p.nome)}">${selo(p)}${midia(p)}${fotosDe(p).length>1?`<span class="mais-fotos">${fotosDe(p).length} fotos</span>`:""}</button>
     <div class="card-body">
       <span class="cat">${p.marca ? `<b>${esc(p.marca)}</b> · ` : ""}${esc(p.sub)}</span>
       <h3><button class="ver-tit" data-ver="${p.id}">${esc(p.nome)}</button></h3>
@@ -980,6 +1003,8 @@ function atualizarPedido(p){
   const {qtd,total,consultar} = totais();
   const bar = document.getElementById("pedidoBar");
   bar.hidden = !qtd;
+  const n = document.getElementById("pedN"); n.textContent = qtd > 99 ? "99+" : qtd; n.hidden = !qtd;
+  document.getElementById("pedTopo").setAttribute("aria-label", qtd ? `Ver pedido (${qtd} ${qtd===1?"item":"itens"})` : "Ver pedido (vazio)");
   document.body.classList.toggle("tem-pedido", !!qtd);
   bar.querySelector("[data-resumo]").innerHTML = `<b>${qtd} ${qtd===1?"item":"itens"}</b> · ${total?brl(total):""}${consultar?(total?" + ":"")+"a consultar":""}`;
   if(document.getElementById("dlgPedido").open) desenharPedido();
@@ -1014,10 +1039,28 @@ function desenharPedido(){
   enviar();
   document.getElementById("pedNome").addEventListener("input", enviar);
 }
+/* ===== Link próprio de cada produto (#produto/nome-marca) ===== */
+const slugTxt = t => semAcento(t).trim().replace(/\s+/g,"-").replace(/-+/g,"-");
+function slugProduto(p){
+  const base = slugTxt(p.nome + (p.marca ? " " + p.marca : ""));
+  const iguais = PRODUTOS.filter(x => slugTxt(x.nome + (x.marca ? " " + x.marca : "")) === base);
+  return iguais.length > 1 ? base + "-" + (iguais.indexOf(p) + 1) : base;
+}
+const linkProduto = p => location.origin + location.pathname + "#produto/" + slugProduto(p);
+const produtoDoHash = () => { const m = /^#produto\/(.+)$/.exec(location.hash); return m ? PRODUTOS.find(p => slugProduto(p) === decodeURIComponent(m[1])) : null; };
+/* fotos do produto: principal + extras (carrossel) */
+const fotosDe = p => [p.foto, ...(p.fotosExtras || [])].filter(Boolean);
+function mediaDetalhe(p){
+  const fotos = fotosDe(p);
+  if(fotos.length < 2) return `${selo(p)}${midia(p,true)}`;
+  return `${selo(p)}<div class="carrossel" data-carrossel tabindex="0" aria-label="Fotos de ${esc(p.nome)}">${fotos.map((f,i)=>`<img src="${esc(f)}" alt="${esc(p.nome)} – foto ${i+1} de ${fotos.length}" ${i?'loading="lazy"':""}>`).join("")}</div>
+    <button class="car-btn ant" data-car="-1" aria-label="Foto anterior">‹</button><button class="car-btn prox" data-car="1" aria-label="Próxima foto">›</button>
+    <div class="car-pontos">${fotos.map((_,i)=>`<button data-car-ir="${i}" aria-label="Foto ${i+1}" ${i?"":'aria-current="true"'}></button>`).join("")}</div>`;
+}
 function abrirDetalhe(p){
   const d = document.getElementById("dlgProduto");
   d.querySelector("[data-det]").innerHTML = `
-    <div class="det-media${fundo(p)}" style="background:${TINT[p.dep]};color:${INK[p.dep]}">${selo(p)}${midia(p,true)}</div>
+    <div class="det-media${fundo(p)}" style="background:${TINT[p.dep]};color:${INK[p.dep]}">${mediaDetalhe(p)}</div>
     <div class="det-info">
       <span class="cat">${p.marca ? `<b>${esc(p.marca)}</b> · ` : ""}${esc(p.dep)} › ${esc(p.sub)}</span>
       <h2 id="detTitulo">${esc(p.nome)}</h2>
@@ -1028,9 +1071,33 @@ function abrirDetalhe(p){
       ${p.dep==="Defensivos"&&!p.restrito?`<p class="obs">Leia e siga sempre as instruções do rótulo.</p>`:""}
       <div class="acoes" data-acoes="${p.id}">${acoes(p)}</div>
       ${p.restrito?"":`<a class="link so-este" href="${waLink(msgUnica(p))}" target="_blank" rel="noopener">ou perguntar só sobre este produto no WhatsApp →</a>`}
+      <button class="link copiar-link" data-copiar="${p.id}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>Copiar link deste produto</button>
     </div>`;
+  const novoHash = "#produto/" + slugProduto(p);
+  if(location.hash !== novoHash) history.replaceState(null, "", novoHash);
   if(!d.open) d.showModal();
+  const car = d.querySelector("[data-carrossel]");
+  if(car) car.addEventListener("scroll", ()=>{ const i = Math.round(car.scrollLeft / car.clientWidth);
+    d.querySelectorAll("[data-car-ir]").forEach((b,j)=> j===i ? b.setAttribute("aria-current","true") : b.removeAttribute("aria-current")); }, {passive:true});
 }
+document.getElementById("dlgProduto").addEventListener("close", ()=>{
+  if(/^#produto\//.test(location.hash)) history.replaceState(null, "", "#" + state.page);
+});
+document.getElementById("dlgProduto").addEventListener("click", async e=>{
+  const c = e.target.closest("[data-car],[data-car-ir]"), car = e.currentTarget.querySelector("[data-carrossel]");
+  if(c && car){
+    const i = c.dataset.carIr != null ? +c.dataset.carIr : Math.round(car.scrollLeft / car.clientWidth) + +c.dataset.car;
+    const n = car.children.length; car.scrollTo({left: ((i % n + n) % n) * car.clientWidth, behavior:"smooth"}); return;
+  }
+  const cp = e.target.closest("[data-copiar]"); if(!cp) return;
+  const p = PRODUTOS[cp.dataset.copiar], url = linkProduto(p);
+  try{
+    if(navigator.share && matchMedia("(pointer:coarse)").matches) await navigator.share({title:p.nome, url});
+    else { await navigator.clipboard.writeText(url); cp.lastChild.textContent = "Link copiado ✓"; setTimeout(()=>cp.lastChild.textContent="Copiar link deste produto", 2200); }
+  }catch(_){ prompt("Copie o link do produto:", url); }
+});
+function abrirDoHash(){ const p = produtoDoHash(); if(p) abrirDetalhe(p); }
+addEventListener("hashchange", abrirDoHash);
 function imgFail(img){
   const t = img.parentElement; t.classList.remove("has-photo");
   img.insertAdjacentHTML("afterend", icon(img.dataset.dep)); img.remove();
@@ -1078,7 +1145,18 @@ const SINONIMOS = {
   carrapato:"carrapaticida", mosca:"mosquicida", mosquito:"mosquicida mosquitos", gado:"bovinos carrapaticida", boi:"bovinos carrapaticida", vaca:"bovinos carrapaticida",
   escorpiao:"escorpioes", dedetizacao:"uso profissional ficam", dedetizadora:"uso profissional ficam",
   esterco:"humus adubo", cal:"calcario", adubo:"adubo npk", terra:"terra substrato humus",
-  semente:"sementes", marreta:"marreta", muda:"mudas", foice:"ferramentas"
+  semente:"sementes", marreta:"marreta", muda:"mudas", foice:"ferramentas",
+  formiga:"formicida", formigueiro:"formicida", sauva:"formicida", sauvas:"formicida", sauveiro:"formicida", cortadeira:"formicida",
+  lesma:"lesmicida", lesmas:"lesmicida", caramujo:"lesmicida", caracol:"lesmicida",
+  barata:"inseticida baratas", baratas:"inseticida baratas", pulga:"inseticida pulgas", pernilongo:"mosquicida mosquitos", muriçoca:"mosquicida mosquitos", murisoca:"mosquicida mosquitos",
+  berne:"carrapaticida mosquicida", bicheira:"mosquicida", sarna:"carrapaticida sarna",
+  rastelo:"ancinho", rastel:"ancinho", ciscador:"ancinho", gadanho:"ancinho", picareta:"enxadao", chibanca:"enxadao", alvião:"enxadao", alviao:"enxadao",
+  trado:"cavadeira", boca:"cavadeira chave", buraqueira:"cavadeira", cavadeira:"cavadeira", pa:"pa",
+  tesourao:"tesoura poda", podao:"tesoura poda facao", serra:"serrote", faca:"facao", machete:"facao",
+  esguicho:"mangueira", galocha:"bota", botina:"botina bota", bota:"bota botina",
+  fertilizante:"adubo", npk:"adubo npk", estrume:"humus adubo", minhoca:"humus", calcareo:"calcario", calcario:"calcario",
+  parafuso:"parafusadeira chave", philips:"phillips", fenda:"chave fenda", cerca:"arame grampo", arame:"arame",
+  mudinha:"mudas", verdura:"sementes hortalicas", hortalica:"sementes hortalicas", horta:"sementes mudas", tempero:"cebolinha salsa coentro"
 };
 const PARADAS = new Set(["de","da","do","das","dos","pra","para","pro","com","e","a","o","as","os","um","uma","no","na"]);
 const semAcento = t => t.toLowerCase().replace(/(\d)\s*[x×]\s*(\d)/g,"$1x$2").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9 ]/g," ");
@@ -1126,7 +1204,16 @@ function indice(p){
   }
   return INDICE.get(p);
 }
-const FRASES = [[/bomba (de |pra |para )?(veneno|passar veneno)|maquina (de |pra )?veneno|passar veneno/g,"pulverizador"],[/cortar (grama|mato)/g,"rocadeira"]];
+const FRASES = [
+  [/(remedio|veneno|isca|po|produto|matar)( (de|pra|para|contra|o|a))*( formigas?| formigueiro| sauvas?)/g,"formicida"],
+  [/(remedio|veneno|isca|produto|matar)( (de|pra|para|contra))*( lesmas?| caramujos?| caracol)/g,"lesmicida"],
+  [/(remedio|veneno|produto|matar)( (de|pra|para|contra|no|o))*( carrapatos?)/g,"carrapaticida"],
+  [/(remedio|veneno|produto|matar)( (de|pra|para|contra))*( moscas?| mosquitos?| pernilongos?)/g,"mosquicida"],
+  [/(remedio|veneno|produto|matar)( (de|pra|para|contra))*( baratas?| escorpi(ao|oes))/g,"inseticida"],
+  [/bomba (de |pra |para )?(veneno|passar veneno)|maquina (de |pra )?veneno|passar veneno/g,"pulverizador"],
+  [/cortar (grama|mato)|maquina de cortar/g,"rocadeira"],
+  [/chave de boca|chave boca/g,"chave combinada"]
+];
 function buscar(texto, lista){
   let t = semAcento(texto); FRASES.forEach(([re,sub])=>t=t.replace(re,sub));
   const termos = palavras(t).map(w=>{
@@ -1274,10 +1361,12 @@ function atualizarCatalogo(d){
   const dlg = document.getElementById("dlgProduto"); if(dlg.open) dlg.close();
   if(state.dep && !DEPS[state.dep]) { state.dep = null; state.sub = null; }
   renderAtalhos(); atualizarPedido(); render();
+  abrirDoHash();
 }
 coresPadrao();
 renderAtalhos();
 render();
+abrirDoHash();
 function buscarCatalogo(){
   carregarCatalogo({ ...SUPABASE, fallback: EMBUTIDO, onAtualizar: atualizarCatalogo }).then(atualizarCatalogo);
 }

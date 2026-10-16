@@ -49,6 +49,8 @@
   function urlFoto(url, caminho) {
     if (!caminho) return null;
     if (/^(https?:|data:|blob:)/i.test(caminho)) return caminho;
+    // fotos guardadas no próprio site (pasta img/ do GitHub Pages): caminho relativo à página
+    if (/^img\//i.test(caminho)) return caminho;
     var c = String(caminho).replace(/^\/+/, "");
     if (c.indexOf(BUCKET + "/") === 0) c = c.slice(BUCKET.length + 1);
     return semBarraFinal(url) + "/storage/v1/object/public/" + BUCKET + "/" +
@@ -77,6 +79,9 @@
     // "foto_url" é a coluna do contrato; "foto_path" é o nome antigo (bancos de versão anterior)
     var foto = urlFoto(url, linha.foto_url != null ? linha.foto_url : linha.foto_path);
     if (foto) p.foto = foto;
+    // fotos a mais (carrossel na página do produto)
+    var extras = (linha.fotos_extras || []).map(function (c) { return urlFoto(url, c); }).filter(Boolean);
+    if (extras.length) p.fotosExtras = extras;
     if (linha.ilustracao) p.ilu = linha.ilustracao;
     if (linha.icone) p.icone = linha.icone;
     if (linha.restrito) p.restrito = true;

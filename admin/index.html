@@ -531,6 +531,47 @@ html:has(dialog[open]){overflow:hidden}
   .resumo .vistas{margin-left:8px}
 }
 
+/* barra de baixo do celular: ícone em cima, texto embaixo (cabem 5 botões) */
+.barra-baixo{gap:6px;padding-left:8px;padding-right:8px}
+.barra-baixo .btn{flex-direction:column;gap:2px;font-size:11.5px;padding:6px 2px;min-height:52px;white-space:nowrap}
+.barra-baixo .btn svg{width:20px;height:20px}
+.barra-baixo .btn-pri{flex:1 1 0}
+/* ---------- fotos extras no editor ---------- */
+.mais-fotos-ed{margin:0 0 12px}
+.mais-fotos-ed .rot{display:block;margin-bottom:6px;font-size:14px}
+.mais-fotos-ed .rot small{font-weight:500;color:var(--muted)}
+.extras{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.extras li{position:relative;width:62px;height:62px;border:1px solid var(--line);border-radius:10px;background:var(--foto);overflow:hidden}
+.extras img{width:100%;height:100%;object-fit:contain}
+.extras li button{position:absolute;top:2px;right:2px;width:20px;height:20px;border-radius:50%;border:0;background:rgba(0,0,0,.6);color:#fff;font-size:11px;cursor:pointer;line-height:20px;padding:0}
+.extras .add-extra{border-style:dashed;background:var(--surface)}
+.extras .add-extra label{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer;font-size:26px;color:var(--leaf-ink)}
+.extras .add-extra input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.ed-grade .mais-fotos-ed{margin-top:-4px}
+/* ---------- histórico ---------- */
+#dlgHist .dlg{max-height:inherit}
+.hist-ferr{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 18px;background:var(--surface);border-bottom:1px solid var(--line)}
+.hist-ferr .vistas{display:inline-flex}
+.hist-ferr .inp{flex:1;min-width:180px;min-height:40px;padding:6px 12px}
+.hist-resumo{font-size:13px;color:var(--muted)}
+.hist-dia{font:700 15px var(--display);color:var(--soil);margin:14px 0 6px}
+.hist-dia:first-child{margin-top:0}
+.hist-linha{display:grid;grid-template-columns:52px minmax(0,1.6fr) minmax(0,1.2fr) minmax(0,.6fr);gap:10px;align-items:center;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--surface);margin-bottom:6px;font-size:14px}
+.hist-hora{color:var(--muted);font-variant-numeric:tabular-nums}
+.hist-prod .link-btn{padding:0;font-weight:600;color:var(--fg);text-align:left}
+.hist-prod small{display:block;color:var(--muted);font-size:12px}
+.hist-valor{font-variant-numeric:tabular-nums}
+.hist-valor s{color:var(--muted)}
+.hist-valor b.sobe,.hist-valor small.sobe{color:var(--promo)}
+.hist-valor b.desce,.hist-valor small.desce{color:var(--ok)}
+.hist-valor small{margin-left:6px;font-weight:700;font-size:12px}
+.hist-quem{color:var(--muted);font-size:12px;text-align:right;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:700px){.hist-linha{grid-template-columns:44px minmax(0,1fr)}.hist-valor{grid-column:2}.hist-quem{grid-column:2;text-align:left}}
+.vistas.hist-periodo{display:inline-flex;border:1px solid var(--line);border-radius:10px;padding:3px;background:var(--surface);gap:2px}
+.vistas.hist-periodo button{border:0;background:none;padding:6px 12px;border-radius:7px;font-weight:600;font-size:14px;color:var(--muted);cursor:pointer}
+.vistas.hist-periodo button[aria-pressed="true"]{background:var(--leaf-soft);color:var(--leaf-ink)}
+@media (min-width:1024px){ #dlgHist{width:min(980px,92vw);height:min(86vh,820px)} #dlgHist .dlg{height:100%} }
+
 /* toast */
 .toasts{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(84px + env(safe-area-inset-bottom));z-index:100;display:grid;gap:8px;width:min(92vw,420px);pointer-events:none}
 .toast{background:#1b2a1f;color:#fff;padding:12px 16px;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.25);font-weight:600;display:flex;gap:10px;align-items:center;animation:sobe .2s ease-out}
@@ -596,6 +637,7 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
         <button class="lat-btn pri" id="btnNovoTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Novo produto</button>
         <button class="lat-btn" id="btnMudasTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 15h14l-1.5 6h-11zM12 15V9M12 11c0-3 2-5 5.5-5 0 3-2 5-5.5 5zM12 12.5c0-2.4-1.7-4-4.3-4 0 2.4 1.7 4 4.3 4z"/></svg>Mudas – balcão</button>
         <button class="lat-btn" id="btnReajusteTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 19L19 5"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>Reajuste em lote</button>
+        <button class="lat-btn" id="btnHistTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>Histórico de preços</button>
         <button class="lat-btn" id="btnDepsTopo" type="button" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Departamentos</button>
       </div>
     </aside>
@@ -631,6 +673,7 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 19L19 5"/><circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="17" r="2.5"/></svg>Reajuste</button>
   <button class="btn btn-sec" type="button" id="btnMudas" aria-label="Mudas – vendas de balcão e notas fiscais">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M5 15h14l-1.5 6h-11zM12 15V9M12 11c0-3 2-5 5.5-5 0 3-2 5-5.5 5zM12 12.5c0-2.4-1.7-4-4.3-4 0 2.4 1.7 4 4.3 4z"/></svg>Mudas</button>
+  <button class="btn btn-sec" type="button" id="btnHist" aria-label="Histórico de preços"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>Histórico</button>
   <button class="btn btn-sec" type="button" id="btnDeps" aria-label="Departamentos e subcategorias">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Seções</button>
   <button class="btn btn-pri" type="button" id="btnNovo">
@@ -668,6 +711,10 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
           </div>
         </div>
         <p class="dica" id="fotoDica" style="margin:10px 0 12px">A foto é ajustada para um quadrado branco (500×500).</p>
+        <div class="mais-fotos-ed">
+          <span class="rot">Mais fotos <small>(carrossel no site)</small></span>
+          <ul class="extras" id="extras"></ul>
+        </div>
       </div>
       <div class="secao">
         <h3>Situação e selos</h3>
@@ -861,6 +908,28 @@ dialog .toasts{bottom:calc(84px + env(safe-area-inset-bottom))}
   </div>
 </dialog>
 
+<!-- HISTÓRICO -->
+<dialog id="dlgHist" aria-labelledby="tHist">
+  <div class="dlg">
+    <div class="dlg-topo">
+      <h2 id="tHist">Histórico de preços</h2>
+      <button class="btn btn-sec btn-ico" type="button" data-fechar aria-label="Fechar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="hist-ferr">
+      <div class="vistas hist-periodo" role="group" aria-label="Período">
+        <button type="button" data-periodo="1" aria-pressed="false">Último dia</button>
+        <button type="button" data-periodo="7" aria-pressed="false">Última semana</button>
+        <button type="button" data-periodo="30" aria-pressed="true">Último mês</button>
+      </div>
+      <input class="inp" id="histBusca" type="search" placeholder="Filtrar por produto…" autocomplete="off">
+      <span class="hist-resumo" id="histResumo" aria-live="polite"></span>
+    </div>
+    <div class="dlg-corpo"><div id="histLista"></div></div>
+  </div>
+</dialog>
+
 <!-- DEPARTAMENTOS -->
 <dialog id="dlgDeps" aria-labelledby="tDeps">
   <div class="dlg">
@@ -1027,8 +1096,18 @@ function criarApiDemo() {
   function persistir() {
     if (!gravarJSON(CHAVE, estado)) throw new Error("Sem espaço no aparelho para guardar (modo demonstração).");
   }
-  const urlFoto = p => p.foto_data || (p.foto_url ? (/^(https?:|data:)/.test(p.foto_url) ? p.foto_url : IMG_BASE + p.foto_url) : null);
-  const copia = p => ({ ...p, opcoes: p.opcoes.slice(), foto_publica: urlFoto(p) });
+  const urlCaminho = c => !c ? null : /^(https?:|data:)/.test(c) ? c : /^img\//.test(c) ? "../" + c : IMG_BASE + c;
+  const urlFoto = p => p.foto_data || urlCaminho(p.foto_url);
+  const copia = p => ({ ...p, opcoes: p.opcoes.slice(), foto_publica: urlFoto(p), fotos_extras: (p.fotos_extras || []).slice(), fotos_extras_publicas: (p.fotos_extras || []).map(urlCaminho) });
+  /* histórico de preços no modo demonstração (no banco quem grava é um gatilho) */
+  function registrarHistDemo(antes, depois) {
+    if (!antes) return;
+    estado.historico ||= []; estado.histSeq ||= 1;
+    for (const c of ["preco", "preco_antigo", "preco_bandeja"]) {
+      const a = antes[c] ?? null, d = depois[c] ?? null;
+      if (a !== d) estado.historico.push({ id: estado.histSeq++, produto_id: depois.id, produto_nome: depois.nome + (depois.marca ? " " + depois.marca : ""), campo: c, valor_antes: a, valor_depois: d, alterado_em: new Date().toISOString(), alterado_por_email: (sessao && sessao.email) || "demonstração" });
+    }
+  }
   const espera = (ms = 250) => new Promise(r => setTimeout(r, ms));
 
   function garantirSub(dep, sub) {
@@ -1067,12 +1146,16 @@ function criarApiDemo() {
         destaque: !!p.destaque, novidade: !!p.novidade, restrito: !!p.restrito, por_metro: !!p.por_metro,
         op_nome: p.op_nome || "", opcoes: (p.opcoes || []).slice(), ativo: p.ativo !== false, ordem: p.ordem ?? (estado.produtos.length + 1) * 10,
         preco_bandeja: p.preco_bandeja ?? null,
+        fotos_extras: [],
       };
+      for (const x of (p.fotos_extras_edit || [])) reg.fotos_extras.push(x.blob ? await blobParaDataURL(x.blob) : x.path);
+      if (!p.fotos_extras_edit) reg.fotos_extras = (p.fotos_extras || []).slice();
       if (foto === null) { reg.foto_url = null; reg.foto_data = null; }
       else if (foto) { const up = await this.subirFoto(foto, p.nome); reg.foto_url = up.path; reg.foto_data = up.data; }
       const i = estado.produtos.findIndex(x => x.id === reg.id);
       const antes = i >= 0 ? estado.produtos[i] : null;
       if (i >= 0) estado.produtos[i] = reg; else estado.produtos.push(reg);
+      registrarHistDemo(antes, reg);
       try { persistir(); } catch (e) { if (i >= 0) estado.produtos[i] = antes; else estado.produtos.pop(); throw e; }
       return copia(reg);
     },
@@ -1086,7 +1169,7 @@ function criarApiDemo() {
       await espera(400);
       for (const a of alteracoes) {
         const p = estado.produtos.find(x => x.id === a.id);
-        if (p) { p.preco = a.preco; p.preco_antigo = a.preco_antigo; }
+        if (p) { const antes = { ...p }; p.preco = a.preco; p.preco_antigo = a.preco_antigo; registrarHistDemo(antes, p); }
       }
       persistir();
       return alteracoes.length;
@@ -1096,6 +1179,7 @@ function criarApiDemo() {
       const p = estado.produtos.find(x => x.id === id);
       if (!p) throw new Error("Produto não encontrado.");
       const antes = { ...p }; Object.assign(p, campos);
+      registrarHistDemo(antes, p);
       try { persistir(); } catch (e) { Object.assign(p, antes); throw e; }
       return copia(p);
     },
@@ -1156,6 +1240,10 @@ function criarApiDemo() {
       if (i < 0) throw new Error("Registro não encontrado.");
       estado.mudas.splice(i, 1); persistir();
     },
+    async listarHistorico(desde) {
+      if (!estado) carregar();
+      return (estado.historico || []).filter(h => h.alterado_em >= desde).sort((a, b) => b.alterado_em.localeCompare(a.alterado_em));
+    },
     async restaurar() { estado = inicial(); try { localStorage.removeItem(CHAVE); } catch {} },
   };
 }
@@ -1164,7 +1252,8 @@ function criarApiDemo() {
 function criarApiSupabase(url, chave) {
   const sb = window.supabase.createClient(url, chave, { auth: { persistSession: true, autoRefreshToken: true } });
   const BUCKET = "produtos";
-  const urlFoto = path => !path ? null : /^https?:/.test(path) ? path : sb.storage.from(BUCKET).getPublicUrl(path.replace(/^produtos\//, "")).data.publicUrl;
+  const urlFoto = path => !path ? null : /^https?:/.test(path) ? path : /^img\//.test(path) ? "../" + path : sb.storage.from(BUCKET).getPublicUrl(path.replace(/^produtos\//, "")).data.publicUrl;
+  const doStorage = path => path && !/^(https?:|img\/)/.test(path);
   let deps = [];
   const NAO_GRAVOU = "A alteração não foi gravada no site. Saia e entre novamente com um usuário administrador.";
   const falhou = (error, msg) => {
@@ -1223,6 +1312,7 @@ function criarApiSupabase(url, chave) {
           por_metro: !!p.por_metro, op_nome: p.op_nome || "", ativo: p.ativo !== false, ordem: p.ordem || 0, atualizado_em: p.atualizado_em || null,
           opcoes: (p.produto_opcoes || []).sort((a, b) => a.ordem - b.ordem).map(o => o.nome),
           preco_bandeja: p.preco_bandeja == null ? null : Number(p.preco_bandeja),
+          fotos_extras: Array.isArray(p.fotos_extras) ? p.fotos_extras : [], fotos_extras_publicas: (Array.isArray(p.fotos_extras) ? p.fotos_extras : []).map(urlFoto),
         };
       });
       return { departamentos: JSON.parse(JSON.stringify(deps)), produtos };
@@ -1246,6 +1336,12 @@ function criarApiSupabase(url, chave) {
         op_nome: p.op_nome || null, ativo: p.ativo !== false,
       };
       if (tamBandeja(p.sub)) linha.preco_bandeja = p.preco_bandeja ?? null; // só mudas de bandeja usam a coluna
+      if (p.fotos_extras_edit) { // fotos a mais (carrossel): envia as novas e guarda a lista na ordem
+        const caminhos = [];
+        for (const x of p.fotos_extras_edit) caminhos.push(x.blob ? (await this.subirFoto(x.blob, p.nome + "-extra")).path : x.path);
+        linha.fotos_extras = caminhos;
+        (p.fotos_extras || []).filter(c => !caminhos.includes(c) && doStorage(c)).forEach(c => sb.storage.from(BUCKET).remove([c]).catch(() => {}));
+      }
       let res;
       const gravar = l => p.id ? sb.from("produtos").update(l).eq("id", p.id).select("id").single()
                                : sb.from("produtos").insert({ ...l, ordem: p.ordem ?? 9999 }).select("id").single();
@@ -1259,7 +1355,7 @@ function criarApiSupabase(url, chave) {
         const ins = await sb.from("produto_opcoes").insert(p.opcoes.map((nome, i) => ({ produto_id: id, nome, ordem: i + 1 })));
         falhou(ins.error, "Produto salvo, mas houve erro nas opções.");
       }
-      if (fotoAntiga && fotoAntiga !== fotoPath && !/^https?:/.test(fotoAntiga)) {
+      if (fotoAntiga && fotoAntiga !== fotoPath && doStorage(fotoAntiga)) {
         sb.storage.from(BUCKET).remove([fotoAntiga.replace(/^produtos\//, "")]).catch(() => {});
       }
       return { ...p, id, foto_url: fotoPath, foto_publica: urlFoto(fotoPath) };
@@ -1267,7 +1363,7 @@ function criarApiSupabase(url, chave) {
     async excluir(id, fotoPath) {
       const { error } = await sb.from("produtos").delete().eq("id", id);
       falhou(error, "Não foi possível excluir.");
-      if (fotoPath && !/^https?:/.test(fotoPath)) sb.storage.from(BUCKET).remove([fotoPath.replace(/^produtos\//, "")]).catch(() => {});
+      if (doStorage(fotoPath)) sb.storage.from(BUCKET).remove([fotoPath.replace(/^produtos\//, "")]).catch(() => {});
     },
     async atualizarCampos(id, campos) {
       // .select() devolve as linhas alteradas: se a RLS barrar, vem vazio SEM erro
@@ -1318,6 +1414,13 @@ function criarApiSupabase(url, chave) {
       const { data, error } = await sb.from("mudas_movimentos").delete().eq("pedido", pedido).select("id");
       falhou(error, "Não foi possível desfazer.");
       if (!data || !data.length) throw new Error(NAO_GRAVOU);
+    },
+    async listarHistorico(desde) {
+      const { data, error } = await sb.from("produtos_historico").select("*").gte("alterado_em", desde).order("alterado_em", { ascending: false }).limit(3000);
+      if (error && (error.code === "42P01" || error.code === "PGRST205" || /produtos_historico/.test(error.message || "")))
+        throw new Error("O histórico ainda não foi ativado no banco (falta rodar o 10_fotos_e_historico.sql no Supabase).");
+      falhou(error, "Não foi possível carregar o histórico.");
+      return data;
     },
     async reajuste(alteracoes) {
       let n = 0;
@@ -1395,7 +1498,7 @@ function mostrarTela(nome) {
   $("#telaLogin").hidden = nome !== "login";
   $("#telaLista").hidden = nome !== "lista";
   const logado = nome === "lista";
-  ["#btnSair", "#btnNovoTopo", "#btnReajusteTopo", "#btnDepsTopo", "#btnMudasTopo", "#barraBaixo"].forEach(s => $(s).hidden = !logado);
+  ["#btnSair", "#btnNovoTopo", "#btnReajusteTopo", "#btnDepsTopo", "#btnMudasTopo", "#btnHistTopo", "#barraBaixo"].forEach(s => $(s).hidden = !logado);
 }
 
 async function recarregar() {
@@ -1720,7 +1823,8 @@ function abrirEditor(p) {
   $("#btnExcluir").hidden = novo;
   $("#listaMarcas").innerHTML = [...new Set(ui.produtos.map(x => x.marca).filter(Boolean))].sort((a, b) => a.localeCompare(b, "pt-BR")).map(m => `<option value="${esc(m)}">`).join("");
   limparErros();
-  renderOpcoes(); renderFoto(); atualizarPromo(); atualizarAtivo(); atualizarBandeja(); mostrarOpcoes(ed.opcoes.length > 0);
+  ed.extras = (p?.fotos_extras || []).map((path, i) => ({ path, url: (p.fotos_extras_publicas || [])[i] || path })); ed.extrasMudou = false;
+  renderOpcoes(); renderFoto(); renderExtras(); atualizarPromo(); atualizarAtivo(); atualizarBandeja(); mostrarOpcoes(ed.opcoes.length > 0);
   $("#dlgEditor").showModal();
   $("#dlgEditor .dlg-corpo").scrollTop = 0;
   if (novo) $("#eNome").focus(); else $("#dlgEditor [data-fechar]").focus();
@@ -1743,6 +1847,18 @@ function renderOpcoes() {
   ul.querySelectorAll(".opcao .btn-ico[disabled]").forEach(b => b.style.opacity = ".35");
 }
 
+/* ---------- fotos a mais (carrossel) ---------- */
+function renderExtras() {
+  $("#extras").innerHTML = ed.extras.map((x, i) => `<li><img src="${esc(x.url)}" alt="Foto extra ${i + 1}"><button type="button" data-tirar-extra="${i}" aria-label="Tirar foto extra ${i + 1}">✕</button></li>`).join("")
+    + `<li class="add-extra"><label title="Adicionar fotos"><span aria-hidden="true">+</span><input type="file" accept="image/*" multiple id="fotoExtra" aria-label="Adicionar mais fotos"></label></li>`;
+}
+async function adicionarExtras(arquivos) {
+  const t = toast("Preparando as fotos…", "carregando");
+  try {
+    for (const arq of arquivos) { const r = await processarFoto(arq, $("#fotoRecorte").checked); ed.extras.push({ blob: r.blob, url: r.url }); }
+    ed.extrasMudou = true; renderExtras();
+  } catch (e) { toast(e.message, "erro"); } finally { t.fechar(); }
+}
 function limparPreview() { if (ed.previewURL) URL.revokeObjectURL(ed.previewURL); ed.previewURL = null; }
 function renderFoto() {
   const box = $("#fotoPrev");
@@ -1849,6 +1965,7 @@ function lerFormulario() {
     ativo: $("#eAtivo").checked, destaque: $("#eTop").checked, novidade: $("#eNovo").checked,
     restrito: $("#eRestrito").checked, por_metro: $("#eMetro").checked,
     foto_url_original: base.foto_url || null,
+    fotos_extras_edit: ed.extrasMudou ? ed.extras.map(x => ({ path: x.path, blob: x.blob })) : undefined,
   };
 }
 
@@ -2125,6 +2242,46 @@ async function desfazerPedido(pedido, botao) {
   } catch { botao.disabled = false; }
 }
 
+/* ---------- HISTÓRICO DE PREÇOS ---------- */
+const hist = { dias: 30, itens: [], q: "" };
+const CAMPO_HIST = { preco: "Preço", preco_antigo: "Preço antigo (promoção)", preco_bandeja: "Bandeja fechada" };
+async function carregarHistorico() {
+  const desde = new Date(Date.now() - hist.dias * 864e5).toISOString();
+  hist.itens = await api.listarHistorico(desde);
+  renderHistorico();
+}
+function renderHistorico() {
+  document.querySelectorAll("[data-periodo]").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.periodo === hist.dias)));
+  const q = semAcento(hist.q.trim());
+  const lista = hist.itens.filter(h => !q || semAcento(h.produto_nome || "").includes(q));
+  const produtos = new Set(lista.map(h => h.produto_id)).size;
+  $("#histResumo").textContent = `${lista.length} alteraç${lista.length === 1 ? "ão" : "ões"} · ${produtos} produto${produtos === 1 ? "" : "s"}`;
+  if (!lista.length) { $("#histLista").innerHTML = `<p class="vazio">Nenhuma alteração de preço ${hist.dias === 1 ? "no último dia" : hist.dias === 7 ? "na última semana" : "no último mês"}${q ? " para essa busca" : ""}.</p>`; return; }
+  let dia = "";
+  $("#histLista").innerHTML = lista.map(h => {
+    const d = new Date(h.alterado_em), diaTxt = d.toLocaleDateString("pt-BR", { weekday: "long", day: "2-digit", month: "long" });
+    const cab = diaTxt !== dia ? `<h3 class="hist-dia">${esc(maiuscula(diaTxt))}</h3>` : ""; dia = diaTxt;
+    const a = h.valor_antes == null ? null : Number(h.valor_antes), b = h.valor_depois == null ? null : Number(h.valor_depois);
+    const pct = a && b != null ? (b - a) / a * 100 : null;
+    const seta = a == null || b == null ? "" : b > a ? "sobe" : b < a ? "desce" : "";
+    const txtA = a == null ? (h.campo === "preco_antigo" ? "sem promoção" : "consultar") : moeda(a);
+    const txtB = b == null ? (h.campo === "preco_antigo" ? "sem promoção" : "consultar") : moeda(b);
+    const prod = ui.produtos.find(x => x.id === h.produto_id);
+    return cab + `<div class="hist-linha">
+      <span class="hist-hora">${d.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
+      <span class="hist-prod">${prod ? `<button type="button" class="link-btn" data-hist-prod="${esc(prod.id)}">${esc(h.produto_nome || prod.nome)}</button>` : esc(h.produto_nome || "(produto excluído)")}<small>${esc(CAMPO_HIST[h.campo] || h.campo)}</small></span>
+      <span class="hist-valor"><s>${txtA}</s> → <b class="${seta}">${txtB}</b>${pct != null && isFinite(pct) ? `<small class="${seta}">${pct > 0 ? "+" : ""}${pct.toLocaleString("pt-BR", { maximumFractionDigits: 1 })}%</small>` : ""}</span>
+      <span class="hist-quem" title="${esc(h.alterado_por_email || "")}">${esc((h.alterado_por_email || "—").split("@")[0])}</span>
+    </div>`;
+  }).join("");
+}
+async function abrirHistorico() {
+  $("#histBusca").value = hist.q = "";
+  $("#histLista").innerHTML = '<p class="carregando">Carregando…</p>';
+  $("#dlgHist").showModal();
+  try { await carregarHistorico(); } catch (e) { $("#histLista").innerHTML = `<p class="vazio">${esc(e.message)}</p>`; }
+}
+
 /* ---------- LOGIN ---------- */
 async function entrar(ev) {
   ev.preventDefault();
@@ -2189,6 +2346,14 @@ function ligarEventos() {
   $("#lista").addEventListener("submit", e => { const f = e.target.closest("[data-form-preco]"); if (!f) return; e.preventDefault(); salvarPrecoRapido(f.dataset.formPreco); });
   $("#lista").addEventListener("keydown", e => { const f = e.target.closest("[data-form-preco]"); if (f && e.key === "Escape") { e.preventDefault(); fecharPrecoRapido(f.dataset.formPreco); } });
   ["#btnDeps", "#btnDepsTopo"].forEach(s => $(s).addEventListener("click", abrirDeps));
+  ["#btnHist", "#btnHistTopo"].forEach(s => $(s).addEventListener("click", abrirHistorico));
+  document.querySelector(".hist-periodo").addEventListener("click", async e => {
+    const b = e.target.closest("[data-periodo]"); if (!b) return;
+    hist.dias = +b.dataset.periodo;
+    try { await carregarHistorico(); } catch (er) { toast(er.message, "erro"); }
+  });
+  $("#histBusca").addEventListener("input", e => { hist.q = e.target.value; renderHistorico(); });
+  $("#histLista").addEventListener("click", e => { const b = e.target.closest("[data-hist-prod]"); if (!b) return; const p = ui.produtos.find(x => String(x.id) === b.dataset.histProd); if (p) { $("#dlgHist").close(); abrirEditor(p); } });
   $("#depsLista").addEventListener("submit", salvarDepOuSub);
   $("#formNovoDep").addEventListener("submit", salvarDepOuSub);
   ["#btnNovo", "#btnNovoTopo"].forEach(s => $(s).addEventListener("click", () => abrirEditor(null)));
@@ -2218,6 +2383,8 @@ function ligarEventos() {
     inp.removeAttribute("aria-invalid"); $("#ePrecoErro").hidden = true;
     atualizarPromo();
   });
+  $("#extras").addEventListener("change", e => { if (e.target.id === "fotoExtra" && e.target.files.length) { adicionarExtras([...e.target.files]); e.target.value = ""; } });
+  $("#extras").addEventListener("click", e => { const b = e.target.closest("[data-tirar-extra]"); if (b) { ed.extras.splice(+b.dataset.tirarExtra, 1); ed.extrasMudou = true; renderExtras(); } });
   $("#btnVoltarPreco").addEventListener("click", () => {
     const ini = ed.precosIniciais || {};
     Object.keys(ini).forEach(k => { $("#" + k).value = ini[k]; $("#" + k).removeAttribute("aria-invalid"); });
