@@ -700,6 +700,13 @@ details[open] > summary .dep-nome{color:var(--leaf-2)}
   .wa-float{bottom:calc(74px + env(safe-area-inset-bottom,0px))}
 }
 @media (max-width:600px){ .search{flex-basis:calc(100% - 52px)!important} }
+
+/* ===== Repetir último pedido ===== */
+.btn-repetir{width:100%;justify-content:flex-start;gap:12px;background:var(--soil-soft);color:var(--fg);border:1.5px solid var(--leaf-2);padding:12px 14px;text-align:left;min-height:56px}
+.btn-repetir:hover{background:var(--seed)}
+.btn-repetir svg{width:24px;height:24px;flex:0 0 auto;fill:none;stroke:var(--leaf-2);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.btn-repetir small{display:block;font-weight:500;font-size:.8rem;color:var(--muted)}
+.aviso-rep{margin:12px 0 0;font-size:.82rem;background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:8px;padding:8px 10px}
 </style>
 </head>
 <body>
@@ -1281,6 +1288,26 @@ try{ PEDIDO = JSON.parse(localStorage.getItem("defema-pedido")||"{}") || {}; }ca
 const doPedido = k => { const [n,op] = k.split("||"); const p = PRODUTOS.find(x=>base(x)===n); return p && (!op || (p.opcoes||[]).includes(op)) ? {p, op:op||null, k, q:PEDIDO[k]} : null; };
 Object.keys(PEDIDO).forEach(k=>{ if(!doPedido(k)) delete PEDIDO[k]; });
 const itensPedido = () => Object.keys(PEDIDO).map(doPedido).filter(x=>x&&x.q>0);
+/* ===== último pedido enviado (fica só neste aparelho) ===== */
+let avisoRepetir = "";
+function lerUltimo(){ try{ const u = JSON.parse(localStorage.getItem("defema-ultimo-pedido")||"null"); return u && u.itens && typeof u.itens==="object" ? u : null; }catch(_){ return null; } }
+function ultimoPedido(){
+  const u = lerUltimo(); if(!u) return null;
+  const ks = Object.keys(u.itens).filter(k=>+u.itens[k]>0 && doPedido(k));
+  if(!ks.length) return null;
+  let data = ""; try{ data = new Date(u.em).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",timeZone:"America/Sao_Paulo"}); }catch(_){}
+  return {ks, itens:u.itens, n:ks.length, total:Object.keys(u.itens).length, data};
+}
+function repetirPedido(){
+  const u = ultimoPedido(); if(!u) return;
+  u.ks.forEach(k=>{ PEDIDO[k] = Math.round(+u.itens[k]) || 1; });
+  const fora = u.total - u.n;
+  avisoRepetir = fora ? `${fora} ${fora===1?"item do último pedido não está mais":"itens do último pedido não estão mais"} no catálogo e ${fora===1?"ficou":"ficaram"} de fora.` : "";
+  salvarPedido();
+  document.querySelectorAll("[data-acoes]").forEach(el=>el.innerHTML=acoes(PRODUTOS[el.dataset.acoes]));
+  atualizarPedido();
+  if(!document.getElementById("dlgPedido").open) desenharPedido();
+}
 function salvarPedido(){ try{ localStorage.setItem("defema-pedido", JSON.stringify(PEDIDO)); }catch(_){} }
 function mudarQtd(p, delta, k=chave(p)){
   const q = Math.max(0,(PEDIDO[k]||0)+delta);
@@ -1309,8 +1336,10 @@ function atualizarPedido(p){
 function desenharPedido(){
   const {it,total,consultar} = totais();
   const box = document.getElementById("pedidoConteudo");
-  if(!it.length){ box.innerHTML = `<p class="vazio">Seu pedido está vazio. Toque em <b>+ Adicionar ao pedido</b> nos produtos.</p>`; return; }
-  box.innerHTML = `<ul class="itens">${it.map(({p,op,k,q})=>`<li>
+  if(!it.length){ const u = ultimoPedido();
+    box.innerHTML = `<p class="vazio">Seu pedido está vazio. Toque em <b>+ Adicionar ao pedido</b> nos produtos.</p>${u?`<button class="btn btn-repetir" data-repetir><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.7M20 4v4.7h-4.7M20 12a8 8 0 0 1-13.7 5.6L4 15.3M4 20v-4.7h4.7"/></svg><span>Repetir último pedido<small>${u.n} ${u.n===1?"item":"itens"} · enviado em ${u.data}</small></span></button>`:""}`; return; }
+  const aviso = avisoRepetir; avisoRepetir = "";
+  box.innerHTML = `${aviso?`<p class="aviso-rep">${aviso}</p>`:""}<ul class="itens">${it.map(({p,op,k,q})=>`<li>
       <div class="mini${fundo(p)}" style="background:${TINT[p.dep]};color:${INK[p.dep]}">${midia(p)}</div>
       <div class="info"><b>${esc(p.nome)}${op?` · ${esc(op)}`:""}</b><span>${ehEncomenda(p,op)?'<em class="enc-tag">Encomenda · chega na semana seguinte</em>':esc(p.un)}</span>
         <span class="vl">${precoDe(p,op)==null?"Consultar preço":brl(precoDe(p,op)*q)}</span></div>
@@ -1335,6 +1364,9 @@ function desenharPedido(){
   };
   enviar();
   document.getElementById("pedNome").addEventListener("input", enviar);
+  document.getElementById("pedEnviar").addEventListener("click", ()=>{
+    try{ localStorage.setItem("defema-ultimo-pedido", JSON.stringify({itens:{...PEDIDO}, em:Date.now()})); }catch(_){}
+  });
 }
 /* ===== Link próprio de cada produto (#produto/nome-marca) ===== */
 const slugTxt = t => semAcento(t).trim().replace(/\s+/g,"-").replace(/-+/g,"-");
@@ -1715,6 +1747,7 @@ function go(page, opts={}){
 }
 
 document.addEventListener("click", e=>{
+  if(e.target.closest("[data-repetir]")) return repetirPedido();
   const t = e.target.closest("[data-op],[data-add],[data-mais],[data-menos],[data-ver],[data-abrir-pedido],[data-limpar],[data-fechar]");
   if(t){
     const ds=t.dataset;
@@ -1928,7 +1961,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610160118";
+  const VERSAO = "202610160124";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
