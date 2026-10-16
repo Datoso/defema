@@ -1358,7 +1358,9 @@ function atualizarCatalogo(d){
   if(!trocarCatalogo(d)) return;
   coresPadrao();
   for(const k in SEL) delete SEL[k];
+  const hashAntes = location.hash;
   const dlg = document.getElementById("dlgProduto"); if(dlg.open) dlg.close();
+  if(/^#produto\//.test(hashAntes)) history.replaceState(null, "", hashAntes); // catálogo novo não perde o produto aberto
   if(state.dep && !DEPS[state.dep]) { state.dep = null; state.sub = null; }
   renderAtalhos(); atualizarPedido(); render();
   abrirDoHash();
