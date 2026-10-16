@@ -645,12 +645,61 @@ footer .wrap.rodape{text-align:left}
 .rod-grade{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 28px}
 .rod-col h2{font-family:var(--display);font-size:1.05rem;color:var(--fg);margin:0 0 6px}
 .rod-col p{margin:0 0 6px;line-height:1.5}
-.rod-col .link{font-size:.9rem;display:inline-block;padding-block:8px;margin-block:-8px}
+.rod-col .link{font-size:.9rem;display:inline-block;padding-block:10px;margin-block:-10px}
 .rod-col .selo-hora{margin-top:2px}
 .rod-aviso{margin-top:18px;background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:10px;padding:10px 14px;font-size:.8rem;line-height:1.45;color:var(--fg)}
 .rod-aviso b{display:block;margin-bottom:2px;font-size:.84rem}
 .rod-fim{margin:12px 0 0;font-size:.78rem;text-align:center}
 @media (max-width:600px){ .rod-grade{grid-template-columns:1fr;gap:16px} }
+
+/* ===== Departamentos: uma lista só no computador (sanfona com ícones) ===== */
+.shortcuts{display:none!important}
+summary{justify-content:flex-start;gap:10px}
+summary::after{margin-left:auto}
+.dep-ic{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto;box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+.dep-ic svg{width:18px;height:18px}
+details[open] > summary .dep-nome{color:var(--leaf-2)}
+/* ===== Chips de departamento (só celular/tablet) ===== */
+.chips-dep{display:none}
+@media (max-width:860px){
+  .chips-dep{display:flex;flex-direction:column;gap:8px;margin:0 -16px 14px;}
+  .chips-linha{position:relative;display:flex;gap:8px;overflow-x:auto;padding:2px 16px;scrollbar-width:none;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+  .chips-linha::-webkit-scrollbar{display:none}
+  .chip{all:unset;box-sizing:border-box;cursor:pointer;flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;min-height:40px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg);font-weight:600;font-size:.86rem;white-space:nowrap;-webkit-tap-highlight-color:transparent}
+  .chip:focus-visible{outline:2px solid var(--leaf-2);outline-offset:2px}
+  .chip.on{background:var(--leaf);border-color:var(--leaf);color:#fff}
+  :root[data-theme="dark"] .chip.on{background:#2a7a44;border-color:#2a7a44}
+  .chip-ic{display:grid;place-items:center}
+  .chip-ic svg{width:18px;height:18px}
+  .chip.on .chip-ic{color:#fff!important}
+  :root[data-theme="dark"] .chip-ic{color:var(--leaf-2)!important}
+  .chips-linha.sub .chip{min-height:40px;font-size:.8rem;padding:0 12px;background:transparent}
+  .chips-linha.sub .chip.on{background:var(--seed);color:var(--seed-ink);border-color:var(--warn-line)}
+  /* lista ocupa a largura toda; departamentos pelos chips e pela barra de baixo */
+  .layout,body.pg-inicio .layout{grid-template-columns:minmax(0,1fr)}
+  main{grid-column:1}
+  .btn.dep-toggle{display:none!important}
+  aside.open{top:calc(var(--hdr,0px) + 10px);max-height:calc(100dvh - var(--hdr,0px) - 90px - env(safe-area-inset-bottom,0px))}
+}
+/* ===== Barra fixa embaixo (celular/tablet) ===== */
+.barra-cel{display:none}
+@media (max-width:860px){
+  .barra-cel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:fixed;left:0;right:0;bottom:0;z-index:36;background:var(--leaf);color:#f2f6ee;padding:4px max(6px,env(safe-area-inset-left,0px)) calc(4px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 20px rgba(0,0,0,.18);border-top:1px solid rgba(255,255,255,.08)}
+  .barra-cel button{all:unset;box-sizing:border-box;cursor:pointer;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:52px;border-radius:10px;font-size:.7rem;font-weight:600;-webkit-tap-highlight-color:transparent}
+  .barra-cel svg{width:23px;height:23px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+  .barra-cel button[aria-current="page"],.barra-cel button.atual,.barra-cel button[aria-expanded="true"]{color:#f7dc94}
+  .barra-cel button[aria-current="page"]::before,.barra-cel button.atual::before,.barra-cel button[aria-expanded="true"]::before{content:"";position:absolute;top:-4px;left:30%;right:30%;height:3px;border-radius:0 0 3px 3px;background:#f7dc94}
+  .barra-cel button:focus-visible{outline:2px solid #f7dc94;outline-offset:-2px}
+  .barra-cel .ped-n{top:3px;right:calc(50% - 22px)}
+  body{padding-bottom:calc(62px + env(safe-area-inset-bottom,0px))}
+  /* o resumo do pedido e a cesta do topo ficam na barra */
+  .pedido-bar{display:none!important}
+  .ped-topo{display:none}
+  body.tem-pedido footer{padding-bottom:28px}
+  body.tem-pedido .wa-float{display:flex}
+  .wa-float{bottom:calc(74px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:600px){ .search{flex-basis:calc(100% - 52px)!important} }
 </style>
 </head>
 <body>
@@ -712,6 +761,13 @@ footer .wrap.rodape{text-align:left}
   <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.3a.5.5 0 0 0 0-.5l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.9 11.9 0 0 0 4.6 4c1.7.7 2.4.8 3.2.7a2.8 2.8 0 0 0 1.8-1.3 2.3 2.3 0 0 0 .2-1.3c-.1-.1-.3-.2-.5-.3Z"/></svg>
   <span>Fale conosco</span>
 </a>
+
+<nav class="barra-cel" id="barraCel" aria-label="Navegação rápida">
+  <button type="button" data-go="inicio" data-barra="inicio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 4l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg><span>Início</span></button>
+  <button type="button" id="barraDeps" aria-controls="deps" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg><span>Departamentos</span></button>
+  <button type="button" id="barraBusca"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg><span>Buscar</span></button>
+  <button type="button" data-abrir-pedido id="barraPed" aria-label="Ver pedido"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9h18l-2 11H5z"/><path d="M8 9l4-6 4 6"/></svg><span>Pedido</span><b class="ped-n" id="pedN2" hidden>0</b></button>
+</nav>
 
 <div class="pedido-bar" id="pedidoBar" hidden>
   <button data-abrir-pedido>
@@ -1243,7 +1299,8 @@ function atualizarPedido(p){
   const {qtd,total,consultar} = totais();
   const bar = document.getElementById("pedidoBar");
   bar.hidden = !qtd;
-  const n = document.getElementById("pedN"); n.textContent = qtd > 99 ? "99+" : qtd; n.hidden = !qtd;
+  ["pedN","pedN2"].forEach(id=>{ const n = document.getElementById(id); if(n){ n.textContent = qtd > 99 ? "99+" : qtd; n.hidden = !qtd; } });
+  document.getElementById("barraPed").setAttribute("aria-label", qtd ? `Ver pedido (${qtd} ${qtd===1?"item":"itens"})` : "Ver pedido (vazio)");
   document.getElementById("pedTopo").setAttribute("aria-label", qtd ? `Ver pedido (${qtd} ${qtd===1?"item":"itens"})` : "Ver pedido (vazio)");
   document.body.classList.toggle("tem-pedido", !!qtd);
   bar.querySelector("[data-resumo]").innerHTML = `<b>${qtd} ${qtd===1?"item":"itens"}</b> · ${total?brl(total):""}${consultar?(total?" + ":"")+"a consultar":""}`;
@@ -1351,7 +1408,7 @@ let state = {page:"inicio", dep:null, sub:null, q:"", sec:null};
 function renderDeps(){
   document.getElementById("depList").innerHTML = Object.entries(DEPS).map(([d,subs])=>`
     <details ${state.dep===d?"open":""}>
-      <summary>${d}</summary>
+      <summary title="${esc(DEP_INFO[d]||"")}"><span class="dep-ic" style="background:${TINT[d]};color:${INK[d]}">${icon(d)}</span><span class="dep-nome">${d}</span></summary>
       <div class="subs">
         <button data-dep="${d}" class="${state.dep===d&&!state.sub?"on":""}">Ver tudo</button>
         ${d==="Sementes e mudas"?`<button data-dep="${d}" data-sub="Mudas" class="${state.dep===d&&state.sub==="Mudas"?"on":""}">Mudas (bandejas e unitárias)</button>`:""}
@@ -1561,7 +1618,16 @@ function buscar(texto, lista){
   return {list:algum.filter(x=>x.total>=melhor*.75).map(x=>x.p), parecidos:!todos.length && algum.length>0};
 }
 
-function viewProdutos(){
+function chipsDeps(){
+  const d = state.dep, subs = d ? (DEPS[d]||[]) : [];
+  const chip = (attrs, txt, on) => `<button class="chip${on?" on":""}" ${attrs}${on?' aria-current="true"':""}>${txt}</button>`;
+  return `<nav class="chips-dep" aria-label="Departamentos">
+    <div class="chips-linha">${chip('data-go="produtos"', "Todos", !d && !state.q.trim())}${Object.keys(DEPS).map(x=>chip(`data-dep="${esc(x)}"`, `<span class="chip-ic" style="color:${INK[x]}">${icon(x)}</span>${esc(x)}`, d===x)).join("")}</div>
+    ${d?`<div class="chips-linha sub">${chip(`data-dep="${esc(d)}"`, "Tudo", !state.sub)}${d==="Sementes e mudas"?chip(`data-dep="${esc(d)}" data-sub="Mudas"`, "Mudas (bandejas e unitárias)", state.sub==="Mudas"):""}${subs.map(x=>chip(`data-dep="${esc(d)}" data-sub="${esc(x)}"`, esc(x), state.sub===x)).join("")}</div>`:""}
+  </nav>`;
+}
+function viewProdutos(){ return chipsDeps() + viewProdutos0(); }
+function viewProdutos0(){
   const q0 = state.q.trim();
   if(!state.dep && !state.sub && !q0){
     if(state.sec==="promo"){ const l=promocoes();
@@ -1633,9 +1699,12 @@ function render(){
   document.body.classList.toggle("pg-sobre", state.page==="sobre");
   document.querySelectorAll(".shortcut").forEach(b=>b.classList.toggle("on", state.page==="produtos" && b.dataset.dep===state.dep));
   document.getElementById("view").innerHTML = {inicio:viewInicio, produtos:viewProdutos, sobre:viewSobre}[state.page]();
+  document.querySelectorAll(".chips-linha .on").forEach(el=>{ const l=el.parentElement; l.scrollLeft = el.offsetLeft - (l.clientWidth - el.offsetWidth)/2; });
   fecharMenuProd(); iniciarHero(); if(typeof atualizarHora==="function") atualizarHora();
   document.querySelectorAll("nav.main > a, .menu-gatilho").forEach(a=>{ a.dataset.go===state.page ? a.setAttribute("aria-current","page") : a.removeAttribute("aria-current"); });
   renderDeps();
+  const bi = document.querySelector('[data-barra="inicio"]'); if(bi) state.page==="inicio" ? bi.setAttribute("aria-current","page") : bi.removeAttribute("aria-current");
+  const bd = document.getElementById("barraDeps"); if(bd){ bd.classList.toggle("atual", state.page==="produtos"); if(!document.getElementById("deps").classList.contains("open")) bd.setAttribute("aria-expanded","false"); }
 }
 function go(page, opts={}){
   state = {...state, page, ...opts};
@@ -1674,7 +1743,18 @@ document.getElementById("q").addEventListener("input", e=>go("produtos",{q:e.tar
 const medirTopo = ()=>document.documentElement.style.setProperty("--hdr", document.querySelector("header").offsetHeight+"px");
 medirTopo(); addEventListener("resize", medirTopo); addEventListener("load", medirTopo);
 document.addEventListener("click", e=>{ const a=document.getElementById("deps");
-  if(a.classList.contains("open") && !e.target.closest("#deps,#depToggle")){ a.classList.remove("open"); document.getElementById("depToggle").setAttribute("aria-expanded","false"); } });
+  if(a.classList.contains("open") && !e.target.closest("#deps,#depToggle,#barraDeps")){ a.classList.remove("open"); document.getElementById("depToggle").setAttribute("aria-expanded","false"); document.getElementById("barraDeps").setAttribute("aria-expanded","false"); } });
+/* ===== barra fixa do celular ===== */
+document.getElementById("barraDeps").addEventListener("click", e=>{
+  const a = document.getElementById("deps"), b = e.currentTarget;
+  if(state.page!=="produtos"){ document.getElementById("q").value=""; go("produtos",{dep:null,sub:null,q:"",sec:null}); }
+  const open = !a.classList.contains("open") || b.getAttribute("aria-expanded")!=="true";
+  a.classList.toggle("open", open); b.setAttribute("aria-expanded", open);
+  if(open){ const f = a.querySelector("details[open] summary, summary"); if(f) f.focus({preventScroll:true}); }
+});
+document.getElementById("barraBusca").addEventListener("click", ()=>{
+  const q = document.getElementById("q"); scrollTo({top:0, behavior:"smooth"}); q.focus(); q.select();
+});
 document.getElementById("depToggle").addEventListener("click", e=>{
   const open = document.getElementById("deps").classList.toggle("open");
   e.currentTarget.setAttribute("aria-expanded", open);
@@ -1848,7 +1928,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610160112";
+  const VERSAO = "202610160118";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
