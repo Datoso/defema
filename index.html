@@ -552,6 +552,61 @@ nav.main .menu-prod.sem-hover .menu-caixa{opacity:0;visibility:hidden}
   .vantagens{grid-template-columns:1fr;gap:8px}
 }
 @media (prefers-reduced-motion:reduce){ .slide,.slide>.bg,.cat-tile,.cat-foto img{transition:none} .slide>.bg{transform:none} }
+
+/* ===== Polimento de layout (out/2026) ===== */
+/* faixa de departamentos: todas as fotos com a mesma altura (4:3), nomes alinhados */
+.cat-foto{overflow:hidden}
+.cat-foto img{position:absolute;inset:12px;width:calc(100% - 24px);height:calc(100% - 24px)}
+/* foco de teclado visível em todos os botões e links */
+nav.main a:focus-visible{outline:2px solid #f7dc94;outline-offset:2px}
+.link:focus-visible,.car-btn:focus-visible,.fechar:focus-visible,.car-pontos button:focus-visible{outline:2px solid var(--leaf-2);outline-offset:2px;border-radius:4px}
+.fechar:focus-visible,.car-btn:focus-visible{border-radius:50%}
+.wa-float:focus-visible{outline:3px solid var(--fg);outline-offset:3px}
+.fechar{width:40px;height:40px}
+/* modo escuro: botões e selos com contraste suficiente */
+:root[data-theme="dark"]{--wa:#1f7f47}
+:root[data-theme="dark"] .btn-add,:root[data-theme="dark"] .btn-seed{background:#2a7a44}
+:root[data-theme="dark"] .btn-add:hover{background:#2f8a4d}
+:root[data-theme="dark"] .opcoes button.on{color:#0f1611}
+:root[data-theme="dark"] .b-promo{color:#2a0d07}
+:root[data-theme="dark"] .b-consulta{color:#1b2a1f}
+:root[data-theme="dark"] .pedido-bar button{background:#1f4d2d;box-shadow:0 8px 24px rgba(0,0,0,.5),inset 0 0 0 1px rgba(255,255,255,.12)}
+:root{--wa:#1a7f47}
+/* "+ Adicionar ao pedido" cabe em uma linha nos cards */
+@media (min-width:601px){ .card .btn-add{font-size:.9rem;padding-left:8px;padding-right:8px} }
+@media (max-width:600px){ .btn-add,.acoes .btn-wa{padding-left:8px;padding-right:8px} }
+/* tablet (601–860 px): menu na mesma linha do logo; faixas mais equilibradas */
+@media (min-width:601px) and (max-width:860px){
+  nav.main{order:2;width:auto;margin-left:auto}
+  .cat-tile{flex-basis:29%}
+  .vantagens{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .vantagens div{flex-direction:column;align-items:flex-start;gap:6px}
+}
+/* celular e tablet: áreas de toque com pelo menos 40 px */
+@media (max-width:860px){
+  nav.main a{min-height:40px;display:inline-flex;align-items:center}
+  .tema-btn,.ped-topo{width:40px;height:40px}
+  .search input{min-height:40px}
+  .btn.dep-toggle{min-height:40px}
+  .btn-add,.acoes .btn-wa{min-height:40px}
+  .qtd button{height:40px}
+  .mini-q{grid-template-columns:40px 30px 40px}
+  .mini-q button{height:40px}
+  .opcoes button{min-height:34px;display:inline-flex;align-items:center}
+  .link.limpar,.copiar-link,.sec-head .link{padding-block:10px;margin-block:-10px}
+  /* carrossel: a altura acompanha o slide mais alto, assim a oferta não sobrepõe o texto */
+  .hero{display:grid;grid-template-columns:minmax(0,1fr);align-items:stretch;padding:0;gap:0}
+  .hero>.slide{position:relative;inset:auto;grid-area:1/1;min-height:440px}
+  .slide.oferta{flex-direction:column;align-items:stretch;justify-content:flex-end}
+  .slide.oferta .oferta-prod{order:-1;position:relative;top:auto;right:auto;transform:rotate(2deg);align-self:center;flex:0 0 auto;width:150px;margin:28px 0 18px}
+}
+@media (max-width:600px){ .search{flex-basis:calc(100% - 104px)!important} }
+@media (min-width:601px) and (max-width:860px){ .slide.oferta .oferta-prod{align-self:flex-start;margin-left:34px} }
+@media (max-width:480px){
+  .slide .tag{letter-spacing:.05em;font-size:.68rem;border-radius:12px;text-align:center;justify-content:center}
+  .slide.oferta .oferta-prod{width:128px;margin:26px 0 14px;padding:10px}
+  .oferta-pct{width:54px;font-size:1rem}
+}
 </style>
 </head>
 <body>
@@ -1712,7 +1767,7 @@ if(TEM_SUPABASE){
 
 /* ---------- versão nova publicada? recarrega sozinho (evita página antiga aberta há horas) ---------- */
 (function(){
-  const VERSAO = "202610152219";
+  const VERSAO = "202610160045";
   let ultima = 0;
   async function conferir(){
     if(Date.now() - ultima < 60000) return; ultima = Date.now();
